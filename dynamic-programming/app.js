@@ -2,7 +2,7 @@
 
 //Memoization method
 function fibonacci(n, memo = []) {
-  //O(n), bad space complexity--> O(m) due to the memo array
+  //O(n) time complexity, bad space complexity--> O(m) due to the memo array
   if (n === 0) return 0;
   if (n <= 2) return 1;
   if (memo[n] !== undefined) return memo[n];
@@ -13,7 +13,7 @@ console.log(fibonacci(13));
 
 //Tabulation method (has better space complexity).
 function fibb(n) {
-  //O(n), good space complexity --> O(m) also but better sha
+  //O(n) time complexity, also O(m) space complexity but quite more optimal than recursion solution
   if (n === 0) return 0;
   if (n <= 2) return 1;
   const dp = [0, 1, 1];
@@ -25,7 +25,7 @@ function fibb(n) {
 console.log(fibb(13));
 
 function fib(n) {
-  //O(1) space complexity, O(n) time complexity
+  //O(n) time complexity, O(1) space complexity
   if (n === 0) return 0;
   
   let fibOne = 1;
