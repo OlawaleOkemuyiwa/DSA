@@ -648,3 +648,38 @@ var climbStairs = function(n) {
   
   return n === 1 ? oneStep : twoStep;
 };
+
+//L.83 (easy)
+var deleteDuplicates = function(head) {
+  let currentNode = head;
+  while (currentNode && currentNode.next) {
+    if (currentNode.val === currentNode.next.val) {
+      currentNode.next = currentNode.next.next;
+    } else {
+      currentNode = currentNode.next;
+    }
+  }
+  return head;
+};
+
+//L.88 (easy)
+var merge = function(nums1, m, nums2, n) {
+  //i, j are pointers for nums1, nums2 respectively starting at end of elements of each array
+  let i = m - 1;
+  let j = n - 1;
+  
+  //k is another pointer starting from the end of nums1 arr moving backwards
+  //constructing the merge of nums1 with nums2 in a non-decreasing order
+  for (let k = nums1.length - 1; k >= 0; k--) {
+    //when we've looped entirely over nums2 then the merge is completed and we done
+    if (j < 0) break;
+    
+    if (i >= 0 && nums1[i] > nums2[j]) {
+      nums1[k] = nums1[i];
+      i--;
+    } else {
+      nums1[k] = nums2[j];
+      j--;
+    }
+  }
+};
