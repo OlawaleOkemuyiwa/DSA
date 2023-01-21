@@ -633,3 +633,18 @@ var mySqrt = function(x) {
   //and right < Sqrt(x) [right === Math.floor(actual sqrt of x)] 
   return right;
 };
+
+//L.70 (easy)
+var climbStairs = function(n) {
+  //0 step, 0 distinct way. 1 step, 1 distinct way. 2 steps, 2 distinct ways
+  let oneStep = 1;
+  let twoStep = 2;
+
+  for (let i = 3; i <= n; i++) {
+    let temp = oneStep + twoStep;
+    oneStep = twoStep;
+    twoStep = temp;
+  }
+  
+  return n === 1 ? oneStep : twoStep;
+};

@@ -6,14 +6,13 @@ function fibonacci(n, memo = []) {
   if (n === 0) return 0;
   if (n <= 2) return 1;
   if (memo[n] !== undefined) return memo[n];
-  const result = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
-  memo[n] = result;
-  return result;
+  memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
+  return memo[n];
 }
 console.log(fibonacci(13));
 
 //Tabulation method (has better space complexity).
-function fib(n) {
+function fibb(n) {
   //O(n), good space complexity --> O(m) also but better sha
   if (n === 0) return 0;
   if (n <= 2) return 1;
@@ -22,5 +21,20 @@ function fib(n) {
     dp[i] = dp[i - 1] + dp[i - 2];
   }
   return dp[n];
+}
+console.log(fibb(13));
+
+function fib(n) {
+  //O(1) space complexity, O(n) time complexity
+  let fibOne = 1;
+  let fibTwo = 1;
+  
+  for (let i = 3; i <= n; i++) {
+    let temp = fibOne + fibTwo;
+    fibOne = fibTwo;
+    fibTwo = temp;
+  }
+  
+  return n === 1 ? fibOne : fibTwo;
 }
 console.log(fib(13));
