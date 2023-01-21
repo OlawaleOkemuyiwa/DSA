@@ -26,6 +26,8 @@ console.log(fibb(13));
 
 function fib(n) {
   //O(1) space complexity, O(n) time complexity
+  if (n === 0) return 0;
+  
   let fibOne = 1;
   let fibTwo = 1;
   
