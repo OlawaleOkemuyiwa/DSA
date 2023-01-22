@@ -669,7 +669,7 @@ var merge = function(nums1, m, nums2, n) {
   let j = n - 1;
   
   //k is another pointer starting from the end of nums1 arr moving backwards
-  //constructing the merge of nums1 with nums2 in a non-decreasing order
+  //orchestrating the merge of nums1 with nums2 in a non-decreasing order
   for (let k = nums1.length - 1; k >= 0; k--) {
     //when we've looped entirely over nums2 then the merge is completed and we done
     if (j < 0) break;
@@ -682,4 +682,74 @@ var merge = function(nums1, m, nums2, n) {
       j--;
     }
   }
+};
+
+//L.94 (easy)
+var inorderTraversal = function(root) {
+  const visited = [];
+  if (!root) return visited;
+
+  let curr = root;
+  const stack = [];
+  while (curr || stack.length > 0) {
+    while (curr) {
+      //traverse down the left of current node while pushing each  
+      //encountered node to the stack until we encounter a null node 
+      stack.push(curr);
+      curr = curr.left;
+    }
+    curr = stack.pop();
+    visited.push(curr.val);
+    curr = curr.right;
+  }
+  return visited;
+};
+
+//L.100 (easy)
+var isSameTree = function(p, q) {
+  if (!p && !q) {
+    //if both p and q are null then they're same
+    return true
+  } else if (!p || !q) {
+    //else if only either of p or q is null then they're not same
+    return false
+  } else if (p.val !== q.val) {
+    //else if neither is null but their values differ then they're not same
+    return false
+  };
+  //p.val == q.val. The 2 nodes can only be same if their left and right children are same
+  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+};
+
+//L.101 (easy)
+var isSymmetric = function(root) {
+  function isMirror (p, q) {
+    if (!p && !q) {
+      return true;
+    } else if (!p || !q) {
+      return false;
+    } else if (p.val !== q.val) {
+      return false;
+    }
+    //p.val == q.val. The tree can only be symmetric if the left child of p is the same
+    //as the right child of q and right child of p is the same as the left child of q
+    return isMirror(p.left, q.right) && isMirror(p.right, q.left); 
+  }
+  return isMirror(root, root);
+};
+
+//L.104 (easy)
+var maxDepth = function(root) { //it is similar to preorderDFSIterativeTraversal
+  //a null node tree has a depth of 0
+  if (!root) return 0;
+
+  const stack = [[root, 1]];
+  let maxDepth = 1;
+  while(stack.length > 0) {
+    const [node, depth] = stack.pop();
+    maxDepth = Math.max(depth, maxDepth);
+    if (node.right) stack.push([node.right, depth + 1]);
+    if (node.left) stack.push([node.left, depth + 1]);
+  }
+  return maxDepth;
 };
