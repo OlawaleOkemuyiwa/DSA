@@ -753,3 +753,41 @@ var maxDepth = function(root) { //it is similar to preorderDFSIterativeTraversal
   }
   return maxDepth;
 };
+
+//L.108 (easy)
+var sortedArrayToBST = function(nums) {
+  //the way we go about it is: for nums arr, the middle element is gonna be the root 
+  //node where the elements before it construct the left part of the tree while the elements 
+  //after it construct the right part. We do this recursively for the smaller subarrs
+  //to determine their subtrees constructed starting from the call stack of the root node 
+  //to the farmost left child then back up to the root node then to farmost right child
+  
+  function helper(leftIdx, rightIdx) {
+    if (leftIdx > rightIdx) return null;
+    const midIdx = Math.floor((leftIdx + rightIdx) / 2);
+    const root = new TreeNode(nums[midIdx]);
+    root.left = helper(leftIdx, midIdx - 1);
+    root.right = helper(midIdx + 1, rightIdx);
+    return root;
+  }
+  return helper(0, nums.length - 1);
+};
+
+//L.110 (easy)
+var isBalanced = function(root) {
+  //helper func call returns an array [isPresentNodeBalanced, maxDepthOfPresentSubTree]
+
+  function helper(node) {
+    if (!node) return [true, 0]; //a null node is balanced and has depth of 0
+    const leftRes = helper(node.left);
+    const rightRes = helper(node.right);
+    //for the present node to be balanced its left subtree must be balanced, its
+    //right subtree must be balanced and the abs difference between the maxDepth of
+    //its left subtree and its right subtree must be <= 1
+    const isBalanced = leftRes[0] && rightRes[0] && Math.abs(leftRes[1] - rightRes[1]) <= 1;
+    return [isBalanced, 1 + Math.max(leftRes[1], rightRes[1])];
+  }
+  const [treeIsBalanced, maxDepthOfTree] = helper(root);
+  console.log(maxDepthOfTree);
+  return treeIsBalanced;
+};
