@@ -937,6 +937,23 @@ var singleNumber = function(nums) {
 };
 
 //L.141 (easy)
+var hasCycle = function(head) {
+  //Floyd's tortoise & hare: O(n) time, O(1) space
+  let slow = head;
+  let fast = head;
+
+  //incase the list doesn't have a cycle in it, we do not wish to enter 
+  //the loop for the lastNode as fast = lastNode.next.next is null.next (error)
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    //if the list has a cycle in it, slow and fast would meet at some point in the list
+    if (slow === fast) {
+      return true;
+    }
+  }
+  return false;
+};
 
 
 
