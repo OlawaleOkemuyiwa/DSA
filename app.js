@@ -879,11 +879,11 @@ var maxProfit = function(prices) {
   //loop through the rest of the arr. From the remaining prices, we could either 
   //get a new buyprice to achieve maxprofit or a better sellprice for maxprofit
   for (let i = 1; i < prices.length; i++) {
-      if (prices[i] < buyprice) {
-          buyprice = prices[i];
-      } else {
-          maxprofit = Math.max(maxprofit, prices[i] - buyprice)
-      }
+    if (prices[i] < buyprice) {
+      buyprice = prices[i];
+    } else {
+      maxprofit = Math.max(prices[i] - buyprice, maxprofit)
+    }
   }     
   return maxprofit
 };
