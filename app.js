@@ -61,8 +61,8 @@
 // function isCharAlphanumeric(char) {
 //     const charCode = char.charCodeAt(0);
 //     if ((charCode > 47 && charCode < 58) ||         //char is numeric(0-9)
-//         (charCode > 96 && charCode < 123) ||
-//         (charCode > 64 && charCode < 91)) {       //char is lower alpha (a-z) [charCode > 64 && charCode < 91 for A-Z]
+//         (charCode > 64 && charCode < 91) ||         //char is upper alpha (A-Z)
+//         (charCode > 96 && charCode < 123)) {        //char is lower alpha (a-z)
 //         return true ;
 //     }
 //     return false;
@@ -876,7 +876,7 @@ var maxProfit = function(prices) {
   //maxprofit is 0 at this point cause no profit has been achieved yet 
   let maxprofit = 0
 
-  //loop through the rest of the arr. From the remaining prices, we could either 
+  //loop through the rest of the prices. From the remaining prices, we could either 
   //get a new buyprice to achieve maxprofit or a better sellprice for maxprofit
   for (let i = 1; i < prices.length; i++) {
     if (prices[i] < buyprice) {
@@ -887,3 +887,61 @@ var maxProfit = function(prices) {
   }     
   return maxprofit
 };
+
+//L.125 (easy)
+var isPalindrome = function(s) {
+  function isCharAlphanumeric(char) {
+    const charCode = char.charCodeAt(0);
+    if ((charCode > 47 && charCode < 58) ||         
+    (charCode > 64 && charCode < 91) ||
+    (charCode > 96 && charCode < 123)) {       
+      return true ;
+    }
+    return false;
+  }
+  
+  for (let i = 0, j = s.length - 1; i < j; i++, j--) {
+    //if charAt(i) is not alphanumeric, move i forward till we get to one
+    while (i < j && !isCharAlphanumeric(s.charAt(i))) {
+      i++
+    }
+    
+    //if charAt(j) is not alphanumeric, move j backwards till we get to one
+    while (i < j && !isCharAlphanumeric(s.charAt(j))) {
+      j--
+    }
+    
+    //now we should have two alphanumeric chars at both ends
+    if (s.charAt(i).toLowerCase() !== s.charAt(j).toLowerCase()) return false;
+  }
+  
+  //if we don't return false from the loop then it is a palindrome string
+  return true;
+};
+
+//L.136 (easy)
+var singleNumber = function(nums) {
+  //A map to store the integers and their corresponding counts
+  const map = new Map();
+
+  for (const num of nums) {
+    map.set(num, (map.get(num) || 0) + 1)
+  }
+
+  //the key of the map with value of 1 is our desired integer
+  for (const [key, value] of map.entries()) {
+    if (value === 1) return key;
+  }
+
+  //The only way to achieve constant space complexity is BIT MANIPULATION
+};
+
+//L.141 (easy)
+
+
+
+//L.144 (easy)
+
+
+
+//L.145 (easy)
