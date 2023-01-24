@@ -955,10 +955,37 @@ var hasCycle = function(head) {
   return false;
 };
 
-
-
 //L.144 (easy)
+var preorderTraversal = function(root) {
+  const visited = [];
+  if (!root) return visited;
 
-
+  const stack = [root]; 
+  while (stack.length > 0) {
+    const node = stack.pop();
+    visited.push(node.val);
+    if (node.right) stack.push(node.right);
+    if (node.left) stack.push(node.left);
+    //we add the left node to the stack after the right node is added so it would be the 1st
+    //we would add to the visited arr between the two i.e [node, left, right] PREORDER
+  }
+  return visited;
+};
 
 //L.145 (easy)
+var postorderTraversal = function(root) {
+  if (!root) return [];
+  const visited = [];
+
+  const stack = [root];
+  while (stack.length > 0) {
+      const node = stack.pop();
+      visited.push(node.val);
+      if (node.left) stack.push(node.left);
+      if (node.right) stack.push(node.right);
+      //we add the right node to the stack after the left node is added so it would be
+      //the 1st we would add to the visited arr between the two i.e [node, right, left]
+      //[node, right, left].reverse === [left, right, node] POSTORDER
+  }
+  return visited.reverse();
+};
