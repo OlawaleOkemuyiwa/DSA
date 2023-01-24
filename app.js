@@ -743,7 +743,7 @@ var maxDepth = function(root) { //it is similar to preorderDFSIterativeTraversal
   //a null node tree has a depth of 0
   if (!root) return 0;
 
-  const stack = [[root, 1]];
+  const stack = [[root, 1]]; //[[currentNode, depthOfCurrentNodeSubtree]]
   let maxDepth = 1;
   while(stack.length > 0) {
     const [node, depth] = stack.pop();
@@ -790,4 +790,100 @@ var isBalanced = function(root) {
   const [treeIsBalanced, maxDepthOfTree] = helper(root);
   console.log(maxDepthOfTree);
   return treeIsBalanced;
+};
+
+//L.111 (easy)
+var minDepth = function(root) {
+  if (!root) {
+    //if the current node is a null node then it has a depth of 0
+    return 0;
+  } else if (!root.left && !root.right) {
+    //if the current node is a leaf node (desired) then it has a depth of 1
+    return 1;
+  } else if (root.left && !root.right) {
+    //if the current node only has a left subtree, then we go down the left subtree
+    return 1 + minDepth(root.left);
+  } else if (!root.left && root.right) { 
+    //if the current node only has a right subtree, then we go down the right subtree
+    return 1 + minDepth(root.right);
+  }
+
+  //if cur node has no null child then we pick the smaller depth btw the left and right subtree
+  return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+};
+
+//L.112 (easy)
+var hasPathSum = function(root, targetSum) {
+  function helper (node, curSum) {
+    //if cur node is a null node then return false as there is no root-to-leaf path
+    if (!node) return false;
+
+    //increment curSum with the value of the current node
+    curSum += node.val;
+    
+    //check if current node is a leaf node (desired)
+    if (!node.left && !node.right) return curSum === targetSum;
+
+    //continue the check on both left and right subtree. Whichever reaches the target first
+    return helper(node.left, curSum) || helper(node.right, curSum);
+  }
+  return helper(root, 0);
+};
+
+//L.118 (easy)
+var generate = function(numRows) {
+  const res = [[1]];
+
+  for (let i = 0; i < numRows - 1; i++) {
+    //add 0 to the front and end of the current row to get temp arr for summing purpose 
+    const temp = [0, ...res[i], 0];
+    
+    const nextRow = [];
+    //from temp arr construct the next row of Pascal's triangle to be pushed to res array
+    for (let j = 0; j < temp.length - 1; j++) {
+      nextRow.push(temp[j] + temp[j + 1])
+    }
+    res.push(nextRow);
+  }
+  
+  return res;
+};
+
+//L.119 (easy)
+var getRow = function(rowIndex) {
+  const res = [[1]];
+
+  for (let i = 0; i < rowIndex; i++) {
+    //add 0 to the front and end of the current row to get temp arr for easier summing
+    const temp = [0, ...res[i], 0];
+    
+    const nextRow = [];
+    //from temp arr construct the next row of Pascal's triangle to be pushed to res array
+    for (let j = 0; j < temp.length - 1; j++) {
+      nextRow.push(temp[j] + temp[j + 1])
+    }
+    res.push(nextRow);
+  }
+
+  return res.pop();
+};
+
+//L.121 (easy)
+var maxProfit = function(prices) {
+  //make price on day 1 the initial buyprice
+  let buyprice = prices[0];
+
+  //maxprofit is 0 at this point cause no profit has been achieved yet 
+  let maxprofit = 0
+
+  //loop through the rest of the arr. From the remaining prices, we could either 
+  //get a new buyprice to achieve maxprofit or a better sellprice for maxprofit
+  for (let i = 1; i < prices.length; i++) {
+      if (prices[i] < buyprice) {
+          buyprice = prices[i];
+      } else {
+          maxprofit = Math.max(maxprofit, prices[i] - buyprice)
+      }
+  }     
+  return maxprofit
 };
