@@ -384,7 +384,7 @@
 
 
 //LEETCODE SOLUTIONS
-//L.1 (easy)
+//L.1 (Easy)
 var twoSum = function(nums, target) {
   //map === already visited elements of the array and their indexes
   const map = new Map();
@@ -400,7 +400,7 @@ var twoSum = function(nums, target) {
   }
 };
 
-//L.9 (easy)
+//L.9 (Easy)
 var isPalindrome = function(x) {
   if (x < 0) return false; 
 
@@ -416,7 +416,7 @@ var isPalindrome = function(x) {
   //O(log10x) where x == integer --> if the digit is 4567, we iterate 4 times
 };
 
-//L.13 (easy)
+//L.13 (Easy)
 var romanToInt = function(s) {
   const obj = {I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000};
   if (s.length === 1) return obj[s.charAt(0)];
@@ -435,7 +435,7 @@ var romanToInt = function(s) {
   return int;
 };
 
-//L.14 (easy)
+//L.14 (Easy)
 var longestCommonPrefix = function(strs) {
   let prefix = strs[0];
   for (let i = 1; i < strs.length; i++) {
@@ -449,7 +449,7 @@ var longestCommonPrefix = function(strs) {
   return prefix;
 };
 
-//L.20 (easy)
+//L.20 (Easy)
 var isValid = function(s) {
   const obj = {')': '(', '}': '{', ']': '['};
   //a stack to contain opening brackets waiting to be closed
@@ -469,7 +469,7 @@ var isValid = function(s) {
   return stack.length === 0;
 };
 
-//L.21 (easy)
+//L.21 (Easy)
 var mergeTwoLists = function(list1, list2) {
   let mergedList = new ListNode();
 
@@ -496,7 +496,7 @@ var mergeTwoLists = function(list1, list2) {
   return head.next;
 };
 
-//L.26 (easy)
+//L.26 (Easy)
 var removeDuplicates = function(nums) {
   //insertIndex helps keep track of where non-duplicate elements are to be inserted in nums arr
   let insertIndex = 0;
@@ -512,7 +512,7 @@ var removeDuplicates = function(nums) {
   return insertIndex;
 };
 
-//L.27 (easy)
+//L.27 (Easy)
 var removeElement = function(nums, val) {
   //insertIndex helps keep track of where non-ocurrence of val are to be inserted in nums arr
   let insertIndex = 0;
@@ -528,7 +528,7 @@ var removeElement = function(nums, val) {
   return insertIndex;
 };
 
-//L.35 (easy)
+//L.35 (Easy)
 var searchInsert = function(nums, target) {
   let left = 0;
   let right = nums.length - 1;
@@ -549,7 +549,7 @@ var searchInsert = function(nums, target) {
   return left;
 };
 
-//L.58 (easy)
+//L.58 (Easy)
 var lengthOfLastWord = function(s) {
   let length = 0;
   let i = s.length - 1;
@@ -568,7 +568,7 @@ var lengthOfLastWord = function(s) {
   return length;
 };
 
-//L.66 (easy)
+//L.66 (Easy)
 var plusOne = function(digits) {
   for (let i = digits.length - 1; i >= 0; i--) {
     //if the current digit (starting from the back) is 9 then change to 0 (9 + 1 == 10 => 0)
@@ -587,7 +587,7 @@ var plusOne = function(digits) {
   return digits;
 };
 
-//L.67 (easy)
+//L.67 (Easy)
 var addBinary = function(a, b) {
   let str = "";
   let i = a.length - 1;
@@ -611,7 +611,7 @@ var addBinary = function(a, b) {
   return str.split("").reverse().join("");
 };
 
-//L.69 (easy)
+//L.69 (Easy)
 var mySqrt = function(x) {
   if (x < 2) return x;
 
@@ -634,7 +634,7 @@ var mySqrt = function(x) {
   return right;
 };
 
-//L.70 (easy)
+//L.70 (Easy)
 var climbStairs = function(n) {
   //0 step, 0 distinct way. 1 step, 1 distinct way. 2 steps, 2 distinct ways
   let oneStep = 1;
@@ -649,7 +649,7 @@ var climbStairs = function(n) {
   return n === 1 ? oneStep : twoStep;
 };
 
-//L.83 (easy)
+//L.83 (Easy)
 var deleteDuplicates = function(head) {
   let currentNode = head;
   while (currentNode && currentNode.next) {
@@ -662,7 +662,7 @@ var deleteDuplicates = function(head) {
   return head;
 };
 
-//L.88 (easy)
+//L.88 (Easy)
 var merge = function(nums1, m, nums2, n) {
   //i, j are pointers for nums1, nums2 respectively starting at end of elements of each array
   let i = m - 1;
@@ -684,7 +684,7 @@ var merge = function(nums1, m, nums2, n) {
   }
 };
 
-//L.94 (easy)
+//L.94 (Easy)
 var inorderTraversal = function(root) {
   const visited = [];
   if (!root) return visited;
@@ -705,7 +705,7 @@ var inorderTraversal = function(root) {
   return visited;
 };
 
-//L.100 (easy)
+//L.100 (Easy)
 var isSameTree = function(p, q) {
   if (!p && !q) {
     //if both p and q are null then they're same
@@ -721,7 +721,7 @@ var isSameTree = function(p, q) {
   return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
 };
 
-//L.101 (easy)
+//L.101 (Easy)
 var isSymmetric = function(root) {
   function isMirror (p, q) {
     if (!p && !q) {
@@ -738,7 +738,7 @@ var isSymmetric = function(root) {
   return isMirror(root, root);
 };
 
-//L.104 (easy)
+//L.104 (Easy)
 var maxDepth = function(root) { //it is similar to preorderDFSIterativeTraversal
   //a null node tree has a depth of 0
   if (!root) return 0;
@@ -754,7 +754,7 @@ var maxDepth = function(root) { //it is similar to preorderDFSIterativeTraversal
   return maxDepth;
 };
 
-//L.108 (easy)
+//L.108 (Easy)
 var sortedArrayToBST = function(nums) {
   //the way we go about it is: for nums arr, the middle element is gonna be the root 
   //node where the elements before it construct the left part of the tree while the elements 
@@ -773,7 +773,7 @@ var sortedArrayToBST = function(nums) {
   return helper(0, nums.length - 1);
 };
 
-//L.110 (easy)
+//L.110 (Easy)
 var isBalanced = function(root) {
   //helper func call returns an array [isPresentNodeBalanced, maxDepthOfPresentSubTree]
 
@@ -792,7 +792,7 @@ var isBalanced = function(root) {
   return treeIsBalanced;
 };
 
-//L.111 (easy)
+//L.111 (Easy)
 var minDepth = function(root) {
   if (!root) {
     //if the current node is a null node then it has a depth of 0
@@ -812,7 +812,7 @@ var minDepth = function(root) {
   return 1 + Math.min(minDepth(root.left), minDepth(root.right));
 };
 
-//L.112 (easy)
+//L.112 (Easy)
 var hasPathSum = function(root, targetSum) {
   function helper (node, curSum) {
     //if cur node is a null node then return false as there is no root-to-leaf path
@@ -830,7 +830,7 @@ var hasPathSum = function(root, targetSum) {
   return helper(root, 0);
 };
 
-//L.118 (easy)
+//L.118 (Easy)
 var generate = function(numRows) {
   const res = [[1]];
 
@@ -849,7 +849,7 @@ var generate = function(numRows) {
   return res;
 };
 
-//L.119 (easy)
+//L.119 (Easy)
 var getRow = function(rowIndex) {
   const res = [[1]];
 
@@ -868,7 +868,7 @@ var getRow = function(rowIndex) {
   return res.pop();
 };
 
-//L.121 (easy)
+//L.121 (Easy)
 var maxProfit = function(prices) {
   //make price on day 1 the initial buyprice
   let buyprice = prices[0];
@@ -888,7 +888,7 @@ var maxProfit = function(prices) {
   return maxprofit
 };
 
-//L.125 (easy)
+//L.125 (Easy)
 var isPalindrome = function(s) {
   function isCharAlphanumeric(char) {
     const charCode = char.charCodeAt(0);
@@ -919,7 +919,7 @@ var isPalindrome = function(s) {
   return true;
 };
 
-//L.136 (easy)
+//L.136 (Easy)
 var singleNumber = function(nums) {
   //A map to store the integers and their corresponding counts
   const map = new Map();
@@ -936,7 +936,7 @@ var singleNumber = function(nums) {
   //The only way to achieve constant space complexity is BIT MANIPULATION
 };
 
-//L.141 (easy)
+//L.141 (Easy)
 var hasCycle = function(head) {
   //Floyd's tortoise & hare: O(n) time, O(1) space
   let slow = head;
@@ -955,7 +955,7 @@ var hasCycle = function(head) {
   return false;
 };
 
-//L.144 (easy)
+//L.144 (Easy)
 var preorderTraversal = function(root) {
   const visited = [];
   if (!root) return visited;
@@ -972,7 +972,7 @@ var preorderTraversal = function(root) {
   return visited;
 };
 
-//L.145 (easy)
+//L.145 (Easy)
 var postorderTraversal = function(root) {
   if (!root) return [];
   const visited = [];
@@ -997,7 +997,7 @@ var addTwoNumbers = function(l1, l2) {
   let carry = 0;
   while (l1 || l2 || carry !== 0) {
     //we always sum up carry, val1, val2 so its paramount to have a default value of 0 for
-    //val1 and val2. Incase l1 or l2 becomes null then val1 or val2 won't be undefined but 0
+    //val1 and val2. Should l1 or l2 become null then val1 or val2 won't be undefined but 0
     let val1 = 0;
     let val2 = 0;
     if (l1) {
@@ -1018,4 +1018,21 @@ var addTwoNumbers = function(l1, l2) {
   return head.next;
 };
 
-//L.2 (Medium)
+//L.3 (Medium)
+var lengthOfLongestSubstring = function(s) { 
+  let set = new Set();
+
+  let maxLength = 0;
+  let start = 0;
+  for (let end = 0; end < s.length; end++) {
+    while (set.has(s.charAt(end))) { 
+      //whenever the char we're on is already in the set, i.e we no longer have
+      //a distinct substring sequence and then we try to start a new one (window)
+      set.delete(s.charAt(start)); 
+      start++;
+    }
+    set.add(s.charAt(end));
+    maxLength = Math.max(maxLength, end - start + 1);
+  }
+  return maxLength;
+};
