@@ -30,7 +30,6 @@ function fib(n) {
   
   let fibOne = 1;
   let fibTwo = 1;
-  
   for (let i = 3; i <= n; i++) {
     let temp = fibOne + fibTwo;
     fibOne = fibTwo;
