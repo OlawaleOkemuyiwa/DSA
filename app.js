@@ -989,3 +989,33 @@ var postorderTraversal = function(root) {
   }
   return visited.reverse();
 };
+
+//L.2 (Medium)
+var addTwoNumbers = function(l1, l2) {
+  let summedList = new ListNode();
+  const head = summedList;
+  let carry = 0;
+  while (l1 || l2 || carry !== 0) {
+    //we always sum up carry, val1, val2 so its paramount to have a default value of 0 for
+    //val1 and val2. Incase l1 or l2 becomes null then val1 or val2 won't be undefined but 0
+    let val1 = 0;
+    let val2 = 0;
+    if (l1) {
+      val1 = l1.val;
+      l1 = l1.next;
+    }
+    if (l2) {
+      val2 = l2.val;
+      l2 = l2.next;
+    }
+    const sum = carry + val1 + val2;
+    const digit = sum % 10; 
+    carry = Math.floor(sum / 10); 
+    const currentNode = new ListNode(digit);
+    summedList.next = currentNode;
+    summedList = summedList.next;
+  }
+  return head.next;
+};
+
+//L.2 (Medium)
