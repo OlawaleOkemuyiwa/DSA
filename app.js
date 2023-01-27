@@ -251,76 +251,74 @@
 //   let maxSum = -Infinity; //Not 0 cause incase we only have -ve numbers, the currentSum would be -ve and thus -ve !> 0 i.e the maxSum of that iteration would still be 0. But if we use -ve infinity then -ve > -Infinity i.e the new maxSum would then be -ve sum
 //   for (i = 0; i <= arr.length - n; i++) {
 //     let currentSum = 0;
-//     for (j = 0; j < n; j++) {
-//       currentSum += arr[i + j];
+//     for (j = i; j < i + n; j++) {
+//       currentSum += arr[j];
 //     }
-//     if (currentSum > maxSum) {
-//       maxSum = currentSum;
-//     }
+//     maxSum = Math.max(currentSum, maxSum);
 //   }
 //   return maxSum;
 // }
 // console.log(maxSumSubArray1([2, 6, 9, 2, 1, 8, 5, 6, 3], 3));
 
-// O(n) using sliding window (FIXED WINDOW LENGTH, here the sliding window is always of length n)
+// O(n) using sliding window (FIXED WINDOW LENGTH(1 POINTER), here the sliding window is always of length n)
 // function maxSumSubArray2(arr, n) { //the maximum sum of k consecutive/contiguous elements of an array
 //   if (k > arr.length) return;
 
-//   let currentSum = 0;
 //   let maxSum = 0;
+//   let currentSum = 0;
 //   for (i = 0; i < k; i++) { //find the sum of the first k elements. That would be our starting window
 //     currentSum += arr[i];
 //   }
 //   maxSum = currentSum; //assuming the sum of the first k elements of the array is the maxSum for the mean time
 //   for (i = k; i < arr.length; i++) { 
-//     currentSum = currentSum + arr[i] - arr[i - k];
-    
+//     currentSum = currentSum - arr[i - k] + arr[i];
 //     maxSum = Math.max(maxSum, currentSum);
 //   }
 //   return maxSum;
 // }
 // console.log(maxSumSubArray2([2, 6, 9, 2, 1, 8, 5, 6, 3], 3));
 
-//VARYING WINDOW LENGTH, here the sliding window is of dynamic length
+//VARYING WINDOW LENGTH (2 POINTERS), here the sliding window is of dynamic length
 // function smallestSubarrayGivenSum(arr, targetSum) { //the least number of contiguous elements of an array that sums up to >= targetSum
 //   let minWindowLength = Infinity;   //to be minimized and returned as the result
-//   let currentWindowSum = 0;
 
+//   let currentWindowSum = 0;
 //   let windowStart = 0;
 //   for (let windowEnd = 0; windowEnd < arr.length; windowEnd++) {
 //     currentWindowSum += arr[windowEnd];
 
 //     while (currentWindowSum >= targetSum) { //while the currentWindowuSum is valid strink the left hand side to see if we could achieve a valid sum with a window of smaller length
-//       minWindowLength = Math.min(minWindowLength, windowEnd - windowStart + 1); //the difference in end and start indices of the window is indexed so to get the actual length of the window we add 1. i.e the length of window from el in index 0 to el index 2 is 3
+//       minWindowLength = Math.min(windowEnd - windowStart + 1, minWindowLength); //the difference in end and start indices of the window is indexed so to get the actual length of the window we add 1. i.e the length of window from el in index 0 to el index 2 is 3
 //       currentWindowSum -= arr[windowStart];
 //       windowStart++; 
 
-//       if (minWindowLength === 1) return 1;  //if we ever get a window length of 1 then we're done (length can't be 0 duur)
+//       if (minWindowLength === 1) return 1;  //if we ever get a window length of 1 then we're done as that's the least number of contiguous elements possible
 //     }
 //   }
 //   return minWindowLength;
 // }
 // console.group(smallestSubarrayGivenSum([1, 2, 2, 1, 8, 1, 3, 8], 10));
 
-// VARYING WINDOW LENGTH
-// function lengthOfLongestSubstring (string) { //longest distinct substring length of a given string
-//   if (string.length === 0) return 0;
-//   if (string.length === 1) return 1;
+// VARYING WINDOW LENGTH (2 POINTERS)
+// function lengthOfLongestSubstring (s) { //longest distinct substring length of a given string
+//   const set = new Set();
 
 //   let maxLength = 0;
-//   let set = new Set();
-
 //   let start = 0;
-//   for (let end = 0; end < string.length; end++) {
-//       while (set.has(string.charAt(end))) { //whenever the char we're on is already in the set, i.e we no longer have distinct substring sequence and then we try to start a new one (window)
-//           set.delete(string.charAt(start)); 
-//           start++;
+//   for (let end = 0; end < s.length; end++) {
+//       while (set.has(s.charAt(end))) { 
+//         //whenever the char we're on is already in the set then we no longer have
+//         //a distinct substring sequence and a new sequence is to be started again
+//         set.delete(s.charAt(start)); 
+//         start++;
 //       }
-//       set.add(string.charAt(end));
-//       maxLength = Math.max(maxLength, end - start + 1);
+//       set.add(s.charAt(end));
+//       maxLength = Math.max(end - start + 1, maxLength);
 //   }
-//   return maxLength;
+//   console.log(set, start)
+//   return maxLength
 // };
+// console.log(lengthOfLongestSubstring("pwwkew"))
 
 // function findLength(string, k) { //find the longest substring length with k distinct characters 
 //   let maxLength = 0;
