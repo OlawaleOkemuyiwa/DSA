@@ -4,11 +4,8 @@
 
 // function checkPalindrome(input) {
 //   const re = /[^A-Za-z0-9]/g; //or  /[\W_]/g  ; this regex matches any character that is not enclosed in the bracket, that is matches anything that isnt A-Z, a-z, and 0-9. Then they are replaced with nothing(that is removed from the string)
-//   const lowRegStr = input.replace(re, "").toLowerCase(); //remove all spaces, punctuations and symbols then convert the resulting string to lowercase
-//   // console.log(lowRegStr);
-//   const reverseString = lowRegStr.split("").reverse().join("");
-
-//   return lowRegStr === reverseString;
+//   const string = input.replace(re, "").toLowerCase(); //remove all spaces, punctuations and symbols then convert the resulting string to lowercase
+//   return string === string.split("").reverse().join("");
 // }
 
 // const testCases = [
@@ -177,17 +174,18 @@
   */
 
 // function first2ElementsSum0(sortedArr, target) { //find the first 2 elements of a sorted array that sums to a target
-//   let right = sortedArr.length - 1;
 //   let left = 0;
+//   let right = sortedArr.length - 1;
 
 //   while (left < right) {
 //     let sum = sortedArr[left] + sortedArr[right];
-//     if (sum === target) {
-//       return [sortedArr[left], sortedArr[right]];
+
+//     if (sum < target) {
+//       left++;
 //     } else if (sum > target) {
 //       right--;
 //     } else {
-//       left++;
+//       return [sortedArr[left], sortedArr[right]];
 //     }
 //   }
 // }
@@ -204,9 +202,9 @@
   
 //   // create 2 pointers: left keeps track of negatives, right keeps track of positives. If there are no negatives then left becomes redundant
 //   let left;
-//   let right = 0
+//   let right = 0;
 
-//   //Iterate over the array. Keep moving right forward until we encounter the first +ve element of the array (arr[right]). left is then made the value before that (i.e the last -ve element before the first +ve element)
+//   //Iterate over the array. moving right forward until we encounter the first +ve element of the array. left is then made the value before that (i.e the last -ve element before the first +ve element)
 //   while (right < arr.length && arr[right] < 0) {
 //     right++;
 //     left = right - 1;
@@ -214,29 +212,29 @@
   
 //   //Inside the iteration, compare the squared elements between index left and index right, push/append the smaller element to the resulting array.
 //   while (left >= 0 && right < arr.length) { 
-//     if ((arr[left] * arr[left]) < (arr[right] * arr[right])) {
-//       result.push((arr[left] * arr[left]));
+//     if ((arr[left] ** 2) < (arr[right] ** 2)) {
+//       result.push((arr[left] ** 2));
 //       left--;
 //     } else {
-//       result.push((arr[right] * arr[right]))
+//       result.push((arr[right] ** 2))
 //       right++;
 //     }
 //   }
 
 //   //After the iteration, our resulting array will have a sorted set of integers. What remains is the element(s) at index left and index right. We can subsequently push/append the remaining elements(s) to the resulting array.
 //   while (left >= 0) {
-//     result.push((arr[left] * arr[left]));
+//     result.push((arr[left] ** 2));
 //     left--;
 //   }
 
 //   while (right < arr.length) {
-//     result.push((arr[right] * arr[right]));
+//     result.push((arr[right] ** 2));
 //     right++;
 //   }
-
+//   console.log(left, right);
 //   return result;
 // }
-// console.log(square2([-7, -3, 2, 3, 11]));
+// console.log(square2([-7, -3, 0, 2, 3, 11]));
 // console.log(square2([0, 1, 2, 3, 4, 5]));
 
 /* 3. SLIDING WINDOW PATTERN 
@@ -604,7 +602,7 @@ var addBinary = function(a, b) {
     j--;
   }
 
-  if (carry !== 0) { //therefore carry === 1 (base 2)
+  if (carry !== 0) { //i.e. carry === 1
     str = str + carry;
   }
 
@@ -979,13 +977,13 @@ var postorderTraversal = function(root) {
 
   const stack = [root];
   while (stack.length > 0) {
-      const node = stack.pop();
-      visited.push(node.val);
-      if (node.left) stack.push(node.left);
-      if (node.right) stack.push(node.right);
-      //we add the right node to the stack after the left node is added so it would be
-      //the 1st we would add to the visited arr between the two i.e [node, right, left]
-      //[node, right, left].reverse === [left, right, node] POSTORDER
+    const node = stack.pop();
+    visited.push(node.val);
+    if (node.left) stack.push(node.left);
+    if (node.right) stack.push(node.right);
+    //we add the right node to the stack after the left node is added so it would be
+    //the 1st we would add to the visited arr between the two i.e [node, right, left]
+    //[node, right, left].reverse === [left, right, node] POSTORDER
   }
   return visited.reverse();
 };
@@ -1020,14 +1018,14 @@ var addTwoNumbers = function(l1, l2) {
 
 //L.3 (Medium)
 var lengthOfLongestSubstring = function(s) { 
-  let set = new Set();
+  const set = new Set();
 
   let maxLength = 0;
   let start = 0;
   for (let end = 0; end < s.length; end++) {
     while (set.has(s.charAt(end))) { 
-      //whenever the char we're on is already in the set, i.e we no longer have
-      //a distinct substring sequence and then we try to start a new one (window)
+      //whenever the char we're on is already in the set then we no longer have
+      //a distinct substring sequence and a new sequence is to be started again
       set.delete(s.charAt(start)); 
       start++;
     }
