@@ -301,6 +301,7 @@
 
 // VARYING WINDOW LENGTH (2 POINTERS)
 // function lengthOfLongestSubstring (s) { //longest distinct substring length of a given string
+//   //a set to house a sequence of distinct substring
 //   const set = new Set();
 
 //   let maxLength = 0;
