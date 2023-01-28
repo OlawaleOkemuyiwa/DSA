@@ -272,7 +272,7 @@
 //   maxSum = currentSum; //assuming the sum of the first k elements of the array is the maxSum for the mean time
 //   for (i = k; i < arr.length; i++) { 
 //     currentSum = currentSum - arr[i - k] + arr[i];
-//     maxSum = Math.max(maxSum, currentSum);
+//     maxSum = Math.max(currentSum, maxSum);
 //   }
 //   return maxSum;
 // }
@@ -292,7 +292,7 @@
 //       currentWindowSum -= arr[windowStart];
 //       windowStart++; 
 
-//       if (minWindowLength === 1) return 1;  //if we ever get a window length of 1 then we're done as that's the least number of contiguous elements possible
+//       if (minWindowLength === 1) return minWindowLength;  //if we ever get a window length of 1 then we're done as that's the least number of contiguous elements possible
 //     }
 //   }
 //   return minWindowLength;
@@ -315,10 +315,9 @@
 //       set.add(s.charAt(end));
 //       maxLength = Math.max(end - start + 1, maxLength);
 //   }
-//   console.log(set, start)
 //   return maxLength
 // };
-// console.log(lengthOfLongestSubstring("pwwkew"))
+// console.log(lengthOfLongestSubstring("pwwkew"));
 
 // function findLength(string, k) { //find the longest substring length with k distinct characters 
 //   let maxLength = 0;
