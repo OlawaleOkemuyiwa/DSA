@@ -1016,6 +1016,7 @@ var addTwoNumbers = function(l1, l2) {
 
 //L.3 (Medium)
 var lengthOfLongestSubstring = function(s) { 
+  //a set to house a sequence of distinct substring
   const set = new Set();
 
   let maxLength = 0;
@@ -1028,7 +1029,7 @@ var lengthOfLongestSubstring = function(s) {
       start++;
     }
     set.add(s.charAt(end));
-    maxLength = Math.max(maxLength, end - start + 1);
+    maxLength = Math.max(end - start + 1, maxLength);
   }
   return maxLength;
 };
