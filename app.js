@@ -1041,7 +1041,7 @@ var longestPalindrome = function(s) {
 
   //go through every char of s considering each to be the centre of a palindrome substring
   for (let i = 0; i < s.length; i++) {
-    //for string inputs with any odd length palindrome substr e.g "aba"
+    //to discover any odd length palindrome substring e.g "aba"
     let l = i, r = i;
     while (l >= 0 && r < s.length && s.charAt(l) === s.charAt(r)) {
       if ((r - l + 1) > (resR - resL + 1)) {
@@ -1052,7 +1052,7 @@ var longestPalindrome = function(s) {
       r++;
     }
 
-    //for string inputs with any even length palindrome substr e.g "abba"
+    //to discover any even length palindrome substring e.g "abba"
     l = i, r = i + 1;
     while (l >= 0 && r < s.length && s.charAt(l) === s.charAt(r)) {
       if ((r - l + 1) > (resR - resL + 1)) {
