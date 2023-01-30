@@ -1036,7 +1036,7 @@ var lengthOfLongestSubstring = function(s) {
 
 //L.5 (Medium)
 var longestPalindrome = function(s) {    
-  //resL and resR are the starting and ending indexes of result (longest palindrome substr)
+  //resL and resR are the starting and ending indexes of result (longest palindrome substr found)
   let resL = 0, resR = 0;
 
   //go through every char of s considering each to be the centre of a palindrome substring
@@ -1064,4 +1064,26 @@ var longestPalindrome = function(s) {
     }
   }
   return s.substring(resL, resR + 1);
+};
+
+//L.6 (Medium)
+var convert = function(s, numRows) {
+  if (numRows === 1) return s;
+
+  let zigzag = new Array(numRows).fill('');
+  let index = 0; 
+  let direction = 1
+
+  for (let char of s) {
+    zigzag[index] += char;
+
+    if (index === 0) {
+      direction = 1;
+    } else if (index === numRows - 1) {
+      direction = -1;
+    }
+      
+    index += direction;
+  }
+  return zigzag.join('');
 };
