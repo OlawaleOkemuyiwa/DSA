@@ -1070,20 +1070,27 @@ var longestPalindrome = function(s) {
 var convert = function(s, numRows) {
   if (numRows === 1) return s;
 
-  let zigzag = new Array(numRows).fill('');
+  const zigzag = new Array(numRows).fill('');
+
+  //index keeps track of how each '' of zigzag arr is populated with characters of s
   let index = 0; 
-  let direction = 1
+  //step determines how index moves from left to right, right to left, repeat over zigzag arr
+  let step;
 
   for (let char of s) {
     zigzag[index] += char;
 
     if (index === 0) {
-      direction = 1;
+      //if index is at the beginning of zigzag arr move rightwards
+      step = 1;
     } else if (index === numRows - 1) {
-      direction = -1;
+      //if index is at the end of zigzag arr move leftwards
+      step = -1;
     }
-      
-    index += direction;
+    
+    index += step;
   }
   return zigzag.join('');
 };
+
+
