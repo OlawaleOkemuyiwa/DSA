@@ -1093,4 +1093,22 @@ var convert = function(s, numRows) {
   return zigzag.join('');
 };
 
+//L.7 (Medium)
+var reverse = function(x) {
+  let num;
+  if (x >= 0) {
+    num = x;
+  } else {
+    num = Math.abs(x);
+  }
+  let revNum = 0;
+  while (num > 0) {
+    revNum = (revNum * 10) + (num % 10);
+    num = Math.floor(num/10); 
+  }
+  revNum = x >= 0 ? revNum : -1 * revNum;
+  if (revNum < (-1 * Math.pow(2, 31)) || revNum > (Math.pow(2, 31) - 1)) return 0;
+  return revNum;
+};
+
 
