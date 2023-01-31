@@ -1111,4 +1111,40 @@ var reverse = function(x) {
   return revNum;
 };
 
+//L.8 (Medium)
+var myAtoi = function(s) {
+  let i = 0;
+  let sign;
+  let num = '';
+  while (i < s.length && s.charAt(i) === ' ') {
+    i++;
+  }
+
+  if (s.charAt(i) === '+') {
+    sign = 1;
+    i++;
+  } else if (s.charAt(i) === '-') {
+    sign = -1;
+    i++;
+  } else {
+    sign = 1;
+  }
+
+  while (i < s.length && !isNaN(parseInt(s.charAt(i)))) {//or char >= '0' && char <= '9'
+    num += s.charAt(i);
+    i++;
+  }
+
+  if (num.length === 0) return 0;
+
+  num = sign * parseInt(num);
+
+  if (num < -Math.pow(2, 31)) {
+    return -Math.pow(2, 31);
+  } else if (num > Math.pow(2, 31) - 1) {
+    return Math.pow(2, 31) - 1;
+  } else {
+    return num;
+  }
+};
 
