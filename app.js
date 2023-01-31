@@ -1115,11 +1115,11 @@ var reverse = function(x) {
 var myAtoi = function(s) {
   let i = 0;
   let sign;
-  let num = '';
+  let num = 0;
   while (i < s.length && s.charAt(i) === ' ') {
     i++;
   }
-
+  
   if (s.charAt(i) === '+') {
     sign = 1;
     i++;
@@ -1130,15 +1130,13 @@ var myAtoi = function(s) {
     sign = 1;
   }
 
-  while (i < s.length && !isNaN(parseInt(s.charAt(i)))) {//or char >= '0' && char <= '9'
-    num += s.charAt(i);
+  while (i < s.length && !isNaN(parseInt(s.charAt(i)))) {
+    num = (num * 10) + parseInt(s.charAt(i));
     i++;
   }
 
-  if (num.length === 0) return 0;
-
-  num = sign * parseInt(num);
-
+  num = sign * num;
+  
   if (num < -Math.pow(2, 31)) {
     return -Math.pow(2, 31);
   } else if (num > Math.pow(2, 31) - 1) {
