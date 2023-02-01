@@ -875,7 +875,7 @@ var maxProfit = function(prices) {
   //loop through the rest of the prices. From the remaining prices, we could either 
   //get a new buyprice to achieve maxprofit or a better sellprice for maxprofit
   for (let i = 1; i < prices.length; i++) {
-    if (prices[i] < buyprice) {
+    if (prices[i] <= buyprice) {
       buyprice = prices[i];
     } else {
       maxprofit = Math.max(prices[i] - buyprice, maxprofit)
@@ -1137,12 +1137,11 @@ var myAtoi = function(s) {
 
   num = sign * num;
   
-  if (num < -Math.pow(2, 31)) {
-    return -Math.pow(2, 31);
-  } else if (num > Math.pow(2, 31) - 1) {
-    return Math.pow(2, 31) - 1;
-  } else {
-    return num;
-  }
+  if (num < -Math.pow(2, 31)) return -Math.pow(2, 31);
+  if (num > Math.pow(2, 31) - 1) return Math.pow(2, 31) - 1;
+  return num;
 };
+
+//L.11 (Medium)
+
 
