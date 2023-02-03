@@ -382,12 +382,12 @@
 //LEETCODE SOLUTIONS
 //L.1 (Easy)
 var twoSum = function(nums, target) {
-  //map === already visited elements of the array and their indexes
+  //a map houses that already visited elements of nums and their indexes
   const map = new Map();
 
   for (let i = 0; i < nums.length; i++) {
     const x = target - nums[i];
-    //x === number to add to the current element of nums array to give the target
+    //x is the no to add to the current element of nums to give the target
     if (map.has(x)) {
       return [map.get(x), i];
     } else {
@@ -395,6 +395,24 @@ var twoSum = function(nums, target) {
     } 
   }
 };
+
+//L.167 (Easy)
+var twoSumII = function(numbers, target) {
+  let left = 0;
+  let right = numbers.length - 1;
+  while (left < right) {
+    let sum = numbers[left] + numbers[right];
+    if (sum < target) {
+      left++;
+    } else if (sum > target) {
+      right--;
+    } else {
+      return [left + 1, right + 1];
+    }
+  }
+  return [-1, -1];
+};
+
 
 //L.9 (Easy)
 var isPalindrome = function(x) {
@@ -415,11 +433,9 @@ var isPalindrome = function(x) {
 //L.13 (Easy)
 var romanToInt = function(s) {
   const obj = {I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000};
-  if (s.length === 1) return obj[s.charAt(0)];
 
   let int = 0;
   for (let i = 0; i < s.length; i++) {
-    console.log(obj[s.charAt(i + 1)]);
     if (obj[s.charAt(i)] < obj[s.charAt(i + 1)]) {
       int += obj[s.charAt(i + 1)] - obj[s.charAt(i)];
       i++;
@@ -1143,5 +1159,38 @@ var myAtoi = function(s) {
 };
 
 //L.11 (Medium)
+var maxArea = function(height) {
+  let maxArea = 0;
+  let left = 0;
+  let right = height.length - 1;
+  while (left < right) {
+    let minHeight = Math.min(height[left], height[right]);
+    let area = minHeight * (right - left);
+    maxArea = Math.max(area, maxArea);
+    if (height[left] < height[right]) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return maxArea;
+};
 
+//L.12
+var intToRoman = function(num) {
+  const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+  const symbols = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
 
+  let roman = '';
+  for (let i = 0; i < values.length; i++) {
+    let value = values[i];
+    let symbol = symbols[i];
+    
+    if (Math.floor(num/value) > 0) {
+      let count = Math.floor(num/value);
+      roman += symbol.repeat(count);
+      num = num % value;
+    }
+  }
+  return roman;
+};
