@@ -396,7 +396,7 @@ var twoSum = function(nums, target) {
   }
 };
 
-//L.167 (Easy)
+//L.167 (Medium)
 var twoSumII = function(numbers, target) {
   let left = 0;
   let right = numbers.length - 1;
@@ -516,10 +516,9 @@ var removeDuplicates = function(nums) {
   for (let i = 0; i < nums.length; i++) {
     //starting from the first el, loop over the nums arr till we encounter a 
     //non-duplicate element which is then inserted at the current insertIndex 
-    if (nums[i] !== nums[i - 1]) {
-      nums[insertIndex] = nums[i];
-      insertIndex++;
-    }
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    nums[insertIndex] = nums[i];
+    insertIndex++;
   }
   return insertIndex;
 };
@@ -1176,7 +1175,7 @@ var maxArea = function(height) {
   return maxArea;
 };
 
-//L.12
+//L.12 (Medium)
 var intToRoman = function(num) {
   const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
   const symbols = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
@@ -1193,4 +1192,52 @@ var intToRoman = function(num) {
     }
   }
   return roman;
+};
+
+//L.15 (Medium)
+var threeSum = function(nums) {
+  const res = [];
+  nums.sort((a, b) => a - b);
+
+  for (let i = 0; i < nums.length; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    let left = i + 1, right = nums.length - 1;
+    while (left < right) {
+      let sum = nums[i] + nums[left] + nums[right];
+      if (sum < 0) {
+        left++;
+      } else if (sum > 0) {
+        right--;
+      } else {
+        res.push([nums[i], nums[left], nums[right]]);
+        //still on i in search of a new sum to equal target, shift left rightwards
+        left++;
+        //keep shifting left rightwards if necessary to find non-duplicate triplets
+        while (left < right && nums[left] === nums[left - 1]) left++;
+      }
+    }
+  }
+  return res;
+};
+
+//L.16 (Medium)
+var threeSumClosest = function(nums, target) {
+  nums.sort((a, b) => a - b);
+
+  let closetSum = Infinity;
+  for (let i = 0; i < nums.length; i++) {
+    let left = i + 1, right = nums.length - 1;
+    while (left < right) {
+      let curSum = nums[i] + nums[left] + nums[right];
+      if (Math.abs(target - curSum) < Math.abs(target - closetSum)) closetSum = curSum;
+      if (curSum < target) {
+        left++;
+      } else if (curSum > target) {
+        right--;
+      } else {
+        return curSum;
+      }
+    }
+  }
+  return closetSum;
 };
