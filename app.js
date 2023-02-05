@@ -337,7 +337,7 @@
 //       }
 //       windowStart++;
 //     }
-//     maxLength = Math.max(maxLength, windowEnd - windowStart + 1); 
+//     maxLength = Math.max(windowEnd - windowStart + 1, maxLength); 
 //   }
 //   return maxLength;
 // }
@@ -381,7 +381,7 @@
 
 //LEETCODE SOLUTIONS
 //L.1 (Easy)
-var twoSum = function(nums, target) {
+var twoSum = function(nums, target) { //unsorted array
   //a map houses that already visited elements of nums and their indexes
   const map = new Map();
 
@@ -397,7 +397,7 @@ var twoSum = function(nums, target) {
 };
 
 //L.167 (Medium)
-var twoSumII = function(numbers, target) {
+var twoSumII = function(numbers, target) { //non-decreasing sorted array
   let left = 0;
   let right = numbers.length - 1;
   while (left < right) {
@@ -1212,6 +1212,7 @@ var threeSum = function(nums) {
         res.push([nums[i], nums[left], nums[right]]);
         //still on i in search of a new sum to equal target, shift left rightwards
         left++;
+
         //keep shifting left rightwards if necessary to find non-duplicate triplets
         while (left < right && nums[left] === nums[left - 1]) left++;
       }
@@ -1240,4 +1241,34 @@ var threeSumClosest = function(nums, target) {
     }
   }
   return closetSum;
+};
+
+//L.17 (Medium)
+var letterCombinations = function(digits) {
+  const res = [];
+  if (digits.length === 0) return res;
+  
+  const obj = {
+    2: 'abc', 
+    3: 'def', 
+    4: 'ghi', 
+    5: 'jkl', 
+    6: 'mno', 
+    7: 'pqrs', 
+    8: 'tuv', 
+    9: 'wxyz'
+  };
+
+  function helper(i, curStr) {
+    if (curStr.length === digits.length) {
+      //every single digit has been mapped to a char, push curStr to res and we're done
+      res.push(curStr);
+      return;
+    } 
+    for (let char of obj[digits[i]]) {
+      helper(i + 1, curStr + char);
+    }
+  }
+  helper(0, '');
+  return res;
 };
