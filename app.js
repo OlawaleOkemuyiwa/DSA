@@ -1290,7 +1290,7 @@ var fourSum = function(nums, target) {
       let left = j + 1, right = innerNums.length - 1;
       while (left < right) {
         let sum = innerNums[j] + innerNums[left] + innerNums[right];
-        let myTarget = target - nums[i]; //(nums[i] + sum should be equal target)
+        let myTarget = target - nums[i]; //(nums[i] + sum should be equal target, therefore sum should be equal target - nums[i])
         if (sum < myTarget) {
           left++;
         } else if (sum > myTarget) {
@@ -1307,4 +1307,30 @@ var fourSum = function(nums, target) {
     }
   }
   return res;
+};
+
+//L.19 (Medium)
+var removeNthFromEnd = function(head, n) {
+  //to remove nth node from the end of a list. If we have 2 pointers from the head where right
+  //leads left by n nodes. When right becomes null, then left points to the exact nth node
+  //from the end to remove. But the way to remove such node is to update the next pointer of
+  //the node b4 it. This is why a dummyHead is created so that right can lead left by n + 1 
+  //nodes. So when right becomes null, left points to the node b4 the nth node to be removed
+  
+  let dummyHead = new ListNode();
+  dummyHead.next = head;
+
+  let left = dummyHead;
+  let right = dummyHead;
+  for (let i = 0; i <= n; i++) {
+    right = right.next;
+  }
+  
+  while (right) {
+    left = left.next;
+    right = right.next;
+  }
+  left.next = left.next.next;
+
+  return dummyHead.next;
 };
