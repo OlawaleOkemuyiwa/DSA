@@ -382,7 +382,7 @@
 //LEETCODE SOLUTIONS
 //L.1 (Easy)
 var twoSum = function(nums, target) { //unsorted array
-  //a map houses that already visited elements of nums and their indexes
+  //a map that houses already visited elements of nums and their indexes
   const map = new Map();
 
   for (let i = 0; i < nums.length; i++) {
@@ -464,6 +464,7 @@ var longestCommonPrefix = function(strs) {
 //L.20 (Easy)
 var isValid = function(s) {
   const obj = {')': '(', '}': '{', ']': '['};
+  
   //a stack to contain opening brackets waiting to be closed
   const stack = [];
 
@@ -1201,6 +1202,7 @@ var threeSum = function(nums) {
 
   for (let i = 0; i < nums.length; i++) {
     if (i > 0 && nums[i] === nums[i - 1]) continue;
+
     let left = i + 1, right = nums.length - 1;
     while (left < right) {
       let sum = nums[i] + nums[left] + nums[right];
@@ -1270,5 +1272,39 @@ var letterCombinations = function(digits) {
     }
   }
   helper(0, '');
+  return res;
+};
+
+//L.18 (Medium)
+var fourSum = function(nums, target) {
+  const res = [];
+  nums.sort((a, b) => a - b);
+
+  for (let i = 0; i < nums.length; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    
+    const innerNums = nums.slice(i + 1);
+    for (let j = 0; j < innerNums.length; j++) {
+      if (j > 0 && innerNums[j] === innerNums[j - 1]) continue;
+
+      let left = j + 1, right = innerNums.length - 1;
+      while (left < right) {
+        let sum = innerNums[j] + innerNums[left] + innerNums[right];
+        let myTarget = target - nums[i]; //(nums[i] + sum should be equal target)
+        if (sum < myTarget) {
+          left++;
+        } else if (sum > myTarget) {
+          right--;
+        } else {
+          res.push([nums[i], innerNums[j], innerNums[left], innerNums[right]]);
+          //still on j in search of a new sum to equal target, shift left rightwards
+          left++;
+
+          //keep shifting left rightwards if necessary to find non-duplicate triplets
+          while (left < right && innerNums[left] === innerNums[left - 1]) left++;
+        }
+      }
+    }
+  }
   return res;
 };
