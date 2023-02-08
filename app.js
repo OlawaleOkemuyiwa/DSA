@@ -378,6 +378,12 @@
 // };
 // console.log(sumOfElsEqualAVal([4, 2, 5, 1], 9));
 
+/* 5. BACKTRACKING ALGORITHMIC TECHNIQUE --> Backtracking is a general algorithmic technique for finding all (or some) solutions to a computational problem by incrementally building candidates to the solutions and abandoning a candidate ("backtracking") as soon as it determines that the candidate cannot possibly be completed to a valid solution
+The technique is particularly useful for problems that cannot be solved by brute force, and require a more sophisticated approach to finding all solutions, such as the traveling salesman problem, N-queens problem, or Sudoku.
+The process involves choosing a move and making it, then recursively solving the subproblem that arises as a result of making that move. If the move leads to a solution, it is recorded. If not, the move is undone and another move is tried. The process is repeated until all possible solutions have been found.
+
+There are 3 keys to keep in mind while solving backtracking problems --> Our choice, Our constraints, Our goal (CCG). 
+ */
 
 //LEETCODE SOLUTIONS
 //L.1 (Easy)
@@ -1289,11 +1295,10 @@ var fourSum = function(nums, target) {
 
       let left = j + 1, right = innerNums.length - 1;
       while (left < right) {
-        let sum = innerNums[j] + innerNums[left] + innerNums[right];
-        let myTarget = target - nums[i]; //(nums[i] + sum should be equal target, therefore sum should be equal target - nums[i])
-        if (sum < myTarget) {
+        let sum = nums[i] + innerNums[j] + innerNums[left] + innerNums[right];
+        if (sum < target) {
           left++;
-        } else if (sum > myTarget) {
+        } else if (sum > target) {
           right--;
         } else {
           res.push([nums[i], innerNums[j], innerNums[left], innerNums[right]]);
@@ -1311,18 +1316,19 @@ var fourSum = function(nums, target) {
 
 //L.19 (Medium)
 var removeNthFromEnd = function(head, n) {
-  //to remove nth node from the end of a list. If we have 2 pointers from the head where right
-  //leads left by n nodes. When right becomes null, then left points to the exact nth node
-  //from the end to remove. But the way to remove such node is to update the next pointer of
-  //the node b4 it. This is why a dummyHead is created so that right can lead left by n + 1 
-  //nodes. So when right becomes null, left points to the node b4 the nth node to be removed
+  //to remove nth node from the end of a list, If we have 2 pointers from the head where right
+  //leads left by n nodes. When right becomes null then left points to the exact nth node from
+  //the end to remove. But the way to remove such node is to update the next pointer of the 
+  //node before it. This is why a dummyHead is created in order to offset left by 1 node so  
+  //that right can thenlead left by n + 1 nodes. So when right becomes null, left points to  
+  //the node just before the nth node to be removed. Then it can be removed.
   
   let dummyHead = new ListNode();
   dummyHead.next = head;
 
   let left = dummyHead;
-  let right = dummyHead;
-  for (let i = 0; i <= n; i++) {
+  let right = head;
+  for (let i = 0; i < n; i++) {
     right = right.next;
   }
   
@@ -1333,4 +1339,30 @@ var removeNthFromEnd = function(head, n) {
   left.next = left.next.next;
 
   return dummyHead.next;
+};
+
+//L.22 (Medium)
+var generateParenthesis = function(n) {
+  const res = [];
+
+  function helper(open, close, curStr) {
+    //open = no of opening parantheses ("(") we have left to combine
+    //close = no of closing parantheses (")") we have left to combine
+      
+    if (open === 0 && close === 0) {//OR if curStr.length === n * 2
+      res.push(curStr);
+      return;
+    }
+
+    if (open > 0) {
+      helper(open - 1, close, curStr + '(');
+    }
+
+    if (open < close) {
+      helper(open, close - 1, curStr + ')');
+    } 
+  }
+  //at start we've n opening and closing paranthesis to combine to form a valid parentheses
+  helper(n, n, '');
+  return res;
 };
