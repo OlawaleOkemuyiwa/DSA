@@ -1358,11 +1358,44 @@ var generateParenthesis = function(n) {
       helper(open - 1, close, curStr + '(');
     }
 
-    if (open < close) {
+    if (close > open) {
       helper(open, close - 1, curStr + ')');
     } 
   }
   //at start we've n opening and closing paranthesis to combine to form a valid parentheses
   helper(n, n, '');
   return res;
+};
+
+//L.24 (Medium)
+var swapPairs = function(head) {
+  //dummyHead serves as prev during the 1st swap to help maintain a valid list after the 
+  //the list is broken up and 2 nodes are swapped. prev.next (which is dummyHead.next during  
+  //1st swap) then connects to the newly swapped list nodes. prev then moves to curr while 
+  //curr moves to nextPair to be swapped. now prev.next can again serve to link the current 
+  //list to the resulting list after the swap 
+  
+  let dummyHead = new ListNode();
+  dummyHead.next = head;
+
+  let curr = head;
+  let prev = dummyHead;
+
+  //we must have at least 2 nodes (cur and cur.next) to swap, if not we done
+  while (curr && curr.next) {
+    //save pointers
+    let second = curr.next;
+    let nextPair = curr.next.next;
+
+    //reverse pair
+    second.next = curr;
+    curr.next = nextPair;
+    prev.next = second;
+
+    //update pointers
+    prev = curr;
+    curr = nextPair;
+  }
+
+  return dummyHead.next;
 };
