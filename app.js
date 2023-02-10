@@ -492,7 +492,7 @@ var isValid = function(s) {
 var mergeTwoLists = function(list1, list2) {
   let mergedList = new ListNode();
 
-  //save a reference to the head of the mergedList to be constructed(or it would be lost)
+  //save a reference pointer to the head of the mergedList to be constructed(or it would be lost)
   let head = mergedList;
 
   while(list1 && list2) {
@@ -1320,7 +1320,7 @@ var removeNthFromEnd = function(head, n) {
   //leads left by n nodes. When right becomes null then left points to the exact nth node from
   //the end to remove. But the way to remove such node is to update the next pointer of the 
   //node before it. This is why a dummyHead is created in order to offset left by 1 node so  
-  //that right can thenlead left by n + 1 nodes. So when right becomes null, left points to  
+  //that right can then lead left by n + 1 nodes. So when right becomes null, left points to  
   //the node just before the nth node to be removed. Then it can be removed.
   
   let dummyHead = new ListNode();
@@ -1369,8 +1369,8 @@ var generateParenthesis = function(n) {
 
 //L.24 (Medium)
 var swapPairs = function(head) {
-  //dummyHead serves as prev during the 1st swap to help maintain a valid list after the 
-  //the list is broken up and 2 nodes are swapped. prev.next (which is dummyHead.next during  
+  //dummyHead serves as prev during the 1st swap to help maintain a valid list after the
+  //list is broken up and d 1st pair are swapped. prev.next (which is dummyHead.next during  
   //1st swap) then connects to the newly swapped list nodes. prev then moves to curr while 
   //curr moves to nextPair to be swapped. now prev.next can again serve to link the current 
   //list to the resulting list after the swap 
@@ -1398,4 +1398,25 @@ var swapPairs = function(head) {
   }
 
   return dummyHead.next;
+};
+
+var strStr = function(haystack, needle) {
+  let m = haystack.length;
+  let n = needle.length;
+
+  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
+    for (let i = 0; i < n; i++) {
+      //as i moves over needle, also use i to move windowStart rightwards over haystack 
+      if (needle[i] !== haystack[windowStart + i]) {
+        break;
+      }
+
+      //if the last char of needle corresponds to the equivalent char of haystack we done 
+      if (i === n - 1) {
+        return windowStart;
+      }
+    }
+  }
+
+  return -1;
 };
