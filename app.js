@@ -1400,7 +1400,8 @@ var swapPairs = function(head) {
   return dummyHead.next;
 };
 
-var strStr = function(haystack, needle) {
+//L.28 (Medium)
+var strStr = function(haystack, needle) { //first occurence of a substring
   let m = haystack.length;
   let n = needle.length;
 
@@ -1419,4 +1420,26 @@ var strStr = function(haystack, needle) {
   }
 
   return -1;
+};
+
+var strStrII = function(haystack, needle) { //last occurence of a substring
+  let m = haystack.length;
+  let n = needle.length;
+  let index = -1;
+
+  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
+    for (let i = 0; i < n; i++) {
+      //as i moves over needle, also use i to move windowStart rightwards over haystack 
+      if (needle[i] !== haystack[windowStart + i]) {
+        break;
+      }
+
+      //if the last char of needle corresponds to the equivalent char of haystack we done 
+      if (i === n - 1) {
+        index = windowStart;
+      }
+    }
+  }
+
+  return index;
 };
