@@ -1129,7 +1129,7 @@ var reverse = function(x) {
     num = Math.floor(num/10); 
   }
   revNum = x >= 0 ? revNum : -1 * revNum;
-  if (revNum < (-1 * Math.pow(2, 31)) || revNum > (Math.pow(2, 31) - 1)) return 0;
+  if (revNum < -Math.pow(2, 31) || revNum > Math.pow(2, 31) - 1) return 0;
   return revNum;
 };
 
@@ -1442,4 +1442,40 @@ var strStrII = function(haystack, needle) { //last occurence of a substring
   }
 
   return index;
+};
+
+//L.29 ???
+
+//L.31 (Medium)
+function swap(arr, indx1, indx2) {
+  [arr[indx1], arr[indx2]] = [arr[indx2], arr[indx1]];
+}
+
+var nextPermutation = function(nums) {
+  let n = nums.length;
+  let pivot = n - 1;
+
+  while (pivot >= 1 && nums[pivot] <= nums[pivot - 1]) {
+    pivot--;
+  }
+
+  //if we dont find the pivot point i.e. pivot got to 0, we skip the swap. Otherwise we  
+  //iterate again right to left looking for the best digit to swap with
+  if (pivot !== 0) { //valid pivot point was found
+    let i = n - 1;
+    while (nums[i] <= nums[pivot - 1]) {
+      i--;
+    }
+    swap(nums, pivot - 1, i);
+  }
+
+  //after the swap (if there was any), we reverse the sequence from the pivot point 
+  //until the end thereby minimizing the value of our number
+  let left = pivot;
+  let right = n - 1;
+  while (left < right) {
+    swap(nums, left, right);
+    left++;
+    right--;
+  }
 };
