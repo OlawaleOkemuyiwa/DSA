@@ -1479,3 +1479,51 @@ var nextPermutation = function(nums) {
     right--;
   }
 };
+
+//L.33 (Medium)
+function findPivotIndex(arr) {
+  let left = 0;
+  let right = arr.length - 1;
+
+  //if nums isn't rotated then arr[left] would be <= arr[right] and no need to find pivot
+  if (arr[left] <= arr[right]) return 0;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right)/2);
+    if (arr[mid] > arr[mid + 1]) {
+      return mid + 1;
+    } else if (arr[left] <= arr[mid]) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return -1;
+}
+
+function binarySearch(arr, left, right, target) {
+  while (left <= right) {
+    let mid = Math.floor((left + right)/2);
+    if (arr[mid] === target) {
+      return mid;
+    } else if (arr[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return -1;
+}
+
+var search = function(nums, target) {
+  //find the pivot index of nums using binary seach (ologn)
+  let pivot = findPivotIndex(nums);
+
+  //if nums isn't rotated, pivot is 0 and we binary search over entire nums for target   
+  if (pivot === 0) return binarySearch(nums, 0, nums.length - 1, target);
+
+  //find the target index in one of the two sub array divided by pivot (ologn)
+  if (nums[pivot] === target) return pivot;
+  if (nums[0] > target) return binarySearch(nums, pivot, nums.length - 1, target);
+  return binarySearch(nums, 0, pivot - 1, target);
+};
