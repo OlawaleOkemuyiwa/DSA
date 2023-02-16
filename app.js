@@ -1527,3 +1527,27 @@ var search = function(nums, target) {
   if (nums[0] > target) return binarySearch(nums, pivot, nums.length - 1, target);
   return binarySearch(nums, 0, pivot - 1, target);
 };
+
+//L.34 (Medium)
+function binarySearch(arr, left, right, target, firstIndexSearch) {
+  let indx = -1;
+  while(left <= right) {
+    let mid = Math.floor((left + right)/2);
+    if (arr[mid] === target) {
+      indx = mid;
+      firstIndexSearch ? right = mid - 1 : left = mid + 1;
+    } else if (arr[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = right - 1;
+    }
+  }
+  return indx;
+}
+
+var searchRange = function(nums, target) {
+  let indx1 = binarySearch(nums, 0, nums.length - 1, target, true);
+  if (indx1 === -1) return [-1, -1];
+  let indx2 = binarySearch(nums, indx1 + 1, nums.length - 1, target, false);
+  return indx2 === -1 ? [indx1, indx1] : [indx1, indx2];
+};
