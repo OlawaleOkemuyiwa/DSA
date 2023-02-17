@@ -1561,9 +1561,9 @@ var isValidSudoku = function(board) {
   const columns = new Array(N);   //9 columns
   const boxes = new Array(N);     //9 boxes
   for (let i = 0; i < N; i++) {
-      rows[i] = new Set();
-      columns[i] = new Set();
-      boxes[i] = new Set();
+    rows[i] = new Set();
+    columns[i] = new Set();
+    boxes[i] = new Set();
   }
 
   //check for an invalid row in the Sudoku
