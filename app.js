@@ -65,7 +65,7 @@
 //     return false;
 // }
 
-// function same (arr1, arr2) {
+// function same (arr1, arr2) { //O(n^2) time, O(1) space
 //     //if the two arrays have different lengths then they are not equal, return false
 //     if (arr1.length !== arr2.length) {
 //         return false;
@@ -1548,6 +1548,42 @@ function binarySearch(arr, left, right, target, firstIndexSearch) {
 var searchRange = function(nums, target) {
   let indx1 = binarySearch(nums, 0, nums.length - 1, target, true);
   if (indx1 === -1) return [-1, -1];
-  let indx2 = binarySearch(nums, indx1 + 1, nums.length - 1, target, false);
-  return indx2 === -1 ? [indx1, indx1] : [indx1, indx2];
+  let indx2 = binarySearch(nums, indx1, nums.length - 1, target, false);
+  return [indx1, indx2];
+};
+
+//L.36 (Medium)
+var isValidSudoku = function(board) {
+  const N = 9;
+
+  //init an array of sets to store unique chars for each row, column and box of the Sudoku
+  const rows = new Array(N);      //9 rows
+  const columns = new Array(N);   //9 columns
+  const boxes = new Array(N);     //9 boxes
+  for (let i = 0; i < N; i++) {
+      rows[i] = new Set();
+      columns[i] = new Set();
+      boxes[i] = new Set();
+  }
+
+  //check for an invalid row in the Sudoku
+  //check for an invalid column in the Sudoku
+  //check for an invalid sub 3x3 box of the grid
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      let char = board[r][c];
+      if (char === '.') continue;
+
+      if (rows[r].has(char)) return false;
+      rows[r].add(char);
+
+      if (columns[c].has(char)) return false;
+      columns[c].add(char);
+
+      let boxIdx = Math.floor(r/3) * 3 + Math.floor(c/3);
+      if (boxes[boxIdx].has(char)) return false;
+      boxes[boxIdx].add(char);
+    }
+  }
+  return true;
 };
