@@ -1587,3 +1587,29 @@ var isValidSudoku = function(board) {
   }
   return true;
 };
+
+//L.38 (Medium)
+function say(str) {
+  let s = '';
+  let c = str.charAt(0);
+  let count = 1;
+  for (let i = 1; i < str.length; i++) {
+    if (str.charAt(i) === c) {
+      count++;
+    } else {
+      s += count + c;
+      c = str.charAt(i);
+      count = 1;
+    }
+  }
+  s += count + c;
+  return s;
+}
+
+var countAndSay = function(n) {
+  let s = '1';
+  for(let i = 1; i < n; i++){
+    s = say(s);
+  }
+  return s;
+};
