@@ -1252,7 +1252,7 @@ var threeSumClosest = function(nums, target) {
 };
 
 //L.17 (Medium)
-var letterCombinations = function(digits) {
+var letterCombinations = function(digits) { //backtracking
   const res = [];
   if (digits.length === 0) return res;
   
@@ -1342,7 +1342,7 @@ var removeNthFromEnd = function(head, n) {
 };
 
 //L.22 (Medium)
-var generateParenthesis = function(n) {
+var generateParenthesis = function(n) { //backtracking
   const res = [];
 
   function helper(open, close, curStr) {
@@ -1612,4 +1612,73 @@ var countAndSay = function(n) {
     s = say(s);
   }
   return s;
+};
+
+//L.39 (Medium)
+var combinationSum = function(candidates, target) {
+  const res = [];
+
+  function helper(i, arr, sum) {
+    if (i >= candidates.length || sum > target) return;
+
+    if (sum === target) {
+      res.push(arr.slice());
+      return;
+    }
+    
+    arr.push(candidates[i]);
+    helper(i, arr, sum + candidates[i]);
+    arr.pop();
+    helper(i + 1, arr, sum); 
+  }
+  helper(0, [], 0);
+  return res;
+};
+
+//L.40 (Medium)
+var combinationSum2 = function(candidates, target) {
+  const res = [];
+  candidates.sort((a, b) => a - b);
+
+  function helper(index, arr, sum) {
+    if (sum > target) return;
+
+    if (sum === target) {
+      res.push(arr.slice());
+      return;
+    }
+
+    for (let i = index; i < candidates.length; i++) {
+      if (i > index && candidates[i] === candidates[i - 1]) continue;
+      if (target - sum < candidates[i]) break;
+      arr.push(candidates[i]);
+      helper(i + 1, arr, sum + candidates[i]);
+      arr.pop();
+    } 
+  }
+  helper(0, [], 0);
+  return res;
+};
+
+//L.216 (Medium)
+var combinationSum3 = function(k, n) {
+  const res = []
+
+  function helper(arr, start, sum) {
+    //when the running sum exceeds target n, then we're out of bound
+    if (sum > n) return;
+    
+    //when arr being constructed becomes of length k (max length arr can be), then we done  
+    //check  if the running sum is equal desired value n and push to result.
+    if (arr.length === k) {
+      if (sum === n) res.push(arr);
+      return;
+    }
+    
+    for (let i = start; i < 10; i++) {
+      helper(arr.concat(i), i + 1, sum + i);
+    }
+  }
+  helper([], 1, 0);
+  return res;
 };
