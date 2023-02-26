@@ -1710,3 +1710,48 @@ var multiply = function(num1, num2) { //time O(n * m), space O(n + m)
   res.reverse();
   return res[0] === 0 ? res.slice(1).join("") : res.join("");
 };
+
+//L.55 (Medium)
+var canJump = function(nums) { //Greedy --> O(n) time, O(1) space
+  let goalIdx = nums.length - 1;
+
+  //from the idx just before the goalIdx, check if we can take a step (from the max steps 
+  //available to take from at the idx, nums[i]) that will atleast get us to the goalIdx.
+  for (let i = goalIdx - 1; i >= 0; i--) {
+    if (i + nums[i] >= goalIdx) {
+      //if we can, goalIdx moves to its position and cur idx leftwards
+      goalIdx = i;
+    }
+  }
+  
+  //if goalIdx which started at the last index ever gets to 0 the start index (at i == -1) 
+  //then the last index can be reached if we had started from such start index
+  return goalIdx === 0 ? true : false;
+};
+
+//L.45 (Medium)
+var jump = function(nums) { //Greedy --> time O(n), space O(1)
+  //res is no of jumps it takes (num[i] is the max no of steps that can be taken from idx i)
+  let res = 0;
+
+  //left and right marks the start and end idxs of the sub array window for BFS
+  let left = 0;
+  let right = 0;
+
+  //we stop the loop when the right idx becomes the last idx
+  while (right < nums.length - 1) {
+    //determine from what idx in the cur sub window we can jump the farthest (biggest step) 
+    let farthestIdx = 0;
+    for (let i = left; i <= right; i++) {
+      farthestIdx = Math.max(farthestIdx, i + nums[i]);
+    }
+
+    //left becomes the idx just after the present sub array window and right is updated to
+    //the farthest idx achievable from the present window. Both form a new window -> res++
+    left = right + 1;
+    right = farthestIdx;
+    res++;
+  }
+
+  return res;
+};
