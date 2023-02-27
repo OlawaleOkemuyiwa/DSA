@@ -1008,6 +1008,27 @@ var postorderTraversal = function(root) {
   return visited.reverse();
 };
 
+//L.867 (Medium)
+var transpose = function(matrix) { //O(n^2) time, O(n^2) space
+  const rows = matrix.length;
+  const columns = matrix[0].length;
+
+  //the rows of matrix becomes the columns of transpose and the columns of matrix 
+  //becomes the rows of transpose. So a transpose is created from matrix
+  const transpose = new Array(columns);
+  for (let i = 0; i < transpose.length; i++) {
+    transpose[i] = new Array(rows);
+  }
+
+  //barebone transpose is filled with values from matrix
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columns; c++) {
+      transpose[c][r] = matrix[r][c];
+    }
+  }
+  return transpose;
+};
+
 //L.2 (Medium)
 var addTwoNumbers = function(l1, l2) {
   let summedList = new ListNode();
@@ -1740,7 +1761,8 @@ var jump = function(nums) { //Greedy --> time O(n), space O(1)
 
   //we stop the loop when the right idx becomes the last idx
   while (right < nums.length - 1) {
-    //determine from what idx in the cur sub window we can jump the farthest (biggest step) 
+    //mininum jumps is actualized by taking the farthest step from each idx
+    //determine from what idx in the cur sub window one can take the farthest step
     let farthestIdx = 0;
     for (let i = left; i <= right; i++) {
       farthestIdx = Math.max(farthestIdx, i + nums[i]);
@@ -1754,4 +1776,31 @@ var jump = function(nums) { //Greedy --> time O(n), space O(1)
   }
 
   return res;
+};
+
+//L.48 (Medium)
+var rotate = function(matrix) { // O(n^2) time, O(1) space
+  const N = matrix.length; 
+  
+  //transpose the matrix in-place (by swapping the el of the n x n square matrix)
+  for (let r = 0; r < N; r++) {
+    for (let c = r; c < N; c++) {
+      let temp = matrix[r][c];
+      matrix[r][c] = matrix[c][r];
+      matrix[c][r] = temp;
+    }
+  }
+
+  //reverse the rows of the now transposed matrix
+  for (let row of matrix) {
+    row.reverse();
+  }
+  // OR
+  // for (let r = 0; r < N;  r++) {
+  //     for (let c = 0; c < Math.floor(N/2); c++) {
+  //         let temp = matrix[r][c];
+  //         matrix[r][c] = matrix[r][N-1-c];
+  //         matrix[r][N-1-c] = temp;
+  //     }
+  // }
 };
