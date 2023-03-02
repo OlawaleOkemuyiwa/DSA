@@ -65,6 +65,30 @@
 //     return false;
 // }
 
+// function getMedian(arr) {
+//   const left = 0;
+//   const right = arr.length - 1;
+//   const mid = Math.floor((left + right) / 2);
+//   let median;
+//   if (arr.length % 2 === 0) {
+//     median = (arr[mid] + arr[mid + 1]) / 2;
+//   } else {
+//     median = arr[mid];
+//   }
+//   return median;
+// }
+// console.log(getMedian([1, 2, 3, 4]));
+
+// function reverseArray (arr) {
+//   for (let i = 0; i < Math.floor(arr.length/2); i++) {
+//     let temp = arr[i];
+//     arr[i] = arr[arr.length - 1 - i];
+//     arr[arr.length - 1 - i] = temp;
+//   }
+//   return arr;
+// }
+// console.log(reverseArray([3, 4, 5, 6, 7]));
+
 // function same (arr1, arr2) { //O(n^2) time, O(1) space
 //     //if the two arrays have different lengths then they are not equal, return false
 //     if (arr1.length !== arr2.length) {
@@ -81,20 +105,6 @@
 //     return true;   //if no false is returned all through, then return true
 // }
 //
-
-// function getMedian(arr) {
-//   const left = 0;
-//   const right = arr.length - 1;
-//   const mid = Math.floor((left + right) / 2);
-//   let median;
-//   if (arr.length % 2 === 0) {
-//     median = (arr[mid] + arr[mid + 1]) / 2;
-//   } else {
-//     median = arr[mid];
-//   }
-//   return median;
-// }
-// console.log(getMedian([1, 2, 3, 4]));
 
 /* 1. FREQUENCY COUNTER PATTERN */
 
@@ -1804,3 +1814,23 @@ var rotate = function(matrix) { // O(n^2) time, O(1) space
   //     }
   // }
 };
+
+//L.49 (Medium)
+var groupAnagrams = function(strs) { 
+  //time O(nklogk) n === length of strs arr, k === max length of a str in strs arr
+  //space O(nk)
+  const map = new Map();
+
+  for (let str of strs) {
+    const sortedStr = str.split('').sort().join('');
+    
+    if (map.has(sortedStr)) {
+      map.get(sortedStr).push(str);
+    } else {
+      map.set(sortedStr, [str]);
+    }
+  }
+  return Array.from(map.values());
+};
+
+//L.50 (Medium)
