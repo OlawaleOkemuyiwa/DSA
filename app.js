@@ -271,17 +271,17 @@
 // console.log(maxSumSubArray1([2, 6, 9, 2, 1, 8, 5, 6, 3], 3));
 
 // O(n) using sliding window (FIXED WINDOW LENGTH(1 POINTER), here the sliding window is always of length n)
-// function maxSumSubArray2(arr, n) { //the maximum sum of k consecutive/contiguous elements of an array
-//   if (k > arr.length) return;
+// function maxSumSubArray2(arr, n) { //the maximum sum of n consecutive/contiguous elements of an array
+//   if (n > arr.length) return;
 
-//   let maxSum = 0;
 //   let currentSum = 0;
-//   for (i = 0; i < k; i++) { //find the sum of the first k elements. That would be our starting window
+//   for (i = 0; i < n; i++) { //find the sum of the first n elements. That would be our starting window
 //     currentSum += arr[i];
 //   }
-//   maxSum = currentSum; //assuming the sum of the first k elements of the array is the maxSum for the mean time
-//   for (i = k; i < arr.length; i++) { 
-//     currentSum = currentSum - arr[i - k] + arr[i];
+
+//   let maxSum = currentSum; //assuming the sum of the first n elements of the array is the maxSum for the mean time
+//   for (i = n; i < arr.length; i++) { 
+//     currentSum = currentSum - arr[i - n] + arr[i];
 //     maxSum = Math.max(currentSum, maxSum);
 //   }
 //   return maxSum;
@@ -1850,4 +1850,19 @@ var myPow = function(x, n) { //time O(logn), space O(1)
 
   //the final output is then dependent on whether n is -ve or not
   return n >= 0 ? res : 1 / res;
+};
+
+//Solved L.53 (Medium)
+var maxSubArray = function(nums) { //DP, Kadane's Algorithm -> O(n) time, O(1) space
+  let maxSum = -Infinity;
+  let currentSubArrSum = 0;
+  for (let num of nums) {
+    //a sub array is not worth keeping if its sum is -ve (it will only minimize the next 
+    //num added to form a new sub array). Instead, we reset it back to an empty sub array 
+    //(make its sum = 0) in order to start a new sub array that might yield maximum sum.
+    if (currentSubArrSum < 0) currentSubArrSum = 0;
+    currentSubArrSum += num;
+    maxSum = Math.max(maxSum, currentSubArrSum);
+  }
+  return maxSum;
 };
