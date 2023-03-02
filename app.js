@@ -1834,3 +1834,20 @@ var groupAnagrams = function(strs) {
 };
 
 //L.50 (Medium)
+var myPow = function(x, n) { //time O(logn), space O(1)
+  function helper(X, N) {
+    if (X === 0) return 0;
+    if (N === 0) return 1;
+    //2^4 === 2^2 * 2^2. We only need to determine 2^2 and multiply it by itself to get 2^4
+    //2^5 === 2^2 * 2^2 * 2. Determine 2^2, multiply it by itself, then multiply it by 2
+    let res = helper(X, Math.floor(N/2));
+    res = res * res;
+    return N % 2 === 0 ? res : res * x;
+  }
+
+  //we work recursively with the abs value of n should in case it is a -ve integer
+  let res = helper(x, Math.abs(n));
+
+  //the final output is then dependent on whether n is -ve or not
+  return n >= 0 ? res : 1 / res;
+};
