@@ -1870,38 +1870,38 @@ var maxSubArray = function(nums) { //DP, Kadane's Algorithm -> O(n) time, O(1) s
 //L.54 (Medium)
 var spiralOrder = function(matrix) { //O(m*n) time, O(1) space
   let res = [];
-  let left = 0, right = matrix[0].length; //column boundaries
-  let top = 0, bottom = matrix.length;    //row boundaries
+  let left = 0, right = matrix[0].length - 1; //column boundaries
+  let top = 0, bottom = matrix.length - 1;    //row boundaries
 
-  //we stop the loop when left = right OR top = bottom (out of bound of matrix)
-  while (left < right && top < bottom) {
+  //we stop the loop when left > right OR top > bottom (out of bound)
+  while (left <= right && top <= bottom) {
     //get every i in the top row
-    for (let i = left; i < right; i++) {
+    for (let i = left; i <= right; i++) {
       res.push(matrix[top][i]);
     }
     //we're done with the top row, and we shift top downwards by 1 to form a new matrix top
     top++;
 
     //get every i in the right column
-    for (let i = top; i < bottom; i++) {
-      res.push(matrix[i][right - 1]);
+    for (let i = top; i <= bottom; i++) {
+      res.push(matrix[i][right]);
     }
     //we're done with the right column, and we shift right leftwards by 1 to form a new 
     //matrix right
     right--;
 
-    if (left >= right || top >= bottom) break;
+    if (left > right || top > bottom) break;
 
     //get every i in the bottom row;
-    for (let i = right - 1; i >= left; i--) {
-      res.push(matrix[bottom - 1][i]);
+    for (let i = right; i >= left; i--) {
+      res.push(matrix[bottom][i]);
     }
     //we're done with the bottom row, and we shift bottom upwards by 1 to form a new 
     //matrix bottom
     bottom--;
 
     //get every i in the left column
-    for (let i = bottom - 1; i >= top; i--) {
+    for (let i = bottom; i >= top; i--) {
       res.push(matrix[i][left]);
     }
     //we're done with the left column, and we shift left rightwards by 1 to form a new 
