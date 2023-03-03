@@ -1852,7 +1852,7 @@ var myPow = function(x, n) { //time O(logn), space O(1)
   return n >= 0 ? res : 1 / res;
 };
 
-//Solved L.53 (Medium)
+//L.53 (Medium)
 var maxSubArray = function(nums) { //DP, Kadane's Algorithm -> O(n) time, O(1) space
   let maxSum = -Infinity;
   let currentSubArrSum = 0;
@@ -1867,6 +1867,7 @@ var maxSubArray = function(nums) { //DP, Kadane's Algorithm -> O(n) time, O(1) s
   return maxSum;
 };
 
+//L.54 (Medium)
 var spiralOrder = function(matrix) { //O(m*n) time, O(1) space
   let res = [];
   let left = 0, right = matrix[0].length; //column boundaries
