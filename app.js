@@ -1910,3 +1910,25 @@ var spiralOrder = function(matrix) { //O(m*n) time, O(1) space
   }
   return res;
 };
+
+//L.56 (Medium)
+var merge = function(intervals) { //O(nlogn) time, O(logn)/O(n) space 
+  const res = [];
+  //sort the intervals in ascending order based on their start values
+  intervals.sort((a, b) => a[0] - b[0]);
+  
+  for (let i = 0; i < intervals.length; i++) {
+    let interval = intervals[i];
+    if (i === 0) {
+      res.push(interval);
+      continue;
+    }
+
+    if (interval[0] <= res[res.length - 1][1]) {
+      res[res.length - 1][1] = Math.max(res[res.length - 1][1], interval[1]); 
+    } else {
+      res.push(interval);
+    }
+  }
+  return res; 
+};
