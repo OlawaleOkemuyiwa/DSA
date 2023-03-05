@@ -1914,9 +1914,11 @@ var spiralOrder = function(matrix) { //O(m*n) time, O(1) space
 //L.56 (Medium)
 var merge = function(intervals) { //O(nlogn) time, O(logn)/O(n) space 
   const res = [];
+
   //sort the intervals in ascending order based on their start values
   intervals.sort((a, b) => a[0] - b[0]);
   
+  //merge overlaps in intervals
   for (let i = 0; i < intervals.length; i++) {
     let interval = intervals[i];
     if (i === 0) {
@@ -1924,6 +1926,7 @@ var merge = function(intervals) { //O(nlogn) time, O(logn)/O(n) space
       continue;
     }
 
+    //overlap exists if the start of cur interval is <= to d end of the last interval in res
     if (interval[0] <= res[res.length - 1][1]) {
       res[res.length - 1][1] = Math.max(res[res.length - 1][1], interval[1]); 
     } else {
@@ -1931,4 +1934,32 @@ var merge = function(intervals) { //O(nlogn) time, O(logn)/O(n) space
     }
   }
   return res; 
+};
+
+//L.57(Medium)
+var insert = function(intervals, newInterval) { //time O(logn), space O(1)
+  const res = [];
+
+  for (let i = 0; i < intervals.length; i++) {
+    let interval = intervals[i];
+
+    if (newInterval[1] < interval[0]) {
+      //if end of newInterval is < the start of cur interval, newIterval is b4 cur iterval
+      res.push(newInterval, ...intervals.slice(i));
+      return res; 
+    } else if (newInterval[0] > interval[1]) {
+      //if start of newInterval is > the end of cur interval, newIterval is after cur itv
+      res.push(interval); 
+    } else {
+      //if neither is the case, newInterval overlaps cur interval. determine merged itv 
+      newInterval = [
+        Math.min(interval[0], newInterval[0]), 
+        Math.max(interval[1], newInterval[1])
+      ];
+    }
+  } 
+
+  //if we never return from the loop, newInterval is added to res and it is returned
+  res.push(newInterval)
+  return res;
 };
