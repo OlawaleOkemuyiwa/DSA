@@ -1973,28 +1973,28 @@ var generateMatrix = function(n) { //time O(n^2), space O(1)
 
   let left = 0, right = res[0].length - 1;
   let top = 0, bottom = res.length - 1;
-  let no = 1;
+  let num = 1;
 
   while (left <= right && top <= bottom) { 
     for (let i = left; i <= right; i++) {
-      res[top][i] = no++;
+      res[top][i] = num++;
     }
     top++;
 
     for (let i = top; i <= bottom; i++) {
-      res[i][right] = no++;
+      res[i][right] = num++;
     }
     right--;
     
     if (left > right || top > bottom) break;
 
     for (let i = right; i >= left; i--) {
-      res[bottom][i] = no++;
+      res[bottom][i] = num++;
     }
     bottom--;
 
     for (let i = bottom; i >= top; i--) {
-      res[i][left] = no++;
+      res[i][left] = num++;
     }
     left++;
   }
