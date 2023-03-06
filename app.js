@@ -1963,3 +1963,40 @@ var insert = function(intervals, newInterval) { //time O(logn), space O(1)
   res.push(newInterval)
   return res;
 };
+
+//L.59 (Medium)
+var generateMatrix = function(n) { //time O(n^2), space O(1)
+  const res = new Array(n);
+  for (let i = 0; i < res.length; i++) {
+    res[i] = new Array(n).fill(0);
+  }
+
+  let left = 0, right = res[0].length - 1;
+  let top = 0, bottom = res.length - 1;
+  let no = 1;
+
+  while (left <= right && top <= bottom) { 
+    for (let i = left; i <= right; i++) {
+      res[top][i] = no++;
+    }
+    top++;
+
+    for (let i = top; i <= bottom; i++) {
+      res[i][right] = no++;
+    }
+    right--;
+    
+    if (left > right || top > bottom) break;
+
+    for (let i = right; i >= left; i--) {
+      res[bottom][i] = no++;
+    }
+    bottom--;
+
+    for (let i = bottom; i >= top; i--) {
+      res[i][left] = no++;
+    }
+    left++;
+  }
+  return res;
+};
