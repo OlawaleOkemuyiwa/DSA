@@ -467,9 +467,8 @@ var romanToInt = function(s) {
 var longestCommonPrefix = function(strs) {
   let prefix = strs[0];
   for (let i = 1; i < strs.length; i++) {
-    while (strs[i].indexOf(prefix) !== 0) { 
-      //the index of a valid prefix of a string must be 0. If it's not 0 (e.g -1 or 1, 2)
-      //then its not a valid prefix and its last char is removed then checked again 
+    while (!strs[i].startsWith(prefix)) { 
+      //if cur prefix is not a valid prefix, its last char is removed then checked again
       prefix = prefix.substring(0, prefix.length - 1);
       if (prefix.length === 0) return "";
     }  
@@ -1873,7 +1872,7 @@ var spiralOrder = function(matrix) { //O(m*n) time, O(1) space
   let left = 0, right = matrix[0].length - 1; //column boundaries
   let top = 0, bottom = matrix.length - 1;    //row boundaries
 
-  //we stop the loop when left > right OR top > bottom (out of bound)
+  //we stop the loop when left > right OR top > bottom (either goes out of bound)
   while (left <= right && top <= bottom) {
     //get every i in the top row
     for (let i = left; i <= right; i++) {
