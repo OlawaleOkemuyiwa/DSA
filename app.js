@@ -1999,3 +1999,32 @@ var generateMatrix = function(n) { //time O(n^2), space O(1)
   }
   return res;
 };
+
+//L.63 (Medium)
+var rotateRight = function(head, k) { //time O(n), space(1)
+  //if the list is a null list then we can make no reversal
+  if (!head) return head;
+
+  //determine the length of the list (>= 1). It would have atleast a tail (the tail then
+  //wouldn't be counted when looping accross the list)
+  let length = 1; 
+  let tail = head;
+  while (tail && tail.next) {
+    length++;
+    tail = tail.next;
+  }
+
+  //determine the actual no of reversals to be done
+  k = k % length;
+  if (k === 0) return head;
+
+  //move to the pivot and rotate
+  let cur = head;
+  for (let i = 0; i < length - k - 1; i++) {
+    cur = cur.next;
+  }
+  let newHead = cur.next;
+  cur.next = null;
+  tail.next = head;
+  return newHead;
+};
