@@ -2036,7 +2036,7 @@ var uniquePaths = function(m, n) { // time O(m * n), space O(m * n)
     grid[i] = new Array(n).fill(1);
   }
   
-  //grid[row][col] rep the no of possible unique paths to that position from starting point
+  //grid[row][col] rep the no of possible unique paths to reach that cell from starting point
   for (let row = 1; row < m; row++) {
     for (let col = 1; col < n; col++) {
       grid[row][col] = grid[row - 1][col] + grid[row][col - 1];
@@ -2046,4 +2046,40 @@ var uniquePaths = function(m, n) { // time O(m * n), space O(m * n)
   return grid[m - 1][n - 1];
 };
 
-//L.62 (Medium)
+//L.63 (Medium)
+var uniquePathsWithObstacles = function(obstacleGrid) { // time O(m * n), space O(1)  
+  const m = obstacleGrid.length;
+  const n = obstacleGrid[0].length;
+
+  //if the robot starts in an obstacle cell then it can't move nowhere. 
+  if (obstacleGrid[0][0] === 1) return 0;
+
+  //if the robot starts in a space cell then the no of ways to get to such cell is 1
+  obstacleGrid[0][0] = 1;
+
+  //fill the cells of the first row. If cur cell is an obstacle, then there are 0 ways to get
+  //there from starting position. If not, the no of ways is that of the cell just before it
+  for (let col = 1; col < n; col++) {
+    obstacleGrid[0][col] = obstacleGrid[0][col] === 1 ? 0 : obstacleGrid[0][col - 1];
+  }
+
+  //fill the cells of the first column. If cur cell is an obstacle, then there are 0 ways to 
+  //get there from starting position. If not the no of ways is that of the cell just above it
+  for (let row = 1; row < m; row++) {
+    obstacleGrid[row][0] = obstacleGrid[row][0] === 1 ? 0 : obstacleGrid[row - 1][0];
+  }
+
+
+  //determine the no of possible unique paths for the remaining cells
+  for (let row = 1; row < m; row++) {
+    for (let col = 1; col < n; col++) {
+      if (obstacleGrid[row][col] === 1) {
+        obstacleGrid[row][col] = 0;
+        continue;
+      } 
+      obstacleGrid[row][col] = obstacleGrid[row - 1][col] + obstacleGrid[row][col - 1];
+    }
+  }
+
+  return obstacleGrid[m - 1][n - 1];
+};
