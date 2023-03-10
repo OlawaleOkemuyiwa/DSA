@@ -2000,7 +2000,7 @@ var generateMatrix = function(n) { //time O(n^2), space O(1)
   return res;
 };
 
-//L.63 (Medium)
+//L.61 (Medium)
 var rotateRight = function(head, k) { //time O(n), space(1)
   //if the list is a null list then we can make no reversal
   if (!head) return head;
@@ -2028,3 +2028,22 @@ var rotateRight = function(head, k) { //time O(n), space(1)
   tail.next = head;
   return newHead;
 };
+
+//L.62 (Medium)
+var uniquePaths = function(m, n) { // time O(m * n), space O(m * n)
+  const grid = new Array(m);
+  for (let i = 0; i < grid.length; i++) {
+    grid[i] = new Array(n).fill(1);
+  }
+  
+  //grid[row][col] rep the no of possible unique paths to that position from starting point
+  for (let row = 1; row < m; row++) {
+    for (let col = 1; col < n; col++) {
+      grid[row][col] = grid[row - 1][col] + grid[row][col - 1];
+    }
+  }
+
+  return grid[m - 1][n - 1];
+};
+
+//L.62 (Medium)
