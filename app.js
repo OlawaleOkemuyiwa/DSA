@@ -2036,7 +2036,7 @@ var uniquePaths = function(m, n) { // time O(m * n), space O(m * n)
     grid[i] = new Array(n).fill(1);
   }
   
-  //grid[row][col] rep the no of possible unique paths to reach that cell from starting point
+  //each grid cell rep the no of possible unique paths to reach that cell from starting point
   for (let row = 1; row < m; row++) {
     for (let col = 1; col < n; col++) {
       grid[row][col] = grid[row - 1][col] + grid[row][col - 1];
@@ -2048,6 +2048,7 @@ var uniquePaths = function(m, n) { // time O(m * n), space O(m * n)
 
 //L.63 (Medium)
 var uniquePathsWithObstacles = function(obstacleGrid) { // time O(m * n), space O(1)  
+  //update each grid cell to become the no of unique paths to each cell of the grid (in-place)
   const m = obstacleGrid.length;
   const n = obstacleGrid[0].length;
 
@@ -2069,7 +2070,6 @@ var uniquePathsWithObstacles = function(obstacleGrid) { // time O(m * n), space 
     obstacleGrid[row][0] = obstacleGrid[row][0] === 1 ? 0 : obstacleGrid[row - 1][0];
   }
 
-
   //determine the no of possible unique paths for the remaining cells
   for (let row = 1; row < m; row++) {
     for (let col = 1; col < n; col++) {
@@ -2082,4 +2082,30 @@ var uniquePathsWithObstacles = function(obstacleGrid) { // time O(m * n), space 
   }
 
   return obstacleGrid[m - 1][n - 1];
+};
+
+//L.64 (Medium)
+var minPathSum = function(grid) { //time O(m * n), space O(1)
+  //update each grid cell to become the mininum sum to get to each cell of the grid (in-place)
+  const m = grid.length;
+  const n = grid[0].length;
+
+  //fill the cells of the first row
+  for (let col = 1; col < n; col++) {
+    grid[0][col] += grid[0][col - 1];
+  }
+
+  //fill the cells of the first column
+  for (let row = 1; row < m; row++) {
+    grid[row][0] += grid[row - 1][0];
+  }
+
+  //fill the remaining cells of the grid
+  for (let row = 1; row < m; row++) {
+    for (let col = 1; col < n; col++) {
+      grid[row][col] += Math.min(grid[row - 1][col], grid[row][col - 1])
+    }
+  }
+
+  return grid[m - 1][n - 1];
 };
