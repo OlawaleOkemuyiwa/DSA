@@ -2129,3 +2129,48 @@ var simplifyPath = function(path) {  //time O(n), space O(n)
   
   return '/' + stack.join('/');
 };
+
+//L.73 (Medium)
+var setZeroes = function(matrix) { //time O(m * n), spae O(1)
+  //The idea is that we can use the 1st cell of every row and column as a flag. This flag 
+  //would determine whether a row or column has been set to 0 due to a 0 cell in it.
+  
+  let firstRowZero = false;
+  let firstColumnZero = false;
+
+  for (let r = 0; r < matrix.length; r++) {
+    for (let c = 0; c < matrix[0].length; c++) {
+      if (matrix[r][c] === 0) {
+        //if a cell is 0, set the 1st cells in it's row and column to 0 
+        //also check if such 0 cell is in the 1st row or 1st column of the matrix
+        matrix[0][c] = 0;
+        matrix[r][0] = 0;
+        if (r === 0) firstRowZero = true; 
+        if (c === 0) firstColumnZero = true; 
+      }
+    }
+  }
+
+  //using the 1st row and column, set each cell (exc 1st row and 1st col cells) to 0 where due
+  for (let r = 1; r < matrix.length; r++) {
+    for (let c = 1; c < matrix[0].length; c++) {
+      if (matrix[0][c] === 0 || matrix[r][0] === 0) {
+        matrix[r][c] = 0;
+      }
+    }
+  }
+
+  //if we have a 0 cell in the 1st row, set all 1st row cells to 0
+  if (firstRowZero) {
+    for (let c = 0; c < matrix[0].length; c++) {
+      matrix[0][c] = 0;
+    }
+  }
+
+  //if we have a 0 cell in the 1st column, set all 1st column cells to 0
+  if (firstColumnZero) {
+    for (let r = 0; r < matrix.length; r++) {
+      matrix[r][0] = 0;
+    }
+  }
+};
