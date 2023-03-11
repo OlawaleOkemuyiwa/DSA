@@ -2109,3 +2109,23 @@ var minPathSum = function(grid) { //time O(m * n), space O(1)
 
   return grid[m - 1][n - 1];
 };
+
+//L.71 (Medium)
+var simplifyPath = function(path) {  //time O(n), space O(n)
+  const stack = [];
+
+  for (let dir of path.split('/')) {
+    if (dir === '' || dir === '.') {
+      //we do nothing to the stack when we encounter '.' or ''
+      continue;
+    } else if (dir === '..') {
+      //we pop off the last dir added to the stack if we encounter '..'
+      if (stack.length) stack.pop();
+    } else {
+      //if both earlier conditions are false then it's a valid directory to be added 
+      stack.push(dir);
+    }
+  }
+  
+  return '/' + stack.join('/');
+};
