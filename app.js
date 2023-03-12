@@ -2174,3 +2174,28 @@ var setZeroes = function(matrix) { //time O(m * n), spae O(1)
     }
   }
 };
+
+//L.74 (Medium)
+var searchMatrix = function(matrix, target) { // time O(log(m*n)), space O(1)
+  //The idea behind this is to binary search while considering the matrix as a 1D sorted arr
+  //of length m x n. We could flatten the matrix into such array then binary search but that 
+  //would take a space of O(m + n). Instead we use a formula to get the pivot El from the
+  //available 2D matrix using the pivot idx of our hypothetical 1D sorted arr
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  let left = 0;
+  let right = m * n - 1;
+  while (left <= right) {
+    let pivotIdx = Math.floor((left + right)/2);
+    let pivotEl = matrix[Math.floor(pivotIdx/n)][pivotIdx % n];
+    if (pivotEl === target) {
+      return true
+    } else if (pivotEl < target) {
+      left = pivotIdx + 1;
+    } else {
+      right = pivotIdx - 1;
+    }
+  }
+  return false;
+};
