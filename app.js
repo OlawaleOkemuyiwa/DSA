@@ -1452,23 +1452,21 @@ var strStr = function(haystack, needle) { //first occurence of a substring
 var strStrII = function(haystack, needle) { //last occurence of a substring
   let m = haystack.length;
   let n = needle.length;
-  let index = -1;
+  let lastIdx = -1;
 
   for (let windowStart = 0; windowStart <= m - n; windowStart++) {
     for (let i = 0; i < n; i++) {
       //as i moves over needle, also use i to move windowStart rightwards over haystack 
-      if (needle[i] !== haystack[windowStart + i]) {
-        break;
-      }
+      if (needle[i] !== haystack[windowStart + i]) break;
+      
 
-      //if the last char of needle corresponds to the equivalent char of haystack we done 
-      if (i === n - 1) {
-        index = windowStart;
-      }
+      //if the last char of needle corresponds to the equivalent char of haystack we update the idx
+      if (i === n - 1) lastIdx = windowStart;
+      
     }
   }
 
-  return index;
+  return lastIdx;
 };
 
 //L.29 ???
@@ -1815,6 +1813,8 @@ var rotate = function(matrix) { // O(n^2) time, O(1) space
 var groupAnagrams = function(strs) { 
   //time O(nklogk) n === length of strs arr, k === max length of a str in strs arr
   //space O(nk)
+
+  //a map of sorted strs to arrays containing anagram words coined from it
   const map = new Map();
 
   for (let str of strs) {
