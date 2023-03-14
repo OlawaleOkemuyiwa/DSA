@@ -18,22 +18,10 @@ function merge(arr1, arr2) {
     }
   }
 
-  // while (i < arr1.length) {
-  //   merged.push(arr1[i]);
-  //   i++;
-  // }
-
-  // while (j < arr2.length) {
-  //   merged.push(arr2[j]);
-  //   j++;
-  // }
-
   if (i < arr1.length) {
-    // merged.push(...arr1.slice(i));
     merged = merged.concat(arr1.slice(i));
-  } else if (j < arr2.length) {
-    // merged.push(...arr1.slice(j));
-    merged = merged.concat(arr1.slice(i));
+  } else {
+    merged = merged.concat(arr1.slice(j));
   }
 
   return merged;
