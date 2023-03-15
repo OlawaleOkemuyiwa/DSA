@@ -2219,3 +2219,21 @@ var sortColors = function(nums) { //time O(n) {1 pass}, space O(1)
     }
   }
 };
+
+// L.77 (Medium)
+var combine = function(n, k) {
+  const result = [];
+
+  function helper(start, arr) {
+    if (arr.length === k) {
+      result.push(arr.slice());
+      return;
+    }
+
+    for (let i = start; i <= n; i++) {
+      helper(i + 1, arr.concat(i));
+    }
+  }
+  helper(1, []);
+  return result;
+};
