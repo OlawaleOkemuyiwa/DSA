@@ -2196,3 +2196,26 @@ var searchMatrix = function(matrix, target) { // time O(log(m*n)), space O(1)
   }
   return false;
 };
+
+//L.75 (Medium)
+var sortColors = function(nums) { //time O(n) {1 pass}, space O(1)
+  function swap (a, b) {
+    [nums[a], nums[b]] = [nums[b], nums[a]];
+  }
+
+  //left safeguards 0 digits, right safeguards 2 digits, i iterates over nums for swapping
+  let left = 0, right = nums.length - 1;
+  let i = 0;
+  while (i <= right) {
+    if (nums[i] === 0) {
+      swap(left, i);
+      left++;
+      i++;
+    } else if (nums[i] === 2) {
+      swap(i, right);
+      right--;
+    } else {
+      i++;
+    }
+  }
+};

@@ -1,4 +1,4 @@
-//BUBBLE SORT --> The largest number bubbles to the top (i.e placing the largest values in a sorted position at the end of the array)
+//BUBBLE SORT --> The largest number bubbles up to the end of the array (i.e placing the largest value in the cur iteration of an array to it's appropriate location at the end of the array)
 //BigO --> at worst O(n^2), at best O(n) as it is most efficient for an almost sorted array right after insertion sort
 
 // function swap1(arr, indx1, indx2) {
@@ -12,17 +12,17 @@
 // }
 
 // function bubbleSort(arr) {
-//   let noSwaps = true; //for optimization we start noSwaps = true for a whole iteration and change it to false whenever there is indeed a swap, then the array is already sorted and there is no need to keep iterating again so we break out of the outer loop
 //   for (let i = arr.length - 1; i > 0; i--) { //i outer loop serves as a pointer guard for where j should stop. j does the actual comparison starting from the first element to the last unsorted element, comparing and swapping when neccessary
+//     let noSwap = true; //for optimization, when we start the sorting process there is being no swap made yet (i.e noSwap = true). This is updated to false for a loop where a swap is made. When we go through the array and no swap is done then the array is already sorted and there is no need to keep iterating (looking for digits to swap) so we break out of loop and we're done
 //     for (let j = 0; j < i; j++) {
 //       if (arr[j] > arr[j + 1]) {
 //         let temp = arr[j];
 //         arr[j] = arr[j + 1];
 //         arr[j + 1] = temp;
-//         noSwaps = false;
+//         noSwap = false;
 //       }
 //     }
-//     if (noSwaps) break; //this will run when arr[j] as being compared with all elements to the right [from start of j to end] in order to bubble the biggest number for that loop of i and no swap occurs i.e arr[j] is the smallest element and cannot swap with any as they're all larger therefore the array is already sorted. So we're done and no need for another round of checking and swapping.
+//     if (noSwap) break; //this will run when arr[j] is being compared with all elements to the right [from start of j to end] in order to bubble the biggest number for that loop of i and no swap occurs i.e arr[j] is the smallest element and cannot swap with any as they're all larger therefore the array is already sorted. So we're done and no need for another round of checking and swapping.
 //   }
 //   return arr;
 // }
@@ -66,3 +66,22 @@
 //   return arr;
 // }
 // console.log(insertionSort([8, 7, 5, 1, 3, 15]));
+
+// function countSort (nums) { //time O(n) {2 passes}, space O(1) {count is always length 3}
+//   const count = new Array(3).fill(0);
+//   for (let num of nums) {
+//     count[num]++
+//   }
+  
+//   let i = 0;
+//   while (i < count[0]) {
+//     nums[i++] = 0;
+//   }
+//   while (i < count[0] + count[1]) {
+//     nums[i++] = 1;
+//   }
+//   while (i < count[0] + count[1] + count[2]) {
+//     nums[i++] = 2;
+//   }
+// };
+// console.log(countSort([2,0,2,1,1,0]))
