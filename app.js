@@ -2221,19 +2221,38 @@ var sortColors = function(nums) { //time O(n) {1 pass}, space O(1)
 };
 
 // L.77 (Medium)
-var combine = function(n, k) {
+var combine = function(n, k) { //backtracking
   const result = [];
 
-  function helper(start, arr) {
+  function helper(arr, start) {
     if (arr.length === k) {
       result.push(arr.slice());
       return;
     }
 
     for (let i = start; i <= n; i++) {
-      helper(i + 1, arr.concat(i));
+      helper(arr.concat(i), i + 1);
     }
   }
-  helper(1, []);
+  helper([], 1);
   return result;
+};
+
+//L.80 (Medium)
+var removeDuplicates = function(nums) {
+  let insertIdx = 0;
+  let numCount = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) { 
+      if (numCount < 2) {
+        nums[insertIdx++] = nums[i];
+      } 
+      numCount++;
+    } else {
+      nums[insertIdx++] = nums[i];
+      numCount = 1;
+    }
+  }
+  return insertIdx;  
 };
