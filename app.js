@@ -2238,6 +2238,9 @@ var combine = function(n, k) { //backtracking
   return result;
 };
 
+//L.79 (Medium)
+
+
 //L.80 (Medium)
 var removeDuplicates = function(nums) {
   let insertIdx = 0;
@@ -2245,14 +2248,39 @@ var removeDuplicates = function(nums) {
 
   for (let i = 0; i < nums.length; i++) {
     if (i > 0 && nums[i] === nums[i - 1]) { 
-      if (numCount < 2) {
+      numCount++;
+      if (numCount <= 2) {
         nums[insertIdx++] = nums[i];
       } 
-      numCount++;
     } else {
-      nums[insertIdx++] = nums[i];
       numCount = 1;
+      nums[insertIdx++] = nums[i];
     }
   }
   return insertIdx;  
+};
+
+//L.82 (Medium)
+var deleteDuplicates = function(head) {
+  let dummyHead = new ListNode(-1, head);
+
+  let left = dummyHead;
+  let right = head;
+
+  while (right && right.next) { //time O(n) {only 1 pass accross the list}, space O(1)
+    let isDuplicated = false;
+    while (right && right.next && right.val === right.next.val) {
+      isDuplicated = true;
+      right = right.next;
+    }
+
+    if (isDuplicated) {
+      left.next = right.next;
+      right = right.next
+    } else {
+      left = right;
+      right = right.next
+    }
+  }
+  return dummyHead.next;
 };
