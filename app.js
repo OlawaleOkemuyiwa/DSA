@@ -416,14 +416,15 @@ var twoSum = function(nums, target) { //unsorted array
 var twoSumII = function(numbers, target) { //non-decreasing sorted array
   let left = 0;
   let right = numbers.length - 1;
+
   while (left < right) {
     let sum = numbers[left] + numbers[right];
-    if (sum < target) {
-      left++;
-    } else if (sum > target) {
-      right--;
-    } else {
+    if (target === sum) {
       return [left + 1, right + 1];
+    } else if (target > sum) {
+      left++;
+    } else {
+      right--;
     }
   }
   return [-1, -1];
@@ -563,12 +564,12 @@ var searchInsert = function(nums, target) {
   while (left <= right) {
     let mid = Math.floor((left + right)/2);
     
-    if (target > nums[mid]) {
-      left = mid + 1;
-    } else if (target < nums[mid]) {
-      right = mid - 1;
-    } else {
+    if (target === nums[mid]) {
       return mid;
+    } else if (target > nums[mid]) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
     }
   }
   //coming out of the loop (nothing was returned) signifies our target wasn't 
@@ -1269,12 +1270,12 @@ var threeSumClosest = function(nums, target) {
     while (left < right) {
       let curSum = nums[i] + nums[left] + nums[right];
       if (Math.abs(target - curSum) < Math.abs(target - closetSum)) closetSum = curSum;
-      if (curSum < target) {
-        left++;
-      } else if (curSum > target) {
-        right--;
-      } else {
+      if (target === curSum) {
         return curSum;
+      } else if (target > curSum) {
+        left++;
+      } else {
+        right--;
       }
     }
   }
@@ -1326,9 +1327,9 @@ var fourSum = function(nums, target) {
       let left = j + 1, right = innerNums.length - 1;
       while (left < right) {
         let sum = nums[i] + innerNums[j] + innerNums[left] + innerNums[right];
-        if (sum < target) {
+        if (target > sum) {
           left++;
-        } else if (sum > target) {
+        } else if (target < sum) {
           right--;
         } else {
           res.push([nums[i], innerNums[j], innerNums[left], innerNums[right]]);
@@ -1512,7 +1513,7 @@ var search = function(nums, target) {
     let mid = Math.floor((left + right) / 2);
     if (target === nums[mid]) {
       return mid;
-    } else if (nums[mid] > nums[right]) {
+    } else if (nums[mid] >= nums[left]) {
       // the left side of mid is sorted
       if (target < nums[mid] && target >= nums[left]) {
         // target is in the left side
@@ -1537,26 +1538,25 @@ var search = function(nums, target) {
 
 //L.34 (Medium)
 function binarySearch(arr, left, right, target, firstIndexSearch) {
-  let indx = -1;
+  let idx = -1;
   while(left <= right) {
     let mid = Math.floor((left + right)/2);
-    if (arr[mid] === target) {
-      indx = mid;
+    if (target === arr[mid]) {
+      idx = mid;
       firstIndexSearch ? right = mid - 1 : left = mid + 1;
-    } else if (arr[mid] < target) {
+    } else if (target > arr[mid]) {
       left = mid + 1;
     } else {
       right = right - 1;
     }
   }
-  return indx;
+  return idx;
 }
-
 var searchRange = function(nums, target) {
-  let indx1 = binarySearch(nums, 0, nums.length - 1, target, true);
-  if (indx1 === -1) return [-1, -1];
-  let indx2 = binarySearch(nums, indx1, nums.length - 1, target, false);
-  return [indx1, indx2];
+  let idx1 = binarySearch(nums, 0, nums.length - 1, target, true);
+  if (idx1 === -1) return [-1, -1];
+  let idx2 = binarySearch(nums, idx1, nums.length - 1, target, false);
+  return [idx1, idx2];
 };
 
 //L.36 (Medium)
@@ -2166,11 +2166,11 @@ var searchMatrix = function(matrix, target) { // time O(log(m*n)), space O(1)
   let left = 0;
   let right = m * n - 1;
   while (left <= right) {
-    let pivotIdx = Math.floor((left + right)/2);
+    let pivotIdx = Math.floor((left + right) / 2);
     let pivotEl = matrix[Math.floor(pivotIdx/n)][pivotIdx % n];
-    if (pivotEl === target) {
+    if (target === pivotEl) {
       return true
-    } else if (pivotEl < target) {
+    } else if (target > pivotEl) {
       left = pivotIdx + 1;
     } else {
       right = pivotIdx - 1;
@@ -2242,6 +2242,42 @@ var removeDuplicates = function(nums) {
   return insertIdx;  
 };
 
+//L.81 (Medium)
+var search = function(nums, target) { // time: at best O(logn), at worst O(n) {when duplicates are present}. space: O(1)
+  let left = 0
+  let right = nums.length - 1;
+
+  while (left <= right) {
+    //skip the duplicate values from both ends of nums array (if there are any)
+    while (left < right && nums[left] === nums[left + 1]) left++;
+    while (left < right && nums[right] === nums[right - 1]) right--;
+    
+    let mid = Math.floor((left + right) / 2);
+    if (target === nums[mid]) {
+      return true;
+    } else if (nums[mid] >= nums[left]) {
+      // left side of mid is sorted
+      if  (target < nums[mid] && target >= nums[left]) {
+        // target is in the left side
+        right = mid - 1;
+      } else {
+        // target is in the right side
+        left = mid + 1
+      }
+    } else {
+      // right side of mid is sorted
+      if  (target > nums[mid] && target <= nums[right]) {
+        // target is in the right side
+        left = mid + 1
+      } else {
+        // target is in the left side
+        right = mid - 1
+      }
+    } 
+  }
+  return false;
+};
+
 //L.82 (Medium)
 var deleteDuplicates = function(head) {
   let dummyHead = new ListNode(-1, head);
@@ -2266,3 +2302,4 @@ var deleteDuplicates = function(head) {
   }
   return dummyHead.next;
 };
+
