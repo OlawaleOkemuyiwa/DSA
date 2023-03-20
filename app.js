@@ -2305,23 +2305,22 @@ var deleteDuplicates = function(head) {
 
 //L.86 (Medium)
 var partition = function(head, x) { // time O(n), space O(1)
-  let beforeHead = new ListNode(-1);
-  let before = beforeHead;
-  let afterHead = new ListNode(-1);
-  let after = afterHead;
+  let leftHead = new ListNode(-1);
+  let left = leftHead;
+  let rightHead = new ListNode(-1);
+  let right = rightHead;
 
   while (head) {
     if (head.val < x) {
-      before.next = head;
-      before = before.next;  
+      left.next = head;
+      left = left.next;  
     } else {
-      after.next = head;
-      after = after.next; 
+      right.next = head;
+      right = right.next; 
     }
     head = head.next;
   }
-  after.next = null;
-  before.next = afterHead.next;
-  return beforeHead.next;
+  right.next = null;
+  left.next = rightHead.next;
+  return leftHead.next;
 };
-
