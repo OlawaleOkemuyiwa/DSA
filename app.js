@@ -2248,7 +2248,7 @@ var search = function(nums, target) { // time: at best O(logn), at worst O(n) {w
   let right = nums.length - 1;
 
   while (left <= right) {
-    //skip the duplicate values from both ends of nums array (if there are any)
+    //skip the duplicate values at each ends of nums array (if there are any)
     while (left < right && nums[left] === nums[left + 1]) left++;
     while (left < right && nums[right] === nums[right - 1]) right--;
     
@@ -2301,5 +2301,27 @@ var deleteDuplicates = function(head) {
     }
   }
   return dummyHead.next;
+};
+
+//L.86 (Medium)
+var partition = function(head, x) { // time O(n), space O(1)
+  let leftList = new ListNode(-1);
+  let left = leftList;
+  let rightList = new ListNode(-1);
+  let right = rightList;
+
+  while (head) {
+    if (head.val < x) {
+      left.next = head;
+      left = left.next;  
+    } else {
+      right.next = head;
+      right = right.next; 
+    }
+    head = head.next;
+  }
+  right.next = null;
+  left.next = rightList.next;
+  return leftList.next;
 };
 
