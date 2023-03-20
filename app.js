@@ -1353,8 +1353,7 @@ var removeNthFromEnd = function(head, n) {
   //that right can then lead left by n + 1 nodes. So when right becomes null, left points to  
   //the node just before the nth node to be removed. Then it can be removed.
   
-  let dummyHead = new ListNode();
-  dummyHead.next = head;
+  let dummyHead = new ListNode(-1, head);
 
   let left = dummyHead;
   let right = head;
@@ -1399,32 +1398,31 @@ var generateParenthesis = function(n) { //backtracking
 
 //L.24 (Medium)
 var swapPairs = function(head) {
-  //dummyHead serves as prev during the 1st swap to help maintain a valid list after the
-  //list is broken up and d 1st pair are swapped. prev.next (which is dummyHead.next during  
-  //1st swap) then connects to the newly swapped list nodes. prev then moves to curr while 
-  //curr moves to nextPair to be swapped. now prev.next can again serve to link the current 
+  //dummyHead serves as left during the 1st swap to help maintain a valid list after the
+  //list is broken up and d 1st pair are swapped. left.next (which is dummyHead.next during  
+  //1st swap) then connects to the newly swapped list nodes. left then moves to right while 
+  //right moves to nextPair to be swapped. now left.next can again serve to link the current 
   //list to the resulting list after the swap 
   
-  let dummyHead = new ListNode();
-  dummyHead.next = head;
+  let dummyHead = new ListNode(-1, head);
 
-  let curr = head;
-  let prev = dummyHead;
+  let left = dummyHead;
+  let right = head;
 
   //we must have at least 2 nodes (cur and cur.next) to swap, if not we done
-  while (curr && curr.next) {
+  while (right && right.next) {
     //save pointers
-    let second = curr.next;
-    let nextPair = curr.next.next;
+    let second = right.next;
+    let nextPair = right.next.next;
 
     //reverse pair
-    second.next = curr;
-    curr.next = nextPair;
-    prev.next = second;
+    second.next = right;
+    right.next = nextPair;
+    left.next = second;
 
     //update pointers
-    prev = curr;
-    curr = nextPair;
+    left = right;
+    right = nextPair;
   }
 
   return dummyHead.next;
@@ -1506,51 +1504,35 @@ var nextPermutation = function(nums) {
 };
 
 //L.33 (Medium)
-function findPivotIndex(arr) {
-  let left = 0;
-  let right = arr.length - 1;
-
-  //if nums isn't rotated then arr[left] would be <= arr[right] and no need to find pivot
-  if (arr[left] <= arr[right]) return 0;
-
-  while (left <= right) {
-    let mid = Math.floor((left + right)/2);
-    if (arr[mid] > arr[mid + 1]) {
-      return mid + 1;
-    } else if (arr[left] <= arr[mid]) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-  return -1;
-}
-
-function binarySearch(arr, left, right, target) {
-  while (left <= right) {
-    let mid = Math.floor((left + right)/2);
-    if (arr[mid] === target) {
-      return mid;
-    } else if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-  return -1;
-}
-
 var search = function(nums, target) {
-  //find the pivot index of nums using binary seach (ologn)
-  let pivot = findPivotIndex(nums);
+  let left = 0;
+  let right = nums.length - 1;
 
-  //if nums isn't rotated, pivot is 0 and we binary search over entire nums for target   
-  if (pivot === 0) return binarySearch(nums, 0, nums.length - 1, target);
-
-  //find the target index in one of the two sub array divided by pivot (ologn)
-  if (nums[pivot] === target) return pivot;
-  if (nums[0] > target) return binarySearch(nums, pivot, nums.length - 1, target);
-  return binarySearch(nums, 0, pivot - 1, target);
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (target === nums[mid]) {
+      return mid;
+    } else if (nums[mid] > nums[right]) {
+      // the left side of mid is sorted
+      if (target < nums[mid] && target >= nums[left]) {
+        // target is in the left side
+        right = mid - 1;
+      } else {
+        // target is in the right side
+        left = mid + 1;
+      }
+    } else {
+      // the right side of mid is sorted
+      if (target > nums[mid] && target <= nums[left]) {
+        // target is in the right side
+        left = mid + 1;
+      } else {
+        // target is in the left side
+        right = mid - 1;
+      }
+    }
+  }
+  return -1;
 };
 
 //L.34 (Medium)
