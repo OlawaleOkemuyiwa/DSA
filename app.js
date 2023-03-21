@@ -1018,6 +1018,22 @@ var postorderTraversal = function(root) {
   return visited.reverse();
 };
 
+//L.206 (Easy)
+var reverseList = function(head) { //time O(n), space O(1)
+  if(!head) return head;
+
+  let curr = head;
+  let prev = null;
+
+  while (curr) {
+    let next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+  return prev;
+};
+
 //L.867 (Medium)
 var transpose = function(matrix) { //O(n^2) time, O(n^2) space
   const rows = matrix.length;
@@ -2304,7 +2320,7 @@ var deleteDuplicates = function(head) {
 };
 
 //L.86 (Medium)
-var partition = function(head, x) { // time O(n), space O(1)
+var partition = function(head, x) { // time O(n), space O(1) {2 linked lists, each with 1 node}
   let leftHead = new ListNode(-1);
   let left = leftHead;
   let rightHead = new ListNode(-1);
