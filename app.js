@@ -2340,3 +2340,33 @@ var partition = function(head, x) { // time O(n), space O(1) {2 linked lists, ea
   left.next = rightHead.next;
   return leftHead.next;
 };
+
+//L.92 (Medium)
+var reverseBetween = function(head, left, right) { //time O(n), space O(1)
+  let dummyHead = new ListNode(-1, head);
+  let prev = dummyHead;
+  let curr = head;
+
+  //move both pointers till curr is on the starting node of the sublist to be reversed (left 
+  //position) and prev is on the node just before it
+  for (let i = 0; i < left - 1; i++) {
+    prev = curr;
+    curr = curr.next;
+  }
+
+  //save a pointer to prev, then set it to null (as the tail of the sublist after it has
+  //been reversed will point to it {tail.next = null}). Then the sublist is reversed
+  let prevRef = prev;
+  prev = null;
+  for (let i = 0; i < right - left + 1; i++) {
+    let next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+
+  //curr stops on the node just after the right position. connect the now reversed sub list 
+  prevRef.next.next = curr;
+  prevRef.next = prev;
+  return dummyHead.next;   
+};
