@@ -2341,6 +2341,38 @@ var partition = function(head, x) { // time O(n), space O(1) {2 linked lists, ea
   return leftHead.next;
 };
 
+//L.91 (Medium)
+var numDecodings = function(s) { // time O(n), space O(n)
+  //a map of idxs of ints in s already encountered and the no of ways they were decoded
+  const memo = new Map();
+
+  function helper(i) {
+    //if cur idx has already been decoded, get the result for such idx
+    if (memo.has(i)) return memo.get(i);
+
+    //if char at cur idx is '0', then there are 0 ways to decode that
+    if (s.charAt(i) === '0') return 0;
+
+    //if idx makes it to the last char of s {a non '0' char}, we have 1 valid way to decode
+    if (i === s.length - 1) return 1;
+
+    //if cur idx is outta bound, we've hit the end and that is also 1 valid way to decode
+    if (i === s.length) return 1;
+
+    //one-digit encoding on cur idx
+    let res = helper(i + 1);
+
+    //if we have a valid two-digit encoding from cur idx
+    if (parseInt(s.substring(i, i + 2)) <= 26) {
+      res += helper(i + 2);
+    }
+    memo.set(i, res);
+    return res;
+  }
+
+  return helper(0);    
+};
+
 //L.92 (Medium)
 var reverseBetween = function(head, left, right) { //time O(n), space O(1)
   let dummyHead = new ListNode(-1, head);
@@ -2355,7 +2387,7 @@ var reverseBetween = function(head, left, right) { //time O(n), space O(1)
   }
 
   //save a pointer to prev, then set it to null (as the tail of the sublist after it has
-  //been reversed will point to it {tail.next = null}). Then the sublist is reversed
+  //been reversed will point to that {tail.next = null}). Then the sublist is reversed
   let prevRef = prev;
   prev = null;
   for (let i = 0; i < right - left + 1; i++) {
