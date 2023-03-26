@@ -1162,7 +1162,7 @@ var convert = function(s, numRows) {
   return zigzag.join('');
 };
 
-//L.7 (Medium)
+//L.7 (Medium) ??
 var reverse = function(x) {
   let num;
   if (x >= 0) {
@@ -1180,7 +1180,7 @@ var reverse = function(x) {
   return revNum;
 };
 
-//L.8 (Medium)
+//L.8 (Medium) ??
 var myAtoi = function(s) {
   let i = 0;
   let sign;
@@ -1298,7 +1298,7 @@ var threeSumClosest = function(nums, target) {
   return closetSum;
 };
 
-//L.17 (Medium)
+//L.17 (Medium) ???
 var letterCombinations = function(digits) { //backtracking
   const res = [];
   if (digits.length === 0) return res;
@@ -1457,7 +1457,6 @@ var strStr = function(haystack, needle) { //first occurence of a substring
       
       //if the last char of needle corresponds to the equivalent char of haystack we done 
       if (i === n - 1) return windowStart;
-      
     }
   }
 
@@ -1486,7 +1485,7 @@ var strStrII = function(haystack, needle) { //last occurence of a substring
 
 //L.29 ???
 
-//L.31 (Medium)
+//L.31 (Medium) ???
 function swap(arr, indx1, indx2) {
   [arr[indx1], arr[indx2]] = [arr[indx2], arr[indx1]];
 }
@@ -1531,7 +1530,7 @@ var search = function(nums, target) {
       return mid;
     } else if (nums[mid] >= nums[left]) {
       // the left side of mid is sorted
-      if (target < nums[mid] && target >= nums[left]) {
+      if (target >= nums[left] && target < nums[mid]) {
         // target is in the left side
         right = mid - 1;
       } else {
@@ -1637,7 +1636,7 @@ var countAndSay = function(n) {
   return s;
 };
 
-//L.39 (Medium)
+//L.39 (Medium) ???
 var combinationSum = function(candidates, target) {
   const res = [];
 
@@ -1658,7 +1657,7 @@ var combinationSum = function(candidates, target) {
   return res;
 };
 
-//L.40 (Medium)
+//L.40 (Medium) ???
 var combinationSum2 = function(candidates, target) {
   const res = [];
   candidates.sort((a, b) => a - b);
@@ -1683,7 +1682,7 @@ var combinationSum2 = function(candidates, target) {
   return res;
 };
 
-//L.216 (Medium)
+//L.216 (Medium) ???
 var combinationSum3 = function(k, n) {
   const res = []
 
@@ -1779,6 +1778,10 @@ var jump = function(nums) { //Greedy --> time O(n), space O(1)
 
   return res;
 };
+
+//L.46 (Medium) ???
+
+//L.47 (Medium) ???
 
 //L.48 (Medium)
 var rotate = function(matrix) { // O(n^2) time, O(1) space
@@ -2218,7 +2221,7 @@ var sortColors = function(nums) { //time O(n) {1 pass}, space O(1)
   }
 };
 
-// L.77 (Medium)
+// L.77 (Medium) ???
 var combine = function(n, k) { //backtracking
   const result = [];
 
@@ -2236,11 +2239,12 @@ var combine = function(n, k) { //backtracking
   return result;
 };
 
-//L.79 (Medium)
+//L.78 (Medium) ???
 
+//L.79 (Medium) ???
 
 //L.80 (Medium)
-var removeDuplicates = function(nums) {
+var removeDuplicates = function(nums) { //time O(n), space O(1)
   let insertIdx = 0;
   let numCount = 0;
 
@@ -2273,7 +2277,7 @@ var search = function(nums, target) { // time: at best O(logn), at worst O(n) {w
       return true;
     } else if (nums[mid] >= nums[left]) {
       // left side of mid is sorted
-      if  (target < nums[mid] && target >= nums[left]) {
+      if  (target >= nums[left] && target < nums[mid]) {
         // target is in the left side
         right = mid - 1;
       } else {
@@ -2341,7 +2345,11 @@ var partition = function(head, x) { // time O(n), space O(1) {2 linked lists, ea
   return leftHead.next;
 };
 
-//L.91 (Medium)
+//L.89 (Medium) ???
+
+//L.90 (Medium) ???
+
+//L.91 (Medium) ???
 var numDecodings = function(s) { // time O(n), space O(n)
   //a map of idxs of ints in s already encountered and the no of ways they were decoded
   const memo = new Map();
@@ -2386,7 +2394,7 @@ var reverseBetween = function(head, left, right) { //time O(n), space O(1)
     curr = curr.next;
   }
 
-  //save a pointer to prev, then set it to null (as the tail of the sublist after it has
+  //save a pointer to prev, then set prev to null (as the tail of the sublist after it has
   //been reversed will point to that {tail.next = null}). Then the sublist is reversed
   let prevRef = prev;
   prev = null;
@@ -2401,4 +2409,29 @@ var reverseBetween = function(head, left, right) { //time O(n), space O(1)
   prevRef.next.next = curr;
   prevRef.next = prev;
   return dummyHead.next;   
+};
+
+//L.93 (Medium) 
+const hasLeadingZero = str => str !== '0' && str[0] === '0';
+const ipIsValid = nums => nums.every(num => !hasLeadingZero(num) && parseInt(num) <= 255);
+
+// a valid ip address would have 4 parts separated by dots
+// we iterate through `s` to insert 3 dots and separate the string into 4 segments
+// for each segment, we check if it is valid
+// if all 4 segments are valid, we combine those 4 segments with dots and push to the result
+var restoreIpAddresses = function(s) { //time O(n) {fixed range nested loops}, space O(1)
+  const n = s.length;
+  const res = [];
+  // i determines the 1st dot's placement - we just need to run it 3 times at most
+  // e.g. for 25523..., we can place the first dot at `2.55`, `25.5` or `255.`
+  // we place the 2nd and 3rd dots in a similar way
+  for (let i = 1; i < 4 && i < n - 2; i++) {
+    for (let j = i + 1; j < i + 4 && j < n - 1; j++) {
+      for (let k = j + 1; k < j + 4 && k < n; k++) {
+        const ip = [s.slice(0, i), s.slice(i, j), s.slice(j, k), s.slice(k)];
+        if (ipIsValid(ip)) res.push(ip.join('.'));
+      }
+    }
+  }
+  return res;
 };
