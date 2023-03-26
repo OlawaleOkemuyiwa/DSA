@@ -2435,3 +2435,24 @@ var restoreIpAddresses = function(s) { //time O(n) {fixed range nested loops}, s
   }
   return res;
 };
+
+//L.96 (Medium) 
+var numTrees = function(n) {
+  //idx 0 to idx n (in arr of length n + 1) rep the no of nodes to form the unique BST's and
+  //d val at each idx rep the no of BST formed by the idx (nodes) e.g. 0||1 idx (node) = 1 BST
+  const numTree = new Array(n + 1).fill(1);  
+
+  //since BST's for node 1 and 2 is known, we can start determining for nodes >= 2
+  for (let nodes = 2; nodes < numTree.length; nodes++) {
+    let totalNoOfBST = 0;
+    for (let root = 1; root < nodes + 1; root++) {
+      let leftNoOfNodes = root - 1;
+      let rightNoOfNodes = nodes - root;
+      totalNoOfBST += numTree[leftNoOfNodes] * numTree[rightNoOfNodes]
+    }
+    numTree[nodes] = totalNoOfBST;
+  }
+  return numTree[n];
+};
+
+//L.95 (Medium) 
