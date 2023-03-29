@@ -2444,6 +2444,11 @@ var numTrees = function(n) { //time O(n^2), space O(1) {numTree to keep the inte
 
   //since the no of BST's for 0 && 1 nodes is known, we can start determining for nodes >= 2
   for (let nodes = 2; nodes < numTree.length; nodes++) {
+    //for a given no of nodes n e.g 2. We've to consider when each value from 1 to n 
+    //is the root node e.g. n = 2, when 1 is the root node, the no of BST formed by that 
+    //tree is no of BST formed by the nodes in the left subtree * the no of BST formed by
+    //the nodes in the right subtree. We do this also for when the root node is 2 till when
+    //n is root node. Then these BSTs are summed up to get the total BST's formed by n nodes
     let totalNoOfBST = 0;
     for (let root = 1; root < nodes + 1; root++) {
       let leftNoOfNodes = root - 1;
@@ -2456,9 +2461,44 @@ var numTrees = function(n) { //time O(n^2), space O(1) {numTree to keep the inte
 };
 
 //L.95 (Medium) ???
+var generateTrees = function(n) {
+  function helper(first, last) {
+    if (first > last) return [null];
+
+    const trees = [];
+    for (let root = first; root < last + 1; root++) {
+      for (let left of helper(first, root - 1)) {
+        for (let right of helper(root + 1, last)) {
+          let node = new TreeNode(root);
+          node.left = left;
+          node.right = right;
+          trees.push(node);
+        }
+      }
+    }
+    return trees;
+  }
+  return helper(1, n);
+};
 
 //L.97 (Medium) ???
 
 //L.98 (Medium) 
+var isValidBST = function(root) {
+
+  function helper(node, min, max) {//time O(n) {each node visited once}, space O(heightOfTree)
+    //a null node is a valid BST
+    if (!node) return true;
+
+    //a node whose val is <= min OR >= max is an invalid BST
+    if (node.val <= min || node.val >= max) return false;
+
+    let leftSubTreeIsValid = helper(node.left, min, node.val);
+    let rightSubTreeIsValid = helper(node.right, node.val, max);
+    return leftSubTreeIsValid && rightSubTreeIsValid;
+  }
+
+  return helper(root, -Infinity, Infinity)
+};
 
 
