@@ -99,21 +99,6 @@ class BinarySearchTree {
     return visited;
   }
 
-  breatheFirstSearch() {
-    //starting from the root, we traverse each descendant left and right node first, then do the same for a sibling node. We do that till we hit the end
-    const visited = [];
-    if (!this.root) return visited;
-    
-    const unvisitedQueue = [this.root];
-    while (unvisitedQueue.length > 0) {
-      let node = unvisitedQueue.shift();
-      visited.push(node.value);
-      if (node.left) unvisitedQueue.push(node.left);
-      if (node.right) unvisitedQueue.push(node.right);
-    }
-    return visited;
-  }
-
   preOrderDepthFirstSearchIterative() {
     const visited = [];
     if (!this.root) return visited;
@@ -164,6 +149,21 @@ class BinarySearchTree {
       curr = stack.pop();
       visited.push(curr.value);
       curr = curr.right;
+    }
+    return visited;
+  }
+
+  breatheFirstSearch() {
+    //starting from the root, we traverse each descendant left and right node first, then do the same for a sibling node. We do that till we hit the end
+    const visited = [];
+    if (!this.root) return visited;
+    
+    const unvisitedQueue = [this.root];
+    while (unvisitedQueue.length > 0) {
+      let node = unvisitedQueue.shift();
+      visited.push(node.value);
+      if (node.left) unvisitedQueue.push(node.left);
+      if (node.right) unvisitedQueue.push(node.right);
     }
     return visited;
   }

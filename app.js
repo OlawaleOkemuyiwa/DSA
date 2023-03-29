@@ -2503,6 +2503,29 @@ var isValidBST = function(root) {
 
 //L.99 (Medium) ???
 
-//L.
+//L.102 (Medium)
+var levelOrder = function(root) { //BA. time O(n), space O(n) {due to the queue used}
+  const visited = [];
+  if (!root) return visited;
+
+  const queue = [root];
+  let level = 0;
+  while(queue.length > 0) {
+    //start the current level
+    visited.push([]);
+
+    //get the no of nodes in the current level 
+    let levelLength = queue.length;
+
+    for (let i = 0; i < levelLength; i++) {
+      let node = queue.shift();
+      visited[level].push(node.val)
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    level++;
+  }
+  return visited;
+};
 
 
