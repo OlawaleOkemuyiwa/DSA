@@ -60,27 +60,6 @@ class BinarySearchTree {
     }
   }
 
-  breatheFirstSearch() {
-    //starting from the root, we traverse each descendant left and right node first, then do the same for a sibling node. We do that till we hit the end
-    let currentNode = this.root;
-    const unvisitedQueue = [currentNode];
-    const visited = [];
-
-    while (unvisitedQueue.length) {
-      currentNode = unvisitedQueue.shift();
-      visited.push(currentNode.value);
-
-      if (currentNode.left) {
-        unvisitedQueue.push(currentNode.left);
-      }
-
-      if (currentNode.right) {
-        unvisitedQueue.push(currentNode.right);
-      }
-    }
-    return visited;
-  }
-
   preOrderDepthFirstSearch() {
     //PRE ORDER (CURRENT NODE BEFORE ITS CHILDREN: CURRENTNODE, LEFT, RIGHT) --> PUSH THE CURRENT NODE (root) INTO THE VISITED ARRAY BEFORE THEN TRAVERSING DOWNWARDS PUSHING THE CURRENT NODE ALONG THE WAY
     const visited = [];
@@ -108,7 +87,7 @@ class BinarySearchTree {
   }
 
   inOrderDepthFirstSearch() {
-    //POST ORDER (LEFT CHILD BEFORE CURRETNODE, THEN CURRENTNODE, THEN RIGHT CHILD)--> TRANSVERSE DOWNWARDS FROM THE ROOT TO THE LAST DESCENDANT, PUSH THE LAST DESCENDANT (THE LEFT) THEN PUSH THE PARENT , THEN PUSH THE RIGHT SO ON
+    //IN ORDER (LEFT CHILD BEFORE CURRENTNODE, THEN CURRENTNODE, THEN RIGHT CHILD)--> TRANSVERSE DOWNWARDS FROM THE ROOT TO THE LAST DESCENDANT, PUSH THE LAST DESCENDANT (THE LEFT) THEN PUSH THE PARENT , THEN PUSH THE RIGHT SO ON
     const visited = [];
 
     function traverse(node) {
@@ -120,33 +99,46 @@ class BinarySearchTree {
     return visited;
   }
 
+  breatheFirstSearch() {
+    //starting from the root, we traverse each descendant left and right node first, then do the same for a sibling node. We do that till we hit the end
+    const visited = [];
+    if (!this.root) return visited;
+    
+    const unvisitedQueue = [this.root];
+    while (unvisitedQueue.length > 0) {
+      let node = unvisitedQueue.shift();
+      visited.push(node.value);
+      if (node.left) unvisitedQueue.push(node.left);
+      if (node.right) unvisitedQueue.push(node.right);
+    }
+    return visited;
+  }
 
   preOrderDepthFirstSearchIterative() {
     const visited = [];
-    if (!root) return visited;
+    if (!this.root) return visited;
 
-    const stack = [root]; 
+    const stack = [this.root]; 
     while (stack.length > 0) {
       const node = stack.pop();
-      visited.push(node.val);
+      visited.push(node.value);
       if (node.right) stack.push(node.right);
       if (node.left) stack.push(node.left);
 
       //we add the left node to the stack after the right node is added so it would be the 1st
       //we would add to the visited arr between the two i.e [node, left, right] PREORDER
     }
-
     return visited;
   }
 
   postOrderDepthFirstSearchIterative() {
     const visited = [];
-    if (!root) return visited;
+    if (!this.root) return visited;
 
-    const stack = [root];
+    const stack = [this.root];
     while (stack.length > 0) {
       const node = stack.pop();
-      visited.push(node.val);
+      visited.push(node.value);
       if (node.left) stack.push(node.left);
       if (node.right) stack.push(node.right);
 
@@ -154,16 +146,15 @@ class BinarySearchTree {
       //the 1st we would add to the visited arr between the two i.e [node, right, left]
       //[node, right, left].reverse === [left, right, node] POSTORDER
     }
-
     return visited.reverse();
   }
 
   inOrderDepthFirstSearchIterative() {
     const visited = [];
-    if (!root) return visited;
+    if (!this.root) return visited;
 
-    let curr = root;
     const stack = [];
+    let curr = this.root;
     while (curr || stack.length > 0) {
       while (curr) {
         //traverse down the left of current node while pushing each encountered node to the stack until we encounter a null node 
@@ -171,7 +162,7 @@ class BinarySearchTree {
         curr = curr.left;
       }
       curr = stack.pop();
-      visited.push(curr.val);
+      visited.push(curr.value);
       curr = curr.right;
     }
     return visited;
@@ -188,5 +179,10 @@ BST.insert(3);
 BST.insert(15);
 BST.insert(6);
 console.log(BST.insert(8));
-console.log(BST.preOrderDepthFirstSearch());
-console.log(BST.postOrderDepthFirstSearch());
+// console.log(BST.preOrderDepthFirstSearch());
+// console.log(BST.postOrderDepthFirstSearch());
+// console.log(BST.inOrderDepthFirstSearch());
+console.log(BST.breatheFirstSearch());
+// console.log(BST.preOrderDepthFirstSearchIterative());
+// console.log(BST.postOrderDepthFirstSearchIterative());
+// console.log(BST.inOrderDepthFirstSearchIterative());
