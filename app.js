@@ -2504,7 +2504,7 @@ var isValidBST = function(root) {
 //L.99 (Medium) ???
 
 //L.102 (Medium)
-var levelOrder = function(root) { //BA. time O(n), space O(n) {due to the queue used}
+var levelOrder = function(root) { //BA. time O(n*k) {k is Q's length }, space O(n) {queue used}
   const visited = [];
   if (!root) return visited;
 
@@ -2514,7 +2514,7 @@ var levelOrder = function(root) { //BA. time O(n), space O(n) {due to the queue 
     //start the current level
     visited.push([]);
 
-    //get the no of nodes in the current level 
+    //get the no of nodes to be in the current level from the queue
     let levelLength = queue.length;
 
     for (let i = 0; i < levelLength; i++) {
@@ -2528,4 +2528,32 @@ var levelOrder = function(root) { //BA. time O(n), space O(n) {due to the queue 
   return visited;
 };
 
+//L.103 (Medium)
+var zigzagLevelOrder = function(root) { //BAM. time O(n*k) {k is Q's length}, space O(n) {Queue}
+  const visited = [];
+  if (!root) return visited;
+
+  const queue = [root];
+  let level = 0;
+  while(queue.length > 0) {
+    //start the current level
+    visited.push([]);
+
+    //get the no of nodes to be in the current level from the queue
+    let levelLength = queue.length;
+
+    for (let i = 0; i < levelLength; i++) {
+      let node = queue.shift();
+      if (level % 2 === 0) {
+        visited[level].push(node.val);
+      } else {
+        visited[level].unshift(node.val);
+      }
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    level++;
+  }
+  return visited;
+};
 
