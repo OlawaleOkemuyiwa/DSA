@@ -2603,3 +2603,22 @@ var levelOrderBottom = function(root) { //AA. time O(n*k) {k is Q's length }, sp
   }
   return visited.reverse();
 };
+
+//L.109 (Medium)
+var sortedListToBST = function(head) { //FAM. time O(n), space O(n) {cause of nums arr}
+  const nums = [];
+  while (head) {
+    nums.push(head.val);
+    head = head.next;
+  }
+  
+  function helper(leftIdx, rightIdx) {
+    if (leftIdx > rightIdx) return null;
+    let midIdx = Math.floor((leftIdx + rightIdx) / 2);
+    let root = new TreeNode(nums[midIdx]);
+    root.left = helper(leftIdx, midIdx - 1);
+    root.right = helper(midIdx + 1, rightIdx);
+    return root;
+  }
+  return helper(0, nums.length - 1);
+};
