@@ -2557,3 +2557,24 @@ var zigzagLevelOrder = function(root) { //BAM. time O(n*k) {k is Q's length}, sp
   return visited;
 };
 
+//L.105 (Medium)
+var buildTree = function(preorder, inorder) { //BAM. time O(n^2), space O(n^2)
+  if (preorder.length === 0 || inorder.length === 0) return null;
+  let val = preorder.shift();
+  let root = new TreeNode(val);
+  let index = inorder.indexOf(val);
+  root.left = buildTree(preorder, inorder.slice(0, index));
+  root.right = buildTree(preorder, inorder.slice(index + 1));
+  return root;
+};
+
+//L.106 (Medium)
+var buildTree = function(inorder, postorder) { //AG. time O(n^2), space O(n^2)
+  if (inorder.length === 0 || postorder.length === 0) return null;
+  let val = postorder.pop();
+  let root = new TreeNode(val);
+  let index = inorder.indexOf(val);
+  root.right = buildTree(inorder.slice(index + 1), postorder);
+  root.left = buildTree(inorder.slice(0, index), postorder);
+  return root;
+};
