@@ -2578,3 +2578,28 @@ var buildTree = function(inorder, postorder) { //AG. time O(n^2), space O(n^2)
   root.left = buildTree(inorder.slice(0, index), postorder);
   return root;
 };
+
+//L.107 (Medium)
+var levelOrderBottom = function(root) { //AA. time O(n*k) {k is Q's length }, space O(n) {queue used}
+  const visited = [];
+  if (!root) return visited;
+
+  const queue = [root];
+  let level = 0;
+  while(queue.length > 0) {
+    //start the current level
+    visited.push([]);
+
+    //get the no of nodes to be in the current level from the queue
+    let levelLength = queue.length;
+
+    for (let i = 0; i < levelLength; i++) {
+      let node = queue.shift();
+      visited[level].push(node.val)
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    level++;
+  }
+  return visited.reverse();
+};
