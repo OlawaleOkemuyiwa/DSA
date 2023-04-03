@@ -2590,7 +2590,7 @@ var levelOrderBottom = function(root) { //AA. time O(n*k) {k is Q's length }, sp
     //start the current level
     visited.push([]);
 
-    //get the no of nodes to be in the current level from the queue
+    //get the no of nodes to in the current level from the queue
     let levelLength = queue.length;
 
     for (let i = 0; i < levelLength; i++) {
@@ -2637,4 +2637,32 @@ var flatten = function(root) { //AFM. time O(n), space O(n) {stack used}
     curr.right= node;
     curr = curr.right;
   }
+};
+
+//L.116 (Medium)
+var connect = function(root) { //ABA. time O(n), space O(1)
+  if (!root) return root;
+
+  //the next pointers for a level are set from the level just above it 
+  let leftmost = root;
+  while (leftmost.left) {
+    let head = leftmost;
+    //iterate over each node in the curr level like a "linked list" starting from the head
+    //node and using the next pointers, establish the necessary links for the next level
+
+    while (head) {
+      //establish siblings' connection
+      head.left.next = head.right;
+
+      //establish cousins' connection (if there are to be any)
+      if (head.next) head.right.next = head.next.left;
+
+      //progress the head in the curr level "linked list"
+      head = head.next;
+    }
+
+    //move unto the next level
+    leftmost = leftmost.left;
+  }
+  return root;
 };
