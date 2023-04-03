@@ -717,8 +717,8 @@ var inorderTraversal = function(root) {
   const visited = [];
   if (!root) return visited;
 
-  let curr = root;
   const stack = [];
+  let curr = root;
   while (curr || stack.length > 0) {
     while (curr) {
       //traverse down the left of current node while pushing each  
@@ -2621,4 +2621,20 @@ var sortedListToBST = function(head) { //FAM. time O(n), space O(n) {cause of nu
     return root;
   }
   return helper(0, nums.length - 1);
+};
+
+//L.114 (Medium)
+var flatten = function(root) { //AFM. time O(n), space O(n) {stack used}
+  if (!root) return root;
+
+  const stack = [root];
+  let curr = new TreeNode();
+  while (stack.length > 0) {
+    let node = stack.pop();
+    if (node.right) stack.push(node.right);
+    if (node.left) stack.push(node.left);
+    curr.left = null;
+    curr.right= node;
+    curr = curr.right;
+  }
 };
