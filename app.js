@@ -527,12 +527,12 @@ var mergeTwoLists = function(list1, list2) {
 
 //L.26 (Easy)
 var removeDuplicates = function(nums) {
-  //insertIndex helps keep track of where non-duplicate elements are to be inserted in nums arr
+  //insertIndex helps keep track of where non-duplicate elements are to be inserted in nums
   let insertIndex = 0;
 
   for (let i = 0; i < nums.length; i++) {
-    //starting from the first el, loop over the nums arr till we encounter a 
-    //non-duplicate element which is then inserted at the current insertIndex 
+    //loop over the nums arr till we encounter a non-duplicate element 
+    //which is then inserted at the current insertIndex 
     if (i > 0 && nums[i] === nums[i - 1]) continue;
     nums[insertIndex] = nums[i];
     insertIndex++;
@@ -542,16 +542,15 @@ var removeDuplicates = function(nums) {
 
 //L.27 (Easy)
 var removeElement = function(nums, val) {
-  //insertIndex helps keep track of where non-ocurrence of val are to be inserted in nums arr
+  //insertIndex helps keep track of where non-ocurrence of val are to be inserted in nums
   let insertIndex = 0;
 
   for (let i = 0; i < nums.length; i++) {
-    //starting from the first el, loop over the nums arr till we encounter a 
+    //starting from the first num, loop over the nums arr till we encounter a 
     //non-ocurrence of val which is then inserted at the current insertIndex
-    if (nums[i] !== val) {
-      nums[insertIndex] = nums[i];
-      insertIndex++;
-    }
+    if (nums[i] === val) continue;
+    nums[insertIndex] = nums[i];
+    insertIndex++;
   }
   return insertIndex;
 };
@@ -692,7 +691,7 @@ var deleteDuplicates = function(head) {
 
 //L.88 (Easy)
 var merge = function(nums1, m, nums2, n) {
-  //i, j are pointers for nums1, nums2 respectively starting at end of elements of each array
+  //i, j are pointers for nums1, nums2 respectively starting at end of the real elements of each array
   let i = m - 1;
   let j = n - 1;
   
@@ -970,8 +969,8 @@ var hasCycle = function(head) {
   let slow = head;
   let fast = head;
 
-  //incase the list doesn't have a cycle in it, we do not wish to enter 
-  //the loop for the lastNode as fast = lastNode.next.next is null.next (error)
+  //should incase the list doesn't have a cycle in it, we wish to stop the loop when fast
+  //points to the last node as lastNode.next.next is null.next (error). 
   while (fast && fast.next) {
     slow = slow.next;
     fast = fast.next.next;
@@ -2656,7 +2655,7 @@ var connect = function(root) { //ABA. time O(n), space O(1)
       //establish cousins' connection (if there are to be any)
       if (curr.next) curr.right.next = curr.next.left;
 
-      //progress the curr in the curr level "linked list"
+      //progress curr pointer in the curr level "linked list"
       curr = curr.next;
     }
 
@@ -2680,9 +2679,11 @@ var connect = function(root) { //BAM. time O(n), space O(1)
     while (curr) {
       if (curr.left) {
         if (!nextLevelLeftmost) {
+          //if leftmost & rightmost havent been set, set them them to the left of curr
           nextLevelLeftmost = curr.left;
           nextLevelRightmost = curr.left;
         } else {
+          //if they have, update next pointer of rightmost and move rightmost forward
           nextLevelRightmost.next = curr.left;
           nextLevelRightmost = nextLevelRightmost.next;
         }
@@ -2690,15 +2691,17 @@ var connect = function(root) { //BAM. time O(n), space O(1)
 
       if (curr.right) {
         if (!nextLevelLeftmost) {
+          //if leftmost & rightmost havent been set, set them them to the right of curr
           nextLevelLeftmost = curr.right;
           nextLevelRightmost = curr.right;
         } else {
+          //if they have, update next pointer of rightmost and move rightmost forward
           nextLevelRightmost.next = curr.right;
           nextLevelRightmost = nextLevelRightmost.next;
         }
       }
 
-      //progress the curr in the curr level "linked list"
+      //progress curr pointer in the curr level "linked list"
       curr = curr.next;
     }
 
@@ -2709,4 +2712,24 @@ var connect = function(root) { //BAM. time O(n), space O(1)
   }
 
   return root;
+};
+
+//L.199 (Medium)
+var rightSideView = function(root) { //BAF. time O(n), space O(n) {queue used}
+  const rightSide = [];
+  if (!root) return rightSide;
+
+  const queue = [root];
+  while (queue.length > 0) {
+    //get the no of nodes in the current level from the queue
+    let levelLength = queue.length;
+
+    for (let i = 0; i < levelLength; i++) {
+      let node = queue.shift();
+      if (i === levelLength - 1) rightSide.push(node.val);      
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+  }
+  return rightSide;
 };
