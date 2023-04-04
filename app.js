@@ -2643,26 +2643,70 @@ var flatten = function(root) { //AFM. time O(n), space O(n) {stack used}
 var connect = function(root) { //ABA. time O(n), space O(1)
   if (!root) return root;
 
-  //the next pointers for a level are set from the level just above it 
-  let leftmost = root;
-  while (leftmost.left) {
-    let head = leftmost;
-    //iterate over each node in the curr level like a "linked list" starting from the head
-    //node and using the next pointers, establish the necessary links for the next level
+  //the curr level is used to connect the next pointers of the level below it
+  let currLevelLeftmost = root;
+  while (currLevelLeftmost.left) {
+    let curr = currLevelLeftmost;
 
-    while (head) {
+    //iterate across curr level connecting the next pointers of the level just below it
+    while (curr) {
       //establish siblings' connection
-      head.left.next = head.right;
+      curr.left.next = curr.right;
 
       //establish cousins' connection (if there are to be any)
-      if (head.next) head.right.next = head.next.left;
+      if (curr.next) curr.right.next = curr.next.left;
 
-      //progress the head in the curr level "linked list"
-      head = head.next;
+      //progress the curr in the curr level "linked list"
+      curr = curr.next;
     }
 
     //move unto the next level
-    leftmost = leftmost.left;
+    currLevelLeftmost = currLevelLeftmost.left;
   }
+
+  return root;
+};
+
+//L.117 (Medium)
+var connect = function(root) { //BAM. time O(n), space O(1)
+  if (!root) return root;
+
+  //the curr level is used to connect the next pointers of the level just below it
+  let curr = root;
+  let nextLevelLeftmost = null;
+  let nextLevelRightmost = null;
+  while (curr) {
+    //iterate across the curr level connecting the next pointers of the level below it 
+    while (curr) {
+      if (curr.left) {
+        if (!nextLevelLeftmost) {
+          nextLevelLeftmost = curr.left;
+          nextLevelRightmost = curr.left;
+        } else {
+          nextLevelRightmost.next = curr.left;
+          nextLevelRightmost = nextLevelRightmost.next;
+        }
+      }
+
+      if (curr.right) {
+        if (!nextLevelLeftmost) {
+          nextLevelLeftmost = curr.right;
+          nextLevelRightmost = curr.right;
+        } else {
+          nextLevelRightmost.next = curr.right;
+          nextLevelRightmost = nextLevelRightmost.next;
+        }
+      }
+
+      //progress the curr in the curr level "linked list"
+      curr = curr.next;
+    }
+
+    //move unto the next level
+    curr = nextLevelLeftmost;
+    nextLevelLeftmost = null;
+    nextLevelRightmost = null;
+  }
+
   return root;
 };
