@@ -2733,3 +2733,20 @@ var rightSideView = function(root) { //BAF. time O(n), space O(n) {queue used}
   }
   return rightSide;
 };
+
+//L.120 (Medium)
+var minimumTotal = function(triangle) { //AA. time O(n^2), space O(n)
+  //the length of the row that comes after the last row == length of last row of triangle
+  //(which is also the length of triangle) + 1. dp is intitialized to this array
+  const dp = new Array(triangle.length + 1).fill(0);
+
+  //starting from the last row determine the min sum path from bottom up while overwriting
+  //the dp array with min sums determined at each row till we get to the top
+  for (let r = triangle.length - 1; r >= 0; r--) {
+    for (let c = 0; c < triangle[r].length; c++) {
+      dp[c] = triangle[r][c] + Math.min(dp[c], dp[c + 1]);
+    }
+  }
+    
+  return dp[0];
+};
