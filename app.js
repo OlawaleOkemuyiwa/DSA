@@ -2737,7 +2737,7 @@ var rightSideView = function(root) { //BAF. time O(n), space O(n) {queue used}
 //L.120 (Medium)
 var minimumTotal = function(triangle) { //AA. time O(n^2), space O(n)
   //the length of the row that comes after the last row == length of last row of triangle
-  //(which is also the length of triangle) + 1. dp is intitialized to this array
+  //(which is also the length of triangle) + 1. dp is initialized to this array
   const dp = new Array(triangle.length + 1).fill(0);
 
   //starting from the last row determine the min sum path from bottom up while overwriting
