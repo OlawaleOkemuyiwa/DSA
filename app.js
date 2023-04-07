@@ -904,12 +904,13 @@ var maxProfit = function(prices) {
   let maxprofit = 0
 
   //loop through the rest of the prices. From the remaining prices, we could either 
-  //get a new buyprice to achieve maxprofit or a better sellprice for maxprofit
+  //get a cheaper buyprice or possibly a better sellprice to achieve greater profit
   for (let i = 1; i < prices.length; i++) {
-    if (prices[i] <= buyprice) {
-      buyprice = prices[i];
+    let dayprice = prices[i];
+    if (dayprice <= buyprice) {
+      buyprice = dayprice;
     } else {
-      maxprofit = Math.max(prices[i] - buyprice, maxprofit)
+      maxprofit = Math.max(maxprofit, dayprice - buyprice);
     }
   }     
   return maxprofit
