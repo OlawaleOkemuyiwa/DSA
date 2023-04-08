@@ -2751,3 +2751,19 @@ var minimumTotal = function(triangle) { //AA. time O(n^2), space O(n)
     
   return dp[0];
 };
+
+//L.122 (Medium)
+var maxProfit = function(prices) { //BA. time O(n), space O(1)
+  let totalProfit = 0;
+
+  //starting from day 2, compare the price of day i to the price of previous day, i - 1
+  for (let i = 1; i < prices.length; i++) {
+    let dayprice = prices[i];
+    let prevDayprice = prices[i - 1];
+    if (dayprice > prevDayprice) {
+      totalProfit += (dayprice - prevDayprice);
+    }
+  }
+  //PS: you can sell a stock in a day (for profit) then re-buy that same day to sell later
+  return totalProfit;
+};
