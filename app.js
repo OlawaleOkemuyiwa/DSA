@@ -2797,3 +2797,21 @@ var longestConsecutive = function(nums) { //AGA. time O(n) {set.has() is O(1)}, 
 
   return longestSequence;
 };
+
+//
+var sumNumbers = function(root) { //time O(n) {all nodes visited}, space 0(treeHeight) 
+  let totalSum = 0;
+
+  function helper (node, pathSum) {
+    pathSum = (pathSum * 10) + node.val;
+    if (!node.left && !node.right) {
+      totalSum += pathSum;
+      return;
+    }
+    if (node.left) helper(node.left, pathSum)
+    if (node.right) helper(node.right, pathSum);
+  }
+  helper(root, 0);
+
+  return totalSum;
+};
