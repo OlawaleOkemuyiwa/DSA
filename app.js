@@ -2764,6 +2764,36 @@ var maxProfit = function(prices) { //BA. time O(n), space O(1)
       totalProfit += (dayprice - prevDayprice);
     }
   }
-  //PS: you can sell a stock in a day (for profit) then re-buy that same day to sell later
+  //PS: you can sell a stock in a day (for profit) then buy again that same day to sell later
   return totalProfit;
+};
+
+//L.128 (Medium)
+var longestConsecutive = function(nums) { //AGA. time O(n) {set.has() is O(1)}, space O(n)
+  // nums arr is used to create a SET so as to weed out duplicaten order to satisfy
+  // the solution approach. A num that's part of a running sequence has a left neighbour i.e 
+  // for a num, if numsSet has (num - 1) then num is part of a running sequence. if not then
+  // num is the start (1st value) of a sequence. Now if num is a start, we can check  
+  // for the other nums in it's sequence by checking if numsSet has (num + 1)
+
+  const numsSet = new Set(nums);
+  let longestSequence = 0;
+
+  for (let num of numsSet) {
+    //check if num is the start of a sequence
+    if (!numsSet.has(num - 1)) {
+      let currentNum = num;
+      let sequenceLength = 1;
+
+      while (numsSet.has(currentNum + 1)) {
+        sequenceLength++;
+        currentNum++;
+      }
+
+      //after the current sequence, we could have potentially found the longest sequence
+      longestSequence = Math.max(longestSequence, sequenceLength);
+    }
+  }
+
+  return longestSequence;
 };
