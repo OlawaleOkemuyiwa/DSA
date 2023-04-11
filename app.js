@@ -1887,6 +1887,7 @@ var spiralOrder = function(matrix) { //O(m*n) time, O(1) space
     //matrix right
     right--;
 
+    //for when we aren't dealing with a square matrix
     if (left > right || top > bottom) break;
 
     //get every i in the bottom row;
@@ -2770,7 +2771,7 @@ var maxProfit = function(prices) { //BA. time O(n), space O(1)
 
 //L.128 (Medium)
 var longestConsecutive = function(nums) { //AGA. time O(n) {set.has() is O(1)}, space O(n)
-  // nums arr is used to create a SET so as to weed out duplicaten order to satisfy
+  // nums arr is used to create a SET so as to weed out duplicates in order to satisfy
   // the solution approach. A num that's part of a running sequence has a left neighbour i.e 
   // for a num, if numsSet has (num - 1) then num is part of a running sequence. if not then
   // num is the start (1st value) of a sequence. Now if num is a start, we can check  
@@ -2786,11 +2787,11 @@ var longestConsecutive = function(nums) { //AGA. time O(n) {set.has() is O(1)}, 
       let sequenceLength = 1;
 
       while (numsSet.has(currentNum + 1)) {
-        sequenceLength++;
         currentNum++;
+        sequenceLength++;
       }
 
-      //after the current sequence, we could have potentially found the longest sequence
+      //after the current sequence ends, we could have potentially found the longest sequence
       longestSequence = Math.max(longestSequence, sequenceLength);
     }
   }
@@ -2808,10 +2809,50 @@ var sumNumbers = function(root) { //time O(n) {all nodes visited}, space 0(treeH
       totalSum += pathSum;
       return;
     }
-    if (node.left) helper(node.left, pathSum)
+    if (node.left) helper(node.left, pathSum);
     if (node.right) helper(node.right, pathSum);
   }
   helper(root, 0);
 
   return totalSum;
+};
+
+//L.130 (Medium)
+var solve = function(board) {//AG. time O(N) {N is board cells}. space O(N) {call stack}
+  //capture surrounded regions == capture everything except unsurrounded regions
+
+  const rows = board.length, cols = board[0].length;
+  
+  function capture (r, c) {
+    if (r < 0 || r === rows || c < 0 || c === cols || board[r][c] !== 'O') {
+      return;
+    }
+    board[r][c] = 'U';
+    capture(r + 1, c);
+    capture(r - 1, c);
+    capture(r, c + 1);
+    capture(r, c - 1);
+  }
+
+  //find all unsurrounded 'O's and replace them with an indicator, let's say 'U' (O -> U).
+  //unsurrounded 'O's are either on the edge of board or neighbouring 'O's of such edge 'O's
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (board[r][c] == 'O' && r == 0 || r == rows - 1 || c == 0 || c == cols - 1) {
+        capture(r, c);
+      }
+    }
+  }
+
+  //now surrounded 'O's are captured by 'X' (O -> X) and unsurrounded 'O's 
+  //(which are now 'U's in the board) are changed back to 'O' (U -> O)
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (board[r][c] === 'O') {
+        board[r][c] = 'X';
+      } else if (board[r][c] === 'U') {
+        board[r][c] = 'O';
+      }
+    }
+  }
 };
