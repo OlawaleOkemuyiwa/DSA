@@ -34,7 +34,6 @@ class Graph {
     const adjacencyList = this.adjacencyList;
     
     function helper(vertex) {
-      // if (!vertex) return null;  //the base case is unnecessary here as we already only conditionally re-call the function 
       visited[vertex] = true;
       result.push(vertex);
       for (let adjacentVertex of adjacencyList[vertex]) {
@@ -45,21 +44,20 @@ class Graph {
     return result;
   }
 
-  DFSIterative(starterVertex) { //DFS of a graph basically means to follow the neigbouring adjacent nodes/starterVertexes before backtracking
-    const stack = [starterVertex];
+  DFSIterative(starterVertex) { //A vertex is noted to have been visited when it has been added to the stack for processing
     const result = [];
     const visited = {};
+    const stack = [starterVertex];
     visited[starterVertex] = true;
-    let currentVertex;
 
     while (stack.length) {
-      currentVertex = stack.pop();
+      let currentVertex = stack.pop();
       result.push(currentVertex);
 
       for (let adjacentVertex of this.adjacencyList[currentVertex]) {
         if (!visited[adjacentVertex]) {
-          visited[adjacentVertex] = true;
           stack.push(adjacentVertex);
+          visited[adjacentVertex] = true;
         }
       }
     }
@@ -67,14 +65,13 @@ class Graph {
   }
 
   BFS(starterVertex) { //BFS priotizes visiting all of the adjacent vertexes (neigbors) at a given depth before moving downwards
-    const queue = [starterVertex];
     const result = [];
     const visited = {};
+    const queue = [starterVertex];
     visited[starterVertex] = true;
-    let currentVertex;
 
     while(queue.length) {
-      currentVertex = queue.shift();
+      let currentVertex = queue.shift();
       result.push(currentVertex);
     
       for (let adjacentVertex of this.adjacencyList[currentVertex]) {
