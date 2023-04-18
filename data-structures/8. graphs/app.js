@@ -34,8 +34,8 @@ class Graph {
     const adjacencyList = this.adjacencyList;
     
     function helper(vertex) {
-      visited[vertex] = true;
       result.push(vertex);
+      visited[vertex] = true;
       for (let adjacentVertex of adjacencyList[vertex]) {
         if(!(visited[adjacentVertex])) helper(adjacentVertex);
       }

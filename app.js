@@ -2860,3 +2860,29 @@ var solve = function(board) {//AG. time O(N) {N is board cells}. space O(N) {cal
 //L.131 (Medium) ???
 
 //L.133 (Medium)
+var cloneGraph = function(node) { //FAA. time O(no of nodes + no of edges). space O(no of nodes)
+  if (!node) return node;
+
+  //a map of already visited nodes of the given graph to their copies
+  const visited = new Map();
+
+  function clone(node) {
+    //if curr node has already been visited, then return it's copy
+    if (visited.has(node)) return visited.get(node);
+
+    //if not, create a copy of curr node and map such node to it's newly created copy
+    let copy = new Node(node.val);
+    visited.set(node, copy);
+
+    //also create a copy of every neighbouring node of the curr node and make such 
+    //copies the neighbouring nodes of curr copy
+    for (let adjacentNode of node.neighbors) {
+      let copyNode = clone(adjacentNode); //returns the copy of curr adjacentNode
+      copy.neighbors.push(copyNode);
+    }
+    
+    return copy;
+  }
+
+  return clone(node);
+};
