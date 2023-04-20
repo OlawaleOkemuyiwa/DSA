@@ -2886,3 +2886,25 @@ var cloneGraph = function(node) { //FAA. time O(no of nodes + no of edges). spac
 
   return clone(node);
 };
+
+//L.134 (Medium)
+var canCompleteCircuit = function(gas, cost) {//BAM. time O(n), space O(1)
+  if (gas.reduce((acc, el) => acc + el) < cost.reduce((acc, el) => acc + el)) {
+    //if total amount of gas available to buy < total amount of gas required to move
+    return -1;
+  }
+
+  let start = 0;
+  let tank = 0;
+  for (let i = 0; i < gas.length; i++) {
+    tank += (gas[i] - cost[i]);
+
+    //if at any station, my tank will go below 0 if I decide to journey to the next station,
+    //then the next station becomes my new starting point with a tank of 0.
+    if (tank < 0) {
+      start = i + 1;
+      tank = 0;
+    }
+  }
+  return start;
+}
