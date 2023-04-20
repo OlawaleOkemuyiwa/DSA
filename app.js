@@ -2908,3 +2908,16 @@ var canCompleteCircuit = function(gas, cost) {//BAM. time O(n), space O(1)
   }
   return start;
 }
+
+//L.137 (Medium)
+var singleNumber = function(nums) { //GAA. time O(n), space O(n) {O(1) space is by bitwise op}
+  const counter = new Map();
+
+  for (let num of nums) {
+    counter.set(num, (counter.get(num) || 0) + 1);
+  }
+  
+  for (let [key, val] of counter.entries()) {
+    if (val === 1) return key;
+  } 
+};
