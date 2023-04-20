@@ -947,7 +947,7 @@ var isPalindrome = function(s) {
   return true;
 };
 
-//L.136 (Easy)
+//L.136 (Easy) ??
 var singleNumber = function(nums) {
   //A map to store the integers and their corresponding counts
   const map = new Map();
@@ -2909,7 +2909,7 @@ var canCompleteCircuit = function(gas, cost) {//BAM. time O(n), space O(1)
   return start;
 }
 
-//L.137 (Medium)
+//L.137 (Medium) ??
 var singleNumber = function(nums) { //GAA. time O(n), space O(n) {O(1) space is by bitwise op}
   const counter = new Map();
 
