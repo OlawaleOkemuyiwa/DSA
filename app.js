@@ -2921,3 +2921,31 @@ var singleNumber = function(nums) { //GAA. time O(n), space O(n) {O(1) space is 
     if (val === 1) return key;
   } 
 };
+
+//L.138 (Medium)
+var copyRandomList = function(head) { //AFB. time O(n), space O(n)
+  const oldToCopy = new Map();
+
+  //1st pass is to map old nodes to their respective newly created copies
+  let curr = head;
+  while (curr) {
+    let copy = new Node(curr.val);
+    oldToCopy.set(curr, copy);
+    curr = curr.next;
+  }
+
+  //this is done because when we try to determine the copy of curr.next/random from our map in
+  //the 2nd pass, if the value is null, oldToCopy.get(null) would return null instead of error
+  oldToCopy.set(null, null);
+
+  //2nd pass is to update each copy's next and random pointers in accordance to the old list
+  curr = head;
+  while (curr) {
+    let copy = oldToCopy.get(curr);
+    copy.next = oldToCopy.get(curr.next);
+    copy.random = oldToCopy.get(curr.random);
+    curr = curr.next;
+  }
+
+  return oldToCopy.get(head);
+};
