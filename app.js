@@ -2949,3 +2949,21 @@ var copyRandomList = function(head) { //AFB. time O(n), space O(n)
 
   return oldToCopy.get(head);
 };
+
+//L.139 (Medium)
+var wordBreak = function(s, wordDict) {//BAA. time O(n^3), space O(n) {n == s length} 
+  //extra 1 is for d base case (i out of bound)
+  const wordDictSet = new Set(wordDict);
+  const dp = new Array(s.length + 1).fill(false); 
+  dp[0] = true;
+  
+  for (let i = 1; i <= s.length; i++) {
+    for (let j = 0; j < i; j++) {
+      if (dp[j] && wordDictSet.has(s.substring(j, i))) {
+        dp[i] = true;
+        break;
+      }
+    }
+  }
+  return dp[dp.length - 1];
+};
