@@ -2951,19 +2951,21 @@ var copyRandomList = function(head) { //AFB. time O(n), space O(n)
 };
 
 //L.139 (Medium)
-var wordBreak = function(s, wordDict) {//BAA. time O(n^3), space O(n) {n == s length} 
-  //extra 1 is for d base case (i out of bound)
-  const wordDictSet = new Set(wordDict);
+var wordBreak = function(s, wordDict) {//BAA. time O(n^3). space O(n) {n == length of s}
+  //dp[i] rep validation of the substr formed from idx i as a valid sequence of substrs of s
   const dp = new Array(s.length + 1).fill(false); 
-  dp[0] = true;
-  
-  for (let i = 1; i <= s.length; i++) {
-    for (let j = 0; j < i; j++) {
-      if (dp[j] && wordDictSet.has(s.substring(j, i))) {
-        dp[i] = true;
-        break;
+  dp[dp.length - 1] = true; //base case {substr after the last substr of s ("") is validated}
+
+  for (let i = s.length - 1; i >= 0; i--) {
+    for (let w of wordDict) {
+      //from idx i of s, check if s has enough chars to the right to compare with cur w
+      if (i + w.length <= s.length && s.substring(i, i + w.length) === w) {
+        //cur substr will only be valid if the substr just after it has been validated
+        dp[i] = dp[i + w.length];
       }
+      //if the substr from i has already been found in wordDict, no need for further look
+      if (dp[i]) break;
     }
   }
-  return dp[dp.length - 1];
+  return dp[0];
 };
