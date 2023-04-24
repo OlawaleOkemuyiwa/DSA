@@ -2969,3 +2969,26 @@ var wordBreak = function(s, wordDict) {//BAA. time O(n^3). space O(n) {n == leng
   }
   return dp[0];
 };
+
+//L.142 (Medium)
+var detectCycle = function(head) { //ABM. Floyd's tortoise & hare. time O(n). space O(1)
+  let slow = head;
+  let fast = head;
+
+  //should incase the list doesn't have a cycle in it, we wish to stop the loop when fast
+  //points to the last node as lastNode.next.next is null.next (error). 
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    //if the list has a cycle in it, slow and fast would meet at some point in the list
+    if (slow === fast) {
+      slow = head;
+      while (slow !== fast) {
+        slow = slow.next;
+        fast = fast.next;
+      }
+      return slow;
+  }
+  }
+  return null;
+};
