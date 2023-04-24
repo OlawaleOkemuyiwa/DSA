@@ -500,29 +500,27 @@ var isValid = function(s) {
 
 //L.21 (Easy)
 var mergeTwoLists = function(list1, list2) {
-  let mergedList = new ListNode();
-
-  //save a reference pointer to the head of the mergedList to be constructed(or it would be lost)
-  let head = mergedList;
+  let dummyHead = new ListNode(-1);
+  let curr = dummyHead;
 
   while(list1 && list2) {
     if (list1.val < list2.val) {
-      mergedList.next = list1;
+      curr.next = list1;
       list1 = list1.next;
     } else {
-      mergedList.next = list2;
+      curr.next = list2;
       list2 = list2.next;
     }
-    mergedList = mergedList.next;
+    curr = curr.next;
   }
 
   if (list1) {
-    mergedList.next = list1;
+    curr.next = list1;
   } else if (list2) {
-    mergedList.next = list2;
+    curr.next = list2;
   }
 
-  return head.next;
+  return dummyHead.next;
 };
 
 //L.26 (Easy)
