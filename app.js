@@ -975,7 +975,7 @@ var hasCycle = function(head) {
   while (fast && fast.next) {
     slow = slow.next;
     fast = fast.next.next;
-    //if the list has a cycle in it, slow and fast would meet at some point in the list
+    //if the list has a cycle in it, slow and fast will meet at some point in the list
     if (slow === fast) {
       return true;
     }
@@ -1032,6 +1032,19 @@ var reverseList = function(head) { //time O(n), space O(1)
     curr = next;
   }
   return prev;
+};
+
+//L.876 (Easy)
+var middleNode = function(head) { //GAA. time O(n). space O(1)
+  let slow = head;
+  let fast = head;
+
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  return slow;
 };
 
 //L.867 (Medium)
@@ -2980,7 +2993,7 @@ var detectCycle = function(head) { //ABM. Floyd's tortoise & hare. time O(n). sp
   while (fast && fast.next) {
     slow = slow.next;
     fast = fast.next.next;
-    //if the list has a cycle in it, slow and fast would meet at some point in the list
+    //if the list has a cycle in it, slow and fast will meet at some point in the list
     if (slow === fast) {
       slow = head;
       while (slow !== fast) {
@@ -2988,7 +3001,7 @@ var detectCycle = function(head) { //ABM. Floyd's tortoise & hare. time O(n). sp
         fast = fast.next;
       }
       return slow;
-  }
+    }
   }
   return null;
 };
