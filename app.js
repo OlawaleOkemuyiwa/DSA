@@ -499,7 +499,7 @@ var isValid = function(s) {
 };
 
 //L.21 (Easy)
-var mergeTwoLists = function(list1, list2) {
+var mergeTwoLists = function(list1, list2) { //AEA. time O(n + m). space O(1)
   let dummyHead = new ListNode(-1);
   let curr = dummyHead;
 
@@ -3002,4 +3002,40 @@ var detectCycle = function(head) { //ABM. Floyd's tortoise & hare. time O(n). sp
     }
   }
   return null;
+};
+
+//L.143 (Medium)
+var reorderList = function(head) { //AAM. time O(n). space O(1)
+  //find the middle node of the linked list
+  let slow = head;
+  let fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  
+  //reverse the 2nd part of the list (slow now points to the head node of the 2nd part)
+  let prev = null;
+  let curr = slow;
+  let next;
+  while (curr) {
+    next = curr.next
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+
+  //merge the two lists (prev now points to the head node of the 2nd part)
+  let list1 = head;
+  let list2 = prev;
+  while (list1.next && list2.next) {
+    next = list1.next;
+    list1.next = list2;
+    list1 = next;
+
+    next = list2.next;
+    list2.next = list1;
+    list2 = next;
+  }
 };
