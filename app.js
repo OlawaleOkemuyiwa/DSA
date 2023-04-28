@@ -3049,7 +3049,7 @@ var Node = function(key, val) {
 }
 var LRUCache = function(capacity) { //ABA. time O(1), space O(capacity) {hashMap used}
   this.capacity = capacity;
-  this.cache = new Map(); //a map of the key of each el to a pointer to the node in memory
+  this.cache = new Map(); //a map of the key of each node el to a pointer to the node in memory
   this.left = new Node(0, 0); //a dummy node to help find the LRU el
   this.right = new Node(0, 0); //a dummy node to help find the MRU el
   this.left.next = this.right;
