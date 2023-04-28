@@ -173,27 +173,28 @@ class SinglyLinkedList {
     return arr;
   }
 
-  // count() {
-  //   if (this.length === 0) return 0;
-  //   let currentNode = this.head;
-  //   let counter = 0;
+  count() {
+    if (this.length === 0) return 0;
+    let currentNode = this.head;
+    let length = 0;
 
-  //   while (currentNode) {
-  //     counter++;
-  //     currentNode = currentNode.next;
-  //   }
-
-  //   return counter;
-  // }
+    while (currentNode) {
+      length++;
+      currentNode = currentNode.next;
+    }
+    return length;
+  }
 }
 
-const list = new SinglyLinkedList();
-list.push(4);
-list.push(6);
-list.unshift(2);
-console.log(list.print());
-console.log(list.reverse());
-console.log(list.print());
+const SLL = new SinglyLinkedList();
+SLL.push(4);
+SLL.push(6);
+SLL.unshift(2);
+SLL.unshift(1);
+// console.log(SLL.count());
+// console.log(SLL.print());
+console.log(SLL.reverse());
+console.log(SLL.print());
 
 /*
 let info = {

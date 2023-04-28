@@ -41,7 +41,7 @@ class Queue {
   }
 
   dequeue() {
-    //shift --> remove from the begining of the list(the item at the begining of the list is the first item added and it is the first item out i.e FIFO)
+    //shift --> remove from the begining of the list(the item at the beginning of the list is the first item added and it is the first item out i.e FIFO)
     if (!this.first) return undefined;
     const currentFirst = this.first;
     if (this.first === this.last) {

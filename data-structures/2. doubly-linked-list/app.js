@@ -1,5 +1,5 @@
 //Doubly linked lists are almost identical to Singly linked lists except there is an additional pointer to previous nodes
-//It is better for find time and can be done in half the time
+//DLL has some certain advantages over SLL such as bidirectional traversal, easier deletion of nodes {O(1) deletion of tail node}, efficient insertion and deletion at both ends.
 //However, they do take up more memory considering due to the extra pointer
 
 class Node {
@@ -33,35 +33,35 @@ class DoublyLinkedList {
 
   pop() {
     if (this.length === 0) return undefined;
-    const lastNode = this.tail;
+    const oldTail = this.tail;
     if (this.length === 1) {
       this.head = null;
       this.tail = null;
     } else {
-      const nodeBeforeLast = lastNode.prev;
-      this.tail = nodeBeforeLast;
-      this.tail.next = null;
-      lastNode.prev = null;
+      const prev = oldTail.prev;
+      oldTail.prev = null;
+      prev.next = null;
+      this.tail = prev;
     }
     this.length--;
-    return lastNode;
+    return oldTail;
   }
 
   shift() {
     if (this.length === 0) return undefined;
 
-    const currentHead = this.head;
+    const oldHead = this.head;
     if (this.length === 1) {
       this.head = null;
       this.tail = null;
     } else {
-      const newHead = currentHead.next;
+      const newHead = oldHead.next;
       newHead.prev = null;
-      currentHead.next = null;
+      oldHead.next = null;
       this.head = newHead;
     }
     this.length--;
-    return currentHead;
+    return oldHead;
   }
 
   unshift(val) {
@@ -70,9 +70,8 @@ class DoublyLinkedList {
       this.head = newNode;
       this.tail = this.head;
     } else {
-      const currentHead = this.head;
-      currentHead.prev = newNode;
-      newNode.next = currentHead;
+      this.head.prev = newNode;
+      newNode.next = this.head;
       this.head = newNode;
     }
     this.length++;
@@ -80,25 +79,25 @@ class DoublyLinkedList {
   }
 
   get(index) {
-    // searching and accessing --> O(n) [technically it is O(n/2) as we have to traverse from the head to middle or from the tail to the middle to get the desired node (no random access) but that's still O(n)]
+    // searching and accessing --> O(n) [technically it is O(n/2) as we have to traverse from the head to middle or from the tail to the middle to get the desired node (no random access as with an array) but that's still O(n)]
     if (index < 0 || index >= this.length) return null;
     let currentNode;
-    let counter;
+    let curIdx;
     if (index <= this.length / 2) {
       currentNode = this.head;
-      counter = 0;
+      curIdx = 0;
 
-      while (index !== counter) {
+      while (curIdx !== index) {
         currentNode = currentNode.next;
-        counter++;
+        curIdx++;
       }
     } else {
       currentNode = this.tail;
-      counter = this.length - 1;
+      curIdx = this.length - 1;
 
-      while (index !== counter) {
+      while (curIdx !== index) {
         currentNode = currentNode.prev;
-        counter--;
+        curIdx--;
       }
     }
     return currentNode;
@@ -112,7 +111,6 @@ class DoublyLinkedList {
   }
 
   insert(index, value) {
-    //O(1)
     if (index < 0 || index > this.length) return false;
     if (index === 0) return Boolean(this.unshift(value));
     if (index === this.length) return Boolean(this.push(value));
@@ -130,7 +128,6 @@ class DoublyLinkedList {
   }
 
   remove(index) {
-    //O(1)
     if (index < 0 || index >= this.length) return undefined;
     if (index === 0) return this.shift();
     if (index === this.length - 1) return this.pop();
@@ -193,10 +190,11 @@ class DoublyLinkedList {
   }
 }
 
-const list = new DoublyLinkedList();
-list.push(4);
-list.push(6);
-list.unshift(2);
-console.log(list.print());
-console.log(list.reverse());
-console.log(list.print());
+const DLL = new DoublyLinkedList();
+DLL.push(2);
+DLL.push(4);
+console.log(DLL.insert(1, 3));
+// console.log(DLL);
+console.log(DLL.print());
+console.log(DLL.reverse());
+console.log(DLL.print());

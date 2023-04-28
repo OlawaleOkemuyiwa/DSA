@@ -55,7 +55,7 @@ class Stack {
     return currentFirst.value;
   }
 
-  //SEARCHING AND ACCESSING A VALUE --> O(n). inserting and removal are the things prioritized in stacks. If getting/accessing individual items using index or position is a priority then an array or some other ds can be used instead of stack
+  //SEARCHING AND ACCESSING A VALUE --> O(n). inserting and removal are the things prioritized in stacks. If getting/accessing individual items using index or position is a priority then an array or some other DS can be used instead of a stack
 }
 
 const myStack = new Stack();
