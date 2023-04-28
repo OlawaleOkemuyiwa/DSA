@@ -111,6 +111,7 @@ class DoublyLinkedList {
   }
 
   insert(index, value) {
+    //O(1) time if we were only inserting before||after the head and tail nodes. But if we not if we have to run the O(n) get method to find the node at a given idx
     if (index < 0 || index > this.length) return false;
     if (index === 0) return Boolean(this.unshift(value));
     if (index === this.length) return Boolean(this.push(value));
@@ -128,6 +129,7 @@ class DoublyLinkedList {
   }
 
   remove(index) {
+    //O(1) time if a pointer to the node to remove is already provided (we don't have to run the O(n) get method)
     if (index < 0 || index >= this.length) return undefined;
     if (index === 0) return this.shift();
     if (index === this.length - 1) return this.pop();

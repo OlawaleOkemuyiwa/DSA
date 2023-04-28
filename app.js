@@ -3039,3 +3039,76 @@ var reorderList = function(head) { //AAM. time O(n). space O(1)
     list2 = next;
   }
 };
+
+//L.146 (Medium)
+var Node = function(key, val) {
+  this.key = key;
+  this.val = val;
+  this.prev = null;
+  this.next = null;
+}
+var LRUCache = function(capacity) { //ABA. time O(1), space O(capacity) {hashMap used}
+  this.capacity = capacity;
+  this.cache = new Map(); //a map of the key of each el to a pointer to the node in memory
+  this.left = new Node(0, 0); //a dummy node to help find the LRU el
+  this.right = new Node(0, 0); //a dummy node to help find the MRU el
+  this.left.next = this.right;
+  this.right.prev = this.left;
+};
+
+//helper method to insert a node to the right of the list (a newly added node is the MRU el)
+LRUCache.prototype.insert = function(node) {
+  let nodeBeforeRight = this.right.prev;
+  nodeBeforeRight.next = node;
+  node.prev = nodeBeforeRight;
+  node.next = this.right;
+  this.right.prev = node;
+}
+
+//helper method to remove a node from the DLL
+LRUCache.prototype.remove = function(node) {
+  let prevNode = node.prev;
+  let nextNode = node.next;
+  prevNode.next = nextNode;
+  nextNode.prev = prevNode;
+  node.next = null;
+  node.prev = null; 
+}
+
+//helper method to move a node to the MRU position
+LRUCache.prototype.moveToHead = function(node) {
+  this.remove(node);
+  this.insert(node);
+}
+
+LRUCache.prototype.put = function(key, value) {
+  if (this.cache.has(key)) {
+    //if the key already exists, update its val
+    let node = this.cache.get(key);
+    node.val = value;
+    this.moveToHead(node);
+  } else {
+    //if not, add the new el to the DLL
+    let newNode = new Node(key, value);
+    this.insert(newNode);
+    this.cache.set(key, newNode);
+    if (this.cache.size > this.capacity) {
+      //if cache exceeds capacity on addition of new el then remove the LRU el
+      let LRU = this.left.next;
+      this.remove(LRU);
+      this.cache.delete(LRU.key);
+    }
+  } 
+};
+
+LRUCache.prototype.get = function(key) {
+  if (this.cache.has(key)) {
+    //make the newly accessed node the MRU el
+    let node = this.cache.get(key);
+    this.moveToHead(node);
+
+    //return its val
+    return node.val;
+  }
+  return -1;
+};
