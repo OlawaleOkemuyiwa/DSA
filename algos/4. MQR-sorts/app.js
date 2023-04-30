@@ -1,3 +1,5 @@
+//MQR sorts are used for larger size arrays or for arrays where using BSI sort will lead to worst-case scenarios O(n^2) e.g when array to be sorted is already sorted in reverse [9, 6, 4, 1] 
+
 //MERGE SORT --> split an unsorted array into arrays of 1 or zero element, sort and merge the sorted arrays till we get 1 final sorted array
 //It has the time complexity of O(nlogn) and a space complexity of O(n)
 
@@ -99,37 +101,37 @@ quickSort([100, -3, 2, 4, 6, 9, 1, 2, 5, 3, 23]);
 //   return String(Math.abs(num)).length;
 // }
 
-function getDigit(num, i) {
-  return Math.floor(Math.abs(num) / Math.pow(10, i)) % 10;
-}
+// function getDigit(num, i) {
+//   return Math.floor(Math.abs(num) / Math.pow(10, i)) % 10;
+// }
 
-function mostDigits(nums) {
-  function digitCount(num) {
-    if (num === 0) return 1;
-    return Math.floor(Math.log10(Math.abs(num))) + 1;
-  }
+// function mostDigits(nums) {
+//   function digitCount(num) {
+//     if (num === 0) return 1;
+//     return Math.floor(Math.log10(Math.abs(num))) + 1;
+//   }
 
-  let maxDigits = digitCount(nums[0]);
-  for (let i = 1; i < nums.length; i++) {
-    if (digitCount(nums[i]) > maxDigits) {
-      maxDigits = digitCount(nums[i]);
-    }
-  }
-  return maxDigits;
-}
+//   let maxDigits = digitCount(nums[0]);
+//   for (let i = 1; i < nums.length; i++) {
+//     if (digitCount(nums[i]) > maxDigits) {
+//       maxDigits = digitCount(nums[i]);
+//     }
+//   }
+//   return maxDigits;
+// }
 
-function radixSort(nums) {
-  let maxDigitCount = mostDigits(nums);
-  for (let k = 0; k < maxDigitCount; k++) {
-    //k is the longestNum size and it determines how many rounds of grouping our array into buckets we do i.e longestNum is 4321, k = 4  and we do 4 rounds (0, 1, 2, 3) of grouping nums into buckets
-    let digitBuckets = Array.from({ length: 10 }, () => []);
-    for (let i = 0; i < nums.length; i++) {
-      let digit = getDigit(nums[i], k);
-      digitBuckets[digit].push(nums[i]);
-    }
-    nums = digitBuckets.flat();
-  }
-  return nums;
-}
+// function radixSort(nums) {
+//   let maxDigitCount = mostDigits(nums);
+//   for (let k = 0; k < maxDigitCount; k++) {
+//     //k is the longestNum size and it determines how many rounds of grouping our array into buckets we do i.e longestNum is 4321, k = 4  and we do 4 rounds (0, 1, 2, 3) of grouping nums into buckets
+//     let digitBuckets = Array.from({ length: 10 }, () => []);
+//     for (let i = 0; i < nums.length; i++) {
+//       let digit = getDigit(nums[i], k);
+//       digitBuckets[digit].push(nums[i]);
+//     }
+//     nums = digitBuckets.flat();
+//   }
+//   return nums;
+// }
 
-console.log(radixSort([230, 124, 5467, 3111, 67895]));
+// console.log(radixSort([230, 124, 5467, 3111, 67895]));

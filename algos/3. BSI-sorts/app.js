@@ -1,5 +1,5 @@
 //BUBBLE SORT --> The largest number bubbles up to the end of the array (i.e placing the largest value in the cur iteration of an array to it's appropriate location at the end of the array)
-//BigO --> at worst O(n^2), at best O(n) as it is most efficient for an almost sorted array right after insertion sort
+//Bubble sort has a worst-case and average-case time complexity of O(n^2) and is generally considered inefficient, especially for large arrays.
 
 // function swap1(arr, indx1, indx2) {
 //   const temp = arr[indx1];
@@ -29,7 +29,7 @@
 // console.log(bubbleSort([21, 9, 1, -3, 5, 2, 7, 1, 2, -9, 8, 5]));
 
 //SELECTION SORT --> iterating the array from the beginning to the end looking for the smallest value. At the end of each iteration the smallest value is inserted at the beginning of the iteration and the next iteration starts from the next value
-//Not very efficient, BigO --> on grand scheme of things O(n^2). SELECTION SORT IS ONLY BETTER THAN BUBBLE SORT if for some reason we wish to minize the no of swaps we are making. In bubble sort we kept swapping till we got the largest value to the end of the array. Here in selection sort swapping only takes place after the smallest value as being determined at the end of each loop
+//Selection sort has a time complexity of O(n^2) in the worst case and is generally less efficient than insertion sort for small arrays, although it can perform better than bubble sort in the case where for some reason we wish to minize the no of swaps we are making. In bubble sort we kept swapping till we got the largest value to the end of the array. Here in selection sort swapping only takes place after the smallest value as being determined at the end of each loop
 
 // function selectionSort(arr) {
 //   for (let i = 0; i < arr.length; i++) {   //i also serves as the pointer guard here and j does the comparisons to determine the smallest number in a loop to be selected
@@ -51,7 +51,7 @@
 // console.log(selectionSort([-20, 19, -5, 44, 38, 5, 47, 15, -11]));
 
 //INSERTION SORT --> we loop over the array starting from the 2nd (so we can have at least 1 value to compare to i.e arr[j]). Each value of the arrayarr[i] is then saved in a variable. Then the inner loop is used to compare that value with values before it and then logically inserted in the appropriate position that would sort the array left to right
-//BigO --> At worst O(n^2). At best O(n) as IT IS THE MOST efficient of the three when the array data is almost sorted e.g [1, 3, 4, 2]). Because in insertion sort we keep one side of the data sorted (the left), it is efficient for when we wish to continously sort an array as new elements are added into it on the go
+//BigO --> At worst O(n^2). At best O(n). IT IS THE MOST efficient of the three for small size arrays or when the array data is almost sorted e.g [1, 3, 4, 2]). Also because in insertion sort we keep one side of the data sorted (the left), it is efficient for when we wish to continously sort an array as new elements are added into it on the fly
 //BSI sort all have the space complexity of O(1)
 
 // function insertionSort(arr) { 
@@ -60,7 +60,7 @@
 //     let j;
 //     for (j = i - 1; j >= 0; j--) {
 //       if (arr[j] <= numToInsert) {
-//         //if arr[j] is <= numToInsert then left of i is already soreted and we can simply insert num to the right of arr[j] (i.e insert num back into it's cur position i)
+//         //if arr[j] is <= numToInsert then left of i is already sorted and we can simply insert num to the right of arr[j] (i.e insert num back into it's cur position i)
 //         break;
 //       } 
 //       //else arr[j] is > the num to inserted, we shift arr[j] to the right in order to potentially insert num to it's left
