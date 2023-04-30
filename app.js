@@ -3014,7 +3014,6 @@ var reorderList = function(head) { //AAM. time O(n). space O(1)
     fast = fast.next.next;
   }
 
-  
   //reverse the 2nd part of the list (slow now points to the head node of the 2nd part)
   let prev = null;
   let curr = slow;
@@ -3111,4 +3110,36 @@ LRUCache.prototype.get = function(key) {
     return node.val;
   }
   return -1;
+};
+
+
+//L.147 (Medium)
+var insertionSortList = function(head) { //MAG. time O(n^2) at worst. space O(1).
+  //the dummy head makes inserting a node into the head of the list as easy as inserting a
+  //node between 2 nodes. Also the head of the new list can be easily gotten through DH.next
+  let dummyHead = new ListNode(-1, head);
+  let prev = head;
+  let curr = head.next;
+  while (curr) {
+    //if val of the node just b4 curr is <= curr.val then move to next d node (it's sorted)
+    if (prev.val <= curr.val) {
+      prev = curr;
+      curr = curr.next;
+      continue;
+    }
+
+    //else find the suitable position to insert curr node
+    let temp = dummyHead;
+    while (curr.val > temp.next.val) {
+      //we stop this iteration on temp when the val of curr node to insert is <= to the 
+      //val of temp.next. Then curr can be inserted in between temp and temp.next
+      temp = temp.next;
+    }
+    prev.next = curr.next;
+    curr.next = temp.next;
+    temp.next = curr;
+
+    curr = prev.next;
+  }
+  return dummyHead.next;
 };
