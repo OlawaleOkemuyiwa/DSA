@@ -3146,7 +3146,7 @@ var insertionSortList = function(head) { //MAG. time O(n^2) at worst. space O(1)
 };
 
 //L.148 (Medium)
-function getNodeBeforeMid(list) { //AAT. time O(nlogn). space O(logn) {recursive call stack}
+function getNodeBeforeMid(list) { 
   let prev;
   let slow = list;
   let fast = list;
@@ -3183,12 +3183,12 @@ function merge(list1, list2) {
   return dummyHead.next;
 }
 
-var sortList = function(head) {
+var sortList = function(head) { //AAT. time O(nlogn). space O(logn) {recursive call stack}
   if (!head || !head.next) return head;
   let left = head;
-  let NodeBeforeMid = getNodeBeforeMid(head);
-  let right = NodeBeforeMid.next;
-  NodeBeforeMid.next = null;
+  let nodeBeforeMid = getNodeBeforeMid(head);
+  let right = nodeBeforeMid.next;
+  nodeBeforeMid.next = null;
 
   let sortedLeft = sortList(left);
   let sortedRight = sortList(right);
