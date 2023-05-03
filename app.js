@@ -1042,6 +1042,7 @@ var middleNode = function(head) { //GAA. time O(n). space O(1)
     fast = fast.next.next;
   }
 
+  //when fast is null or points to the lastNode, then slow points to the mid (or ceil mid if there are even no of nodes)
   return slow;
 };
 
@@ -3142,4 +3143,54 @@ var insertionSortList = function(head) { //MAG. time O(n^2) at worst. space O(1)
     curr = prev.next;
   }
   return dummyHead.next;
+};
+
+//L.148 (Medium)
+function getNodeBeforeMid(list) { 
+  let prev;
+  let slow = list;
+  let fast = list;
+  while (fast && fast.next) {
+    prev = slow;
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  //prev can never be undefined as this func will always be called with at least 2 nodes
+  return prev;
+}
+
+function merge(list1, list2) {
+  let dummyHead = new ListNode(-1);
+  let curr = dummyHead;
+
+  while (list1 && list2) {
+    if (list1.val < list2.val) {
+      curr.next = list1;
+      list1 = list1.next;
+    } else {
+      curr.next = list2;
+      list2 = list2.next;
+    }
+    curr = curr.next;
+  }
+
+  if (list1) {
+    curr.next = list1;
+  } else if (list2) {
+    curr.next = list2;
+  }
+
+  return dummyHead.next;
+}
+
+var sortList = function(head) { //AAT. time O(nlogn). space O(logn) {recursive call stack}
+  if (!head || !head.next) return head;
+  let left = head;
+  let nodeBeforeMid = getNodeBeforeMid(head);
+  let right = nodeBeforeMid.next;
+  nodeBeforeMid.next = null;
+
+  let sortedLeft = sortList(left);
+  let sortedRight = sortList(right);
+  return merge(sortedLeft, sortedRight);
 };
