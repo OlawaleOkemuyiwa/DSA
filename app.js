@@ -3199,7 +3199,7 @@ var sortList = function(head) { //AAT. time O(nlogn). space O(logn) {recursive c
 var evalRPN = function(tokens) { //AGL. time O(n). space O(n)
   const stack = [];
   for (let token of tokens) {
-    if (!isNaN(parseInt(token))) {
+    if (!isNaN(token)) {
         stack.push(parseInt(token));
     } else {
       let a = stack.pop();
