@@ -3194,3 +3194,27 @@ var sortList = function(head) { //AAT. time O(nlogn). space O(logn) {recursive c
   let sortedRight = sortList(right);
   return merge(sortedLeft, sortedRight);
 };
+
+//L.150 (Medium)
+var evalRPN = function(tokens) { //AGL. time O(n). space O(n)
+  const stack = [];
+  for (let token of tokens) {
+    if (!isNaN(parseInt(token))) {
+        stack.push(parseInt(token));
+    } else {
+      let a = stack.pop();
+      let b = stack.pop();
+
+      if (token === '+') {
+        stack.push(b + a);
+      } else if (token === '-') {
+        stack.push(b - a);
+      } else if (token === '*') {
+        stack.push(b * a);
+      } else {
+        stack.push(Math.trunc(b/a));
+      }
+    }
+  }
+  return stack[0];
+};
