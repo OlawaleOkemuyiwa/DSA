@@ -3200,7 +3200,7 @@ var evalRPN = function(tokens) { //AGL. time O(n). space O(n)
   const stack = [];
   for (let token of tokens) {
     if (!isNaN(token)) {
-        stack.push(parseInt(token));
+      stack.push(parseInt(token));
     } else {
       let a = stack.pop();
       let b = stack.pop();
@@ -3217,4 +3217,36 @@ var evalRPN = function(tokens) { //AGL. time O(n). space O(n)
     }
   }
   return stack[0];
+};
+
+//L.151 (Medium)
+var reverseWords = function(s) { //AMA. time O(n). space O(n)
+  const n = s.length;
+  let res = '';
+
+  let i = 0;
+  while (i < n) {
+    //skip white spaces till we get to the 1st letter of a substring
+    while (i < n && s.charAt(i) === ' ') i++;
+
+    //if i ever goes out of bound while skipping white spaces then we're done
+    if (i >= n) break;
+
+    //else i is on the 1st letter of a sub in s. j is then used to determine the cur sub 
+    //j stops when it goes out of bound or when j is on a white space after cur sub
+    let j = i + 1;
+    while (j < n && s.charAt(j) !== ' ') j++;
+
+    let sub = s.substring(i, j);
+
+    if (res.length === 0) {
+      res = sub;
+    } else {
+      res = sub + ' ' + res;
+    }
+
+    i = j + 1;
+  }
+
+  return res;
 };
