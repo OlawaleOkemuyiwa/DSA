@@ -3250,3 +3250,17 @@ var reverseWords = function(s) { //AMA. time O(n). space O(n)
 
   return res;
 };
+
+//L.152 (Medium)
+var maxProduct = function(nums) { //ALM. time O(n). space O(1)
+  let maxProduct = -Infinity;
+  let curMin = 1, curMax = 1;
+  for (let num of nums) {
+    let tempMax = Math.max(num, curMin * num, curMax * num);
+    curMin = Math.min(num, curMin * num, curMax * num);
+
+    curMax = tempMax;
+    maxProduct = Math.max(maxProduct, curMax);
+  }
+  return maxProduct;
+};
