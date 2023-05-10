@@ -1532,7 +1532,7 @@ var nextPermutation = function(nums) {
 };
 
 //L.33 (Medium)
-var search = function(nums, target) {
+var search = function(nums, target) { //UBG. time O(logn). space O(1)
   let left = 0;
   let right = nums.length - 1;
 
@@ -1540,7 +1540,7 @@ var search = function(nums, target) {
     let mid = Math.floor((left + right) / 2);
     if (target === nums[mid]) {
       return mid;
-    } else if (nums[mid] >= nums[left]) {
+    } else if (nums[left] <= nums[mid]) {
       // the left side of mid is sorted
       if (target >= nums[left] && target < nums[mid]) {
         // target is in the left side
@@ -1551,7 +1551,7 @@ var search = function(nums, target) {
       }
     } else {
       // the right side of mid is sorted
-      if (target > nums[mid] && target <= nums[left]) {
+      if (target > nums[mid] && target <= nums[right]) {
         // target is in the right side
         left = mid + 1;
       } else {
@@ -2288,7 +2288,7 @@ var search = function(nums, target) { // time: at best O(logn), at worst O(n) {w
     let mid = Math.floor((left + right) / 2);
     if (target === nums[mid]) {
       return true;
-    } else if (nums[mid] >= nums[left]) {
+    } else if (nums[left] <= nums[mid]) {
       // left side of mid is sorted
       if  (target >= nums[left] && target < nums[mid]) {
         // target is in the left side
@@ -3263,4 +3263,31 @@ var maxProduct = function(nums) { //ALM. time O(n). space O(1)
     maxProduct = Math.max(maxProduct, curMax);
   }
   return maxProduct;
+};
+
+//L.153 (Medium)
+var findMin = function(nums) {
+  //to rotate by 4 is to take the 4 rightmost nums and put in the beginning of the array
+  let left = 0;
+  let right = nums.length - 1;
+  let res = Infinity;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right)/2);
+    res = Math.min(res, nums[mid]);
+    
+    //since when the arr was rotated, the larger values at the rightside of the ascending
+    //arr are put to it's left side.Therefore the values on the left are now larger and the
+    //right smaller. if nums[mid] falls on the left sorted portion then we wish to search 
+    //the right sorted portion of the rotated arr with smaller values to find the min val
+
+    if (nums[mid] >= nums[right]) {
+      //search right
+      left = mid + 1;
+    } else {
+      //search left
+      right = mid - 1;
+    }
+  }
+  return res;
 };
