@@ -2911,7 +2911,7 @@ var canCompleteCircuit = function(gas, cost) {//BAM. time O(n), space O(1)
   for (let i = 0; i < gas.length; i++) {
     tank += (gas[i] - cost[i]);
 
-    //if at any station, my tank will go below 0 if I decide to journey to the next station,
+    //if at any station, my tank will go below 0 if i decide to journey to the next station,
     //then the next station becomes my new starting point with a tank of 0.
     if (tank < 0) {
       start = i + 1;
@@ -3266,7 +3266,7 @@ var maxProduct = function(nums) { //ALM. time O(n). space O(1)
 };
 
 //L.153 (Medium)
-var findMin = function(nums) {
+var findMin = function(nums) { //AMF. time O(logn). space O(1)
   //to rotate by 4 is to take the 4 rightmost nums and put in the beginning of the array
   let left = 0;
   let right = nums.length - 1;
@@ -3282,12 +3282,37 @@ var findMin = function(nums) {
     //the right sorted portion of the rotated arr with smaller values to find the min val
 
     if (nums[mid] >= nums[right]) {
-      //search right
+      //search the right side as it contains the smaller digits
       left = mid + 1;
     } else {
-      //search left
+      //search the left side as it contains the larger digits
       right = mid - 1;
     }
   }
   return res;
+};
+
+//L.155 (Medium)
+var MinStack = function() { //BAM
+  this.stack = [];
+};
+
+MinStack.prototype.push = function(val) {
+  if (!this.stack.length) {
+    this.stack.push([val, val]);
+  } else {
+    this.stack.push([val, Math.min(val, this.getMin())])
+  }
+};
+
+MinStack.prototype.pop = function() {
+  this.stack.pop();
+};
+
+MinStack.prototype.top = function() {
+  return this.stack[this.stack.length - 1][0];
+};
+
+MinStack.prototype.getMin = function() {
+  return this.stack[this.stack.length - 1][1];
 };
