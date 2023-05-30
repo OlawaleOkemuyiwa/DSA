@@ -3,7 +3,7 @@
 // }
 
 // function checkPalindrome(input) {
-//   const re = /[^A-Za-z0-9]/g; //or  /[\W_]/g  ; this regex matches any character that is not enclosed in the bracket, that is matches anything that isnt A-Z, a-z, and 0-9. Then they are replaced with nothing(that is removed from the string)
+//   const re = /[^a-zA-Z0-9]/g; //or  /[\W_]/g  ; this regex matches any character that is not enclosed in the bracket, that is matches anything that isnt A-Z, a-z, and 0-9. Then they are replaced with nothing(that is removed from the string)
 //   const string = input.replace(re, "").toLowerCase(); //remove all spaces, punctuations and symbols then convert the resulting string to lowercase
 //   return string === string.split("").reverse().join("");
 // }
@@ -106,7 +106,7 @@
 // }
 //
 
-/* 1. FREQUENCY COUNTER PATTERN */
+/* I. FREQUENCY COUNTER PATTERN */
 
 // function checkElementsIn1SquaredIsElementsIn2(arr1, arr2) {
 //     if(arr1.length !== arr2.length) {
@@ -176,7 +176,7 @@
 // console.log(countUniqueValues([1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3]));
 
 
-/* MULTIPLE POINTERS TECHNIQUE (TWO POINTERS)
+/* II. MULTIPLE POINTERS TECHNIQUE (TWO POINTERS)
   When iterating over an array or string, we can set two pointers to search and/or compare two elements. There are three common ways to set the pointers:
   -start both pointers at the beginning of the iteration
   -start both pointers at the end of the iteration
@@ -247,7 +247,7 @@
 // console.log(square2([-7, -3, 0, 2, 3, 11]));
 // console.log(square2([0, 1, 2, 3, 4, 5]));
 
-/* 3. SLIDING WINDOW PATTERN 
+/* III. SLIDING WINDOW PATTERN 
   We know we're to use this pattern when:
   -We have to deal with the contiguous sequence of elements of a sequentially iterable item e.g an arrays, strings, linked list
   -Typically deals with finding the maximum/minimum of sth, the longest/shortest sequence to satisfy a condition, or if sth is contained within a given string, array etc
@@ -354,7 +354,7 @@
 // console.log(findLength('AAAHHIBC', 2)); //  The distinct characters that make the longest substring are A(3x) and H(2x) == 5
 
 
-/* 4. DIVIDE AND CONQUER APPROACH --> Example is how merge sort works. When an array to be sorted is provided, 1st thing to do is divide the array down to individual arrays of size 1 || 0 (DIVIDE). An array of 1 el is sorted so we merge these sub arrays accordingly using the 2 pointers technique till we get the overall array sorted (CONQUER)
+/* IV. DIVIDE AND CONQUER APPROACH --> Example is how merge sort works. When an array to be sorted is provided, 1st thing to do is divide the array down to individual arrays of size 1 || 0 (DIVIDE). An array of 1 el is sorted so we merge these sub arrays accordingly using the 2 pointers technique till we get the overall array sorted (CONQUER)
   IT IS A RECURSIVE METHOD. Other examples are quick sort, binary search, finding max and min, strassem's matrix multiplication 
 */
 
@@ -388,7 +388,7 @@
 // };
 // console.log(sumOfElsEqualAVal([4, 2, 5, 1], 9));
 
-/* 5. BACKTRACKING ALGORITHMIC TECHNIQUE --> Backtracking is a general algorithmic technique for finding all (or some) solutions to a computational problem by incrementally building candidates to the solutions and abandoning a candidate ("backtracking") as soon as it determines that the candidate cannot possibly be completed to a valid solution
+/* V. BACKTRACKING ALGORITHMIC TECHNIQUE --> Backtracking is a general algorithmic technique for finding all (or some) solutions to a computational problem by incrementally building candidates to the solutions and abandoning a candidate ("backtracking") as soon as it determines that the candidate cannot possibly be completed to a valid solution
 The technique is particularly useful for problems that cannot be solved by brute force, and require a more sophisticated approach to finding all solutions, such as the traveling salesman problem, N-queens problem, or Sudoku.
 The process involves choosing a move and making it, then recursively solving the subproblem that arises as a result of making that move. If the move leads to a solution, it is recorded. If not, the move is undone and another move is tried. The process is repeated until all possible solutions have been found.
 
@@ -397,7 +397,7 @@ There are 3 keys to keep in mind while solving backtracking problems --> Our cho
 
 //LEETCODE SOLUTIONS
 //L.1 (Easy)
-var twoSum = function(nums, target) { //unsorted array
+var twoSum = function(nums, target) { //unsorted array time O(n). space O(n)
   //a map that houses already visited elements of nums and their indexes
   const map = new Map();
 
@@ -412,8 +412,8 @@ var twoSum = function(nums, target) { //unsorted array
   }
 };
 
-//L.167 (Medium)
-var twoSumII = function(numbers, target) { //non-decreasing sorted array
+//L.167 (Medium) II
+var twoSumII = function(numbers, target) { // non-decreasing sorted array. time O(n). space(1)
   let left = 0;
   let right = numbers.length - 1;
 
@@ -421,10 +421,10 @@ var twoSumII = function(numbers, target) { //non-decreasing sorted array
     let sum = numbers[left] + numbers[right];
     if (target === sum) {
       return [left + 1, right + 1];
-    } else if (target > sum) {
-      left++;
-    } else {
+    } else if (sum > target) {
       right--;
+    } else {
+      left++;
     }
   }
   return [-1, -1];
@@ -432,7 +432,7 @@ var twoSumII = function(numbers, target) { //non-decreasing sorted array
 
 
 //L.9 (Easy)
-var isPalindrome = function(x) {
+var isPalindrome = function(x) { //time O(log10x. space O(1)
   if (x < 0) return false; 
 
   let num = x;
@@ -443,8 +443,6 @@ var isPalindrome = function(x) {
   }
 
   return x === revNum;
-  
-  //O(log10x) where x == integer --> if the digit is 4567, we iterate 4 times
 };
 
 //L.13 (Easy)
@@ -524,14 +522,14 @@ var mergeTwoLists = function(list1, list2) { //AEA. time O(n + m). space O(1)
 };
 
 //L.26 (Easy)
-var removeDuplicates = function(nums) {
+var removeDuplicates = function(nums) { //time O(n). space O(1)
   //insertIndex helps keep track of where non-duplicate elements are to be inserted in nums
-  let insertIndex = 0;
+  let insertIndex = 1;
 
-  for (let i = 0; i < nums.length; i++) {
+  for (let i = 1; i < nums.length; i++) {
     //loop over the nums arr till we encounter a non-duplicate element 
     //which is then inserted at the current insertIndex 
-    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    if (nums[i] === nums[i - 1]) continue;
     nums[insertIndex] = nums[i];
     insertIndex++;
   }
@@ -551,6 +549,44 @@ var removeElement = function(nums, val) {
     insertIndex++;
   }
   return insertIndex;
+};
+
+//L.28 (Easy) III
+var strStr = function(haystack, needle) { //first occurence of a substring
+  let m = haystack.length;
+  let n = needle.length;
+
+  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
+    for (let i = 0; i < n; i++) {
+      //as i moves over needle, also use i to move windowStart rightwards over haystack 
+      if (needle[i] !== haystack[windowStart + i]) break;
+      
+      //if the last char of needle corresponds to the equivalent char of haystack we done 
+      if (i === n - 1) return windowStart;
+    }
+  }
+
+  return -1;
+};
+
+var strStrII = function(haystack, needle) { //last occurence of a substring
+  let m = haystack.length;
+  let n = needle.length;
+  let lastIdx = -1;
+
+  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
+    for (let i = 0; i < n; i++) {
+      //as i moves over needle, also use i to move windowStart rightwards over haystack 
+      if (needle[i] !== haystack[windowStart + i]) break;
+      
+
+      //if the last char of needle corresponds to the equivalent char of haystack we update the idx
+      if (i === n - 1) lastIdx = windowStart;
+      
+    }
+  }
+
+  return lastIdx;
 };
 
 //L.35 (Easy)
@@ -596,17 +632,17 @@ var lengthOfLastWord = function(s) {
 //L.66 (Easy)
 var plusOne = function(digits) {
   for (let i = digits.length - 1; i >= 0; i--) {
-    //if the current digit (starting from the back) is 9 then change to 0 (9 + 1 == 10 => 0)
-    if (digits[i] === 9) {
-      digits[i] = 0;
-    } else {
-      //if not 9 then just increment by 1 and return the resulting array
+    if (digits[i] !== 9) {
+      //if cur digit is not 9 then just increment by 1 and return the resulting array
       digits[i]++;
       return digits;
+    } else {
+      //else if 9 then change to 0 (9 + 1 == 10 => 0)
+      digits[i] = 0;
     }
   }
-  //coming out of the loop (nothing was returned) signifies digits array comprises only of
-  //digit 9 i.e [9] or [9, 9] and 1 needs to be added to the front of the mutated digits array.
+  //coming out of the loop (nothing was returned) signifies the first digit of digits arr
+  //is 9 (which has been turned to 0). 1 is then unshifted into the arr
   digits.unshift(1);
 
   return digits;
@@ -620,20 +656,20 @@ var addBinary = function(a, b) {
   let carry = 0;
 
   while (i >= 0 || j >= 0) {
-    let sum = carry;
-    if (i >= 0) sum += Number(a.charAt(i));
-    if (j >= 0) sum += Number(b.charAt(j));
-    str = str + (sum % 2);
-    carry = Math.floor(sum / 2);
+    let curSum = carry;
+    if (i >= 0) curSum += Number(a.charAt(i));
+    if (j >= 0) curSum += Number(b.charAt(j));
+    str = (curSum % 2) + str; 
+    carry = Math.floor(curSum / 2);
     i--;
     j--;
   }
 
   if (carry !== 0) { //i.e. carry === 1
-    str = str + carry;
+    str = carry + str;
   }
 
-  return str.split("").reverse().join("");
+  return str;
 };
 
 //L.69 (Easy)
@@ -645,12 +681,12 @@ var mySqrt = function(x) {
 
   while (left <= right) {
     let mid = Math.floor((left + right) / 2);
-    if (mid * mid > x) {
-      right = mid - 1;
-    } else if (mid * mid < x) {
-      left = mid + 1;
-    } else {
+    if (mid * mid === x) {
       return mid;
+    } else if (mid * mid > x) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
     }
   }
   //if we exit the loop without returning mid then the exact sqrt root wasn't found
@@ -748,7 +784,7 @@ var isSameTree = function(p, q) {
 
 //L.101 (Easy)
 var isSymmetric = function(root) {
-  function isMirror (p, q) {
+  function isMirror(p, q) {
     if (!p && !q) {
       return true;
     } else if (!p || !q) {
@@ -812,8 +848,8 @@ var isBalanced = function(root) {
     const isBalanced = leftRes[0] && rightRes[0] && Math.abs(leftRes[1] - rightRes[1]) <= 1;
     return [isBalanced, 1 + Math.max(leftRes[1], rightRes[1])];
   }
+
   const [treeIsBalanced, maxDepthOfTree] = helper(root);
-  console.log(maxDepthOfTree);
   return treeIsBalanced;
 };
 
@@ -849,7 +885,7 @@ var hasPathSum = function(root, targetSum) {
     //check if current node is a leaf node (desired)
     if (!node.left && !node.right) return curSum === targetSum;
 
-    //continue the check on both left and right subtree. Whichever reaches the target first
+    //else continue the check on both left and right subtree. Whichever reaches the target first
     return helper(node.left, curSum) || helper(node.right, curSum);
   }
   return helper(root, 0);
@@ -859,7 +895,7 @@ var hasPathSum = function(root, targetSum) {
 var generate = function(numRows) {
   const res = [[1]];
 
-  for (let i = 0; i < numRows - 1; i++) {
+  for (let i = 0; i < numRows - 1; i++) { //i = 0 to create res (numRow 2), i = 1 to create res (numRow 3)
     //add 0 to the front and end of the current row to get temp arr for summing purpose 
     const temp = [0, ...res[i], 0];
     
@@ -878,7 +914,7 @@ var generate = function(numRows) {
 var getRow = function(rowIndex) {
   const res = [[1]];
 
-  for (let i = 0; i < rowIndex; i++) {
+  for (let i = 0; i < rowIndex; i++) { //i = 0 to create res (rowIndx 1), i = 1 to create res (rowIndx 2)
     //add 0 to the front and end of the current row to get temp arr for easier summing
     const temp = [0, ...res[i], 0];
     
@@ -918,12 +954,7 @@ var maxProfit = function(prices) {
 var isPalindrome = function(s) {
   function isCharAlphanumeric(char) {
     const charCode = char.charCodeAt(0);
-    if ((charCode > 47 && charCode < 58) ||         
-    (charCode > 64 && charCode < 91) ||
-    (charCode > 96 && charCode < 123)) {       
-      return true ;
-    }
-    return false;
+    return (charCode > 47 && charCode < 58) || (charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123);
   }
   
   for (let i = 0, j = s.length - 1; i < j; i++, j--) {
@@ -955,9 +986,9 @@ var singleNumber = function(nums) {
   }
 
   //the key of the map with value of 1 is our desired integer
-  for (const [key, value] of map.entries()) {
-    if (value === 1) return key;
-  }
+  for (const [num, count] of map.entries()) {
+    if (count === 1) return num;
+  } 
 
   //The only way to achieve constant space complexity is BIT MANIPULATION
 };
@@ -1455,44 +1486,6 @@ var swapPairs = function(head) {
   }
 
   return dummyHead.next;
-};
-
-//L.28 (Medium)
-var strStr = function(haystack, needle) { //first occurence of a substring
-  let m = haystack.length;
-  let n = needle.length;
-
-  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
-    for (let i = 0; i < n; i++) {
-      //as i moves over needle, also use i to move windowStart rightwards over haystack 
-      if (needle[i] !== haystack[windowStart + i]) break;
-      
-      //if the last char of needle corresponds to the equivalent char of haystack we done 
-      if (i === n - 1) return windowStart;
-    }
-  }
-
-  return -1;
-};
-
-var strStrII = function(haystack, needle) { //last occurence of a substring
-  let m = haystack.length;
-  let n = needle.length;
-  let lastIdx = -1;
-
-  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
-    for (let i = 0; i < n; i++) {
-      //as i moves over needle, also use i to move windowStart rightwards over haystack 
-      if (needle[i] !== haystack[windowStart + i]) break;
-      
-
-      //if the last char of needle corresponds to the equivalent char of haystack we update the idx
-      if (i === n - 1) lastIdx = windowStart;
-      
-    }
-  }
-
-  return lastIdx;
 };
 
 //L.29 ???
