@@ -655,7 +655,7 @@ var addBinary = function(a, b) {
   let j = b.length - 1;
   let carry = 0;
 
-  while (i >= 0 || j >= 0) {
+  while (i >= 0 || j >= 0 || carry !== 0) {
     let curSum = carry;
     if (i >= 0) curSum += Number(a.charAt(i));
     if (j >= 0) curSum += Number(b.charAt(j));
@@ -663,10 +663,6 @@ var addBinary = function(a, b) {
     carry = Math.floor(curSum / 2);
     i--;
     j--;
-  }
-
-  if (carry !== 0) { //i.e. carry === 1
-    str = carry + str;
   }
 
   return str;
@@ -1101,32 +1097,29 @@ var transpose = function(matrix) { //O(n^2) time, O(n^2) space
 //L.2 (Medium)
 var addTwoNumbers = function(l1, l2) {
   let summedList = new ListNode();
-  const head = summedList;
+  let curr = summedList;
   let carry = 0;
+
   while (l1 || l2 || carry !== 0) {
-    //we always sum up carry, val1, val2 so its paramount to have a default value of 0 for
-    //val1 and val2. Should l1 or l2 become null then val1 or val2 won't be undefined but 0
-    let val1 = 0;
-    let val2 = 0;
+    let curSum = carry;
     if (l1) {
-      val1 = l1.val;
+      curSum += l1.val;
       l1 = l1.next;
     }
     if (l2) {
-      val2 = l2.val;
+      curSum += l2.val;
       l2 = l2.next;
     }
-    const sum = carry + val1 + val2;
-    const digit = sum % 10; 
-    carry = Math.floor(sum / 10); 
-    const currentNode = new ListNode(digit);
-    summedList.next = currentNode;
-    summedList = summedList.next;
+    const digit = curSum % 10; 
+    carry = Math.floor(curSum / 10); 
+    let node = new ListNode(digit);
+    curr.next = node;
+    curr = curr.next;
   }
-  return head.next;
+  return summedList.next;
 };
 
-//L.3 (Medium)
+//L.3 (Medium) III
 var lengthOfLongestSubstring = function(s) { 
   //a set to house a sequence of distinct substring
   const set = new Set();
@@ -1141,7 +1134,7 @@ var lengthOfLongestSubstring = function(s) {
       start++;
     }
     set.add(s.charAt(end));
-    maxLength = Math.max(end - start + 1, maxLength);
+    maxLength = Math.max(set.size, maxLength);
   }
   return maxLength;
 };
@@ -1186,45 +1179,56 @@ var convert = function(s, numRows) {
 
   //index keeps track of how each '' of zigzag arr is populated with characters of s
   let index = 0; 
-  //step determines how index moves from left to right, right to left, repeat over zigzag arr
+  
+  //step determines how index oscillates top to bottom, bottom to top over zigzag arr
   let step;
 
   for (let char of s) {
     zigzag[index] += char;
 
     if (index === 0) {
-      //if index is at the beginning of zigzag arr move rightwards
+      //if index is at the beginning of zigzag arr move index downwards with +ve 1 steps
       step = 1;
     } else if (index === numRows - 1) {
-      //if index is at the end of zigzag arr move leftwards
+      //if index is at the end of zigzag arr move index upwards with -ve 1 steps
       step = -1;
     }
     
     index += step;
   }
+  
   return zigzag.join('');
 };
 
-//L.7 (Medium) ??
+//L.7 (Medium)
 var reverse = function(x) {
-  let num;
-  if (x >= 0) {
-    num = x;
-  } else {
-    num = Math.abs(x);
-  }
+  const MAX = 2147483647;
+  const MIN = -2147483648;
+
   let revNum = 0;
-  while (num > 0) {
-    revNum = (revNum * 10) + (num % 10);
-    num = Math.floor(num/10); 
+  while(x) {
+    let digit = x % 10;
+
+    //if cur revNum is about to exceed MAX OR addition of cur digit will cause overflow
+    if (revNum > parseInt(MAX / 10) || 
+      (revNum === parseInt(MAX / 10) && digit > MAX % 10)) return 0;
+
+    //if cur revNum is about to go below MIN OR addition of cur digit will cause overflow
+    if (revNum < parseInt(MIN / 10) || 
+      (revNum === parseInt(MIN / 10) && digit < MIN % 10)) return 0;
+
+    revNum = (revNum * 10) + digit;
+    x = parseInt(x / 10);
   }
-  revNum = x >= 0 ? revNum : -1 * revNum;
-  if (revNum < -Math.pow(2, 31) || revNum > Math.pow(2, 31) - 1) return 0;
+
   return revNum;
 };
 
 //L.8 (Medium) ??
 var myAtoi = function(s) {
+  const MAX = 2147483647;
+  const MIN = -2147483648;
+
   let i = 0;
   let sign;
   let num = 0;
@@ -1243,15 +1247,21 @@ var myAtoi = function(s) {
   }
 
   while (i < s.length && !isNaN(parseInt(s.charAt(i)))) {
-    num = (num * 10) + parseInt(s.charAt(i));
+    let curDigit = parseInt(s.charAt(i));
+
+    //if num is about to exceed MAX OR addition of curDigit will cause overflow
+    if ((sign * num) > parseInt(MAX / 10) || 
+    ((sign * num) === parseInt(MAX / 10) && (sign * curDigit) > MAX % 10)) return MAX;
+
+    //if num is about to go below MIN OR addition of curDigit will cause overflow
+    if ((sign * num) < parseInt(MIN / 10) || 
+    ((sign * num) === parseInt(MIN / 10) && (sign * curDigit) < MIN % 10)) return MIN;
+
+    num = (num * 10) + curDigit;
     i++;
   }
 
-  num = sign * num;
-  
-  if (num < -Math.pow(2, 31)) return -Math.pow(2, 31);
-  if (num > Math.pow(2, 31) - 1) return Math.pow(2, 31) - 1;
-  return num;
+  return sign * num;
 };
 
 //L.11 (Medium)
@@ -1259,32 +1269,41 @@ var maxArea = function(height) {
   let maxArea = 0;
   let left = 0;
   let right = height.length - 1;
+
   while (left < right) {
+    //min height between 2 height vertices determines the actual height of cur tank
     let minHeight = Math.min(height[left], height[right]);
+
+    //determine the ara of cur tank (length * breath)
     let area = minHeight * (right - left);
+
+    //compare with the running max area
     maxArea = Math.max(area, maxArea);
+
+    //update left or right in a way that will maximize area
     if (height[left] < height[right]) {
       left++;
     } else {
       right--;
     }
   }
+
   return maxArea;
 };
 
 //L.12 (Medium)
 var intToRoman = function(num) {
-  const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
-  const symbols = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
+  const values = [1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000]
+  const symbols = ['I', 'IV', 'V', 'IX', 'X', 'XL', 'L', 'XC', 'C', 'CD', 'D', 'CM', 'M'];
 
   let roman = '';
-  for (let i = 0; i < values.length; i++) {
+  for (let i = values.length - 1; i >= 0; i--) {
     let value = values[i];
     let symbol = symbols[i];
     
-    if (Math.floor(num/value) > 0) {
-      let count = Math.floor(num/value);
-      roman += symbol.repeat(count);
+    let countOfSym = Math.floor(num/value);
+    if (countOfSym > 0) {
+      roman += symbol.repeat(countOfSym);
       num = num % value;
     }
   }
@@ -1308,6 +1327,7 @@ var threeSum = function(nums) {
         right--;
       } else {
         res.push([nums[i], nums[left], nums[right]]);
+
         //still on i in search of a new sum to equal target, shift left rightwards
         left++;
 
@@ -1328,10 +1348,10 @@ var threeSumClosest = function(nums, target) {
     let left = i + 1, right = nums.length - 1;
     while (left < right) {
       let curSum = nums[i] + nums[left] + nums[right];
-      if (Math.abs(target - curSum) < Math.abs(target - closetSum)) closetSum = curSum;
-      if (target === curSum) {
+      if (Math.abs(curSum - target) < Math.abs(closetSum - target)) closetSum = curSum;
+      if (curSum === target) {
         return curSum;
-      } else if (target > curSum) {
+      } else if (curSum < target) {
         left++;
       } else {
         right--;
@@ -1386,12 +1406,13 @@ var fourSum = function(nums, target) {
       let left = j + 1, right = innerNums.length - 1;
       while (left < right) {
         let sum = nums[i] + innerNums[j] + innerNums[left] + innerNums[right];
-        if (target > sum) {
+        if (sum < target) {
           left++;
-        } else if (target < sum) {
+        } else if (sum > target) {
           right--;
         } else {
           res.push([nums[i], innerNums[j], innerNums[left], innerNums[right]]);
+
           //still on j in search of a new sum to equal target, shift left rightwards
           left++;
 
@@ -1458,31 +1479,31 @@ var generateParenthesis = function(n) { //backtracking
 
 //L.24 (Medium)
 var swapPairs = function(head) {
-  //dummyHead serves as left during the 1st swap to help maintain a valid list after the
-  //list is broken up and d 1st pair are swapped. left.next (which is dummyHead.next during  
-  //1st swap) then connects to the newly swapped list nodes. left then moves to right while 
-  //right moves to nextPair to be swapped. now left.next can again serve to link the current 
+  //dummyHead serves as curr during the 1st swap to help maintain a valid list after the
+  //list is broken up and d 1st pair are swapped. curr.next (which is dummyHead.next during  
+  //1st swap) then connects to the newly swapped list nodes. curr then moves to first while 
+  //first moves to nextPair to be swapped. now curr.next can again serve to link the current 
   //list to the resulting list after the swap 
   
   let dummyHead = new ListNode(-1, head);
 
-  let left = dummyHead;
-  let right = head;
+  let curr = dummyHead;
+  let first = head;
 
-  //we must have at least 2 nodes (cur and cur.next) to swap, if not we done
-  while (right && right.next) {
+  //we must have at least 2 nodes (first and first.next(2nd)) to swap, if not we done
+  while (first && first.next) {
     //save pointers
-    let second = right.next;
-    let nextPair = right.next.next;
+    let second = first.next;
+    let nextPair = first.next.next;
 
     //reverse pair
-    second.next = right;
-    right.next = nextPair;
-    left.next = second;
+    second.next = first;
+    first.next = nextPair;
+    curr.next = second;
 
     //update pointers
-    left = right;
-    right = nextPair;
+    curr = first;
+    first = nextPair;
   }
 
   return dummyHead.next;
