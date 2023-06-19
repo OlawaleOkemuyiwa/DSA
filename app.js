@@ -1301,9 +1301,9 @@ var intToRoman = function(num) {
     let value = values[i];
     let symbol = symbols[i];
     
-    let countOfSym = Math.floor(num/value);
-    if (countOfSym > 0) {
-      roman += symbol.repeat(countOfSym);
+    let symbolCount = Math.floor(num/value);
+    if (symbolCount > 0) {
+      roman += symbol.repeat(symbolCount);
       num = num % value;
     }
   }
@@ -1585,7 +1585,7 @@ function binarySearch(arr, left, right, target, firstIndexSearch) {
     if (target === arr[mid]) {
       idx = mid;
       firstIndexSearch ? right = mid - 1 : left = mid + 1;
-    } else if (target > arr[mid]) {
+    } else if (arr[mid] < target) {
       left = mid + 1;
     } else {
       right = right - 1;
@@ -1735,27 +1735,24 @@ var combinationSum3 = function(k, n) {
 var multiply = function(num1, num2) { //time O(n * m), space O(n + m)
   if (num1 === "0" || num2 === "0") return "0";
 
-  //reverse num1 and num2 strings
-  num1 = num1.split("").reverse().join("");
-  num2 = num2.split("").reverse().join("");
-
   //the max length of res would be num1.length + num2.length
   let res = new Array(num1.length + num2.length).fill(0);
 
-  for (let i = 0; i < num1.length; i++) {
-    let a = num1.charAt(i);
-    for (let j = 0; j < num2.length; j++) {
-      let b = num2.charAt(j);
+  for (let i = num2.length - 1; i >= 0; i--) {
+    let b = num2.charAt(i);
+    
+    for (let j = num1.length - 1; j >= 0; j--) {
+      let a = num1.charAt(j);
 
-      let digit = a * b;
-      res[i + j] += digit;
-      res[i + j + 1] += Math.floor(res[i + j]/10);
-      res[i + j] = res[i + j] % 10;
+      let product = a * b;
+      const digit = Math.floor((res[i + j + 1] + product) % 10);
+      const carry = Math.floor((res[i + j + 1] + product) / 10);
+      res[i + j + 1] = digit;
+      res[i + j] += carry;
     }
   } 
-  
-  //skip the leading 0 if there is and join res (array of integers) to become a string
-  res.reverse();
+
+  //skip the leading 0 if there is and join res (array of ints) to become a string
   return res[0] === 0 ? res.slice(1).join("") : res.join("");
 };
 
