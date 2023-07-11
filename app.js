@@ -708,12 +708,12 @@ var climbStairs = function(n) {
 
 //L.83 (Easy)
 var deleteDuplicates = function(head) {
-  let currentNode = head;
-  while (currentNode && currentNode.next) {
-    if (currentNode.val === currentNode.next.val) {
-      currentNode.next = currentNode.next.next;
+  let curr = head;
+  while (curr && curr.next) {
+    if (curr.val === curr.next.val) {
+      curr.next = curr.next.next;
     } else {
-      currentNode = currentNode.next;
+      curr = curr.next;
     }
   }
   return head;
@@ -1438,6 +1438,7 @@ var removeNthFromEnd = function(head, n) {
 
   let left = dummyHead;
   let right = head;
+
   for (let i = 0; i < n; i++) {
     right = right.next;
   }
@@ -1479,31 +1480,31 @@ var generateParenthesis = function(n) { //backtracking
 
 //L.24 (Medium)
 var swapPairs = function(head) {
-  //dummyHead serves as curr during the 1st swap to help maintain a valid list after the
-  //list is broken up and d 1st pair are swapped. curr.next (which is dummyHead.next during  
-  //1st swap) then connects to the newly swapped list nodes. curr then moves to first while 
-  //first moves to nextPair to be swapped. now curr.next can again serve to link the current 
+  //dummyHead serves as left during the 1st swap to help maintain a valid list after the
+  //list is broken up and d 1st pair are swapped. left.next (which is dummyHead.next during  
+  //1st swap) then connects to the newly swapped list nodes. left then moves to right while 
+  //right moves to nextPair to be swapped. now left.next can again serve to link the current 
   //list to the resulting list after the swap 
   
   let dummyHead = new ListNode(-1, head);
 
-  let curr = dummyHead;
-  let first = head;
+  let left = dummyHead;
+  let right = head;
 
-  //we must have at least 2 nodes (first and first.next(2nd)) to swap, if not we done
-  while (first && first.next) {
+  //we must have at least 2 nodes (right and right.next(2nd)) to swap, if not we done
+  while (right && right.next) {
     //save pointers
-    let second = first.next;
-    let nextPair = first.next.next;
+    let rightII = right.next;
+    let nextPair = right.next.next;
 
     //reverse pair
-    second.next = first;
-    first.next = nextPair;
-    curr.next = second;
+    rightII.next = right;
+    right.next = nextPair;
+    left.next = rightII;
 
     //update pointers
-    curr = first;
-    first = nextPair;
+    left = right;
+    right = nextPair;
   }
 
   return dummyHead.next;
@@ -1758,13 +1759,14 @@ var multiply = function(num1, num2) { //time O(n * m), space O(n + m)
 
 //L.55 (Medium)
 var canJump = function(nums) { //Greedy --> O(n) time, O(1) space
+  //from the onset the goal is to reach the lastIdx, which becomes our initial goalIdx
   let goalIdx = nums.length - 1;
 
   //from the idx just before the goalIdx, check if we can take a step (from the max steps 
   //available to take from at the idx, nums[i]) that will atleast get us to the goalIdx.
   for (let i = goalIdx - 1; i >= 0; i--) {
     if (i + nums[i] >= goalIdx) {
-      //if we can, goalIdx moves to its position and cur idx leftwards
+      //if we can then d new goalIdx is the cur idx and we check again for the idx b4 it
       goalIdx = i;
     }
   }
@@ -1777,13 +1779,13 @@ var canJump = function(nums) { //Greedy --> O(n) time, O(1) space
 //L.45 (Medium)
 var jump = function(nums) { //Greedy --> time O(n), space O(1)
   //res is no of jumps it takes (num[i] is the max no of steps that can be taken from idx i)
-  let res = 0;
+  let noOfJumps = 0;
 
   //left and right marks the start and end idxs of the sub array window for BFS
   let left = 0;
   let right = 0;
 
-  //we stop the loop when the right idx becomes the last idx
+  //we stop the loop when the right idx falls on the last idx (we've gotten to destination and no jump is required anymore)
   while (right < nums.length - 1) {
     //mininum jumps is actualized by taking the farthest step from each idx
     //determine from what idx in the cur sub window one can take the farthest step
@@ -1796,10 +1798,10 @@ var jump = function(nums) { //Greedy --> time O(n), space O(1)
     //the farthest idx achievable from the present window. Both form a new window -> res++
     left = right + 1;
     right = farthestIdx;
-    res++;
+    noOfJumps++;
   }
 
-  return res;
+  return noOfJumps;
 };
 
 //L.46 (Medium) ???
@@ -1841,6 +1843,7 @@ var groupAnagrams = function(strs) {
   //a map of sorted strs to arrays containing anagram words coined from it
   const map = new Map();
 
+  //anagrams are words that when sorted they spell exactly the same i.e. eat, tea, ate -> aet
   for (let str of strs) {
     const sortedStr = str.split('').sort().join('');
     
@@ -1869,7 +1872,7 @@ var myPow = function(x, n) { //time O(logn), space O(1)
   let res = helper(x, Math.abs(n));
 
   //the final output is then dependent on whether n is -ve or not
-  return n >= 0 ? res : 1 / res;
+  return n < 0 ? 1 / res : res;
 };
 
 //L.53 (Medium)
@@ -1942,18 +1945,20 @@ var merge = function(intervals) { //O(nlogn) time, O(logn)/O(n) space
   //merge overlaps in intervals
   for (let i = 0; i < intervals.length; i++) {
     let interval = intervals[i];
+    
     if (i === 0) {
       res.push(interval);
       continue;
     }
 
-    //overlap exists if the start of cur interval is <= to d end of the last interval in res
+    //overlap exists if the start of cur interval <= end of the last interval in res
     if (interval[0] <= res[res.length - 1][1]) {
       res[res.length - 1][1] = Math.max(res[res.length - 1][1], interval[1]); 
     } else {
       res.push(interval);
     }
   }
+  
   return res; 
 };
 
@@ -2024,11 +2029,11 @@ var generateMatrix = function(n) { //time O(n^2), space O(1)
 
 //L.61 (Medium)
 var rotateRight = function(head, k) { //time O(n), space(1)
-  //if the list is a null list then we can make no reversal
+  //if the list is a null list then we can make no rotation
   if (!head) return head;
 
-  //determine the length of the list (>= 1). It would have atleast a tail (the tail then
-  //wouldn't be counted when looping accross the list)
+  //determine the length of the list with at least a node (tail). The count is started from 1
+  //to account for the tail so as to stop the pointer when it gets to the tail (not on null)
   let length = 1; 
   let tail = head;
   while (tail && tail.next) {
@@ -2036,17 +2041,17 @@ var rotateRight = function(head, k) { //time O(n), space(1)
     tail = tail.next;
   }
 
-  //determine the actual no of reversals to be done
+  //determine the actual no of rotations to the right by k places to be done
   k = k % length;
   if (k === 0) return head;
 
-  //move to the pivot and rotate
-  let cur = head;
-  for (let i = 0; i < length - k - 1; i++) {
-    cur = cur.next;
+  //move to the pivot node and rotate
+  let curr = head;
+  for (let i = 0; i < length - 1 - k; i++) {
+    curr = curr.next;
   }
-  let newHead = cur.next;
-  cur.next = null;
+  let newHead = curr.next;
+  curr.next = null;
   tail.next = head;
   return newHead;
 };
@@ -2059,9 +2064,9 @@ var uniquePaths = function(m, n) { // time O(m * n), space O(m * n)
   }
   
   //each grid cell rep the no of possible unique paths to reach that cell from starting point
-  for (let row = 1; row < m; row++) {
-    for (let col = 1; col < n; col++) {
-      grid[row][col] = grid[row - 1][col] + grid[row][col - 1];
+  for (let r = 1; r < m; r++) {
+    for (let c = 1; c < n; c++) {
+      grid[r][c] = grid[r - 1][c] + grid[r][c - 1];
     }
   }
 
@@ -2082,24 +2087,24 @@ var uniquePathsWithObstacles = function(obstacleGrid) { // time O(m * n), space 
 
   //fill the cells of the first row. If cur cell is an obstacle, then there are 0 ways to get
   //there from starting position. If not, the no of ways is that of the cell just before it
-  for (let col = 1; col < n; col++) {
-    obstacleGrid[0][col] = obstacleGrid[0][col] === 1 ? 0 : obstacleGrid[0][col - 1];
+  for (let c = 1; c < n; c++) {
+    obstacleGrid[0][c] = obstacleGrid[0][c] === 1 ? 0 : obstacleGrid[0][c - 1];
   }
 
   //fill the cells of the first column. If cur cell is an obstacle, then there are 0 ways to 
   //get there from starting position. If not the no of ways is that of the cell just above it
-  for (let row = 1; row < m; row++) {
-    obstacleGrid[row][0] = obstacleGrid[row][0] === 1 ? 0 : obstacleGrid[row - 1][0];
+  for (let r = 1; r < m; r++) {
+    obstacleGrid[r][0] = obstacleGrid[r][0] === 1 ? 0 : obstacleGrid[r - 1][0];
   }
 
   //determine the no of possible unique paths for the remaining cells
-  for (let row = 1; row < m; row++) {
-    for (let col = 1; col < n; col++) {
-      if (obstacleGrid[row][col] === 1) {
-        obstacleGrid[row][col] = 0;
-        continue;
-      } 
-      obstacleGrid[row][col] = obstacleGrid[row - 1][col] + obstacleGrid[row][col - 1];
+  for (let r = 1; r < m; r++) {
+    for (let c = 1; c < n; c++) {
+      if (obstacleGrid[r][c] === 1) {
+        obstacleGrid[r][c] = 0;
+      } else {
+        obstacleGrid[r][c] = obstacleGrid[r - 1][c] + obstacleGrid[r][c - 1];
+      }
     }
   }
 
@@ -2113,19 +2118,19 @@ var minPathSum = function(grid) { //time O(m * n), space O(1)
   const n = grid[0].length;
 
   //fill the cells of the first row
-  for (let col = 1; col < n; col++) {
-    grid[0][col] += grid[0][col - 1];
+  for (let c = 1; c < n; c++) {
+    grid[0][c] += grid[0][c - 1];
   }
 
   //fill the cells of the first column
-  for (let row = 1; row < m; row++) {
-    grid[row][0] += grid[row - 1][0];
+  for (let r = 1; r < m; r++) {
+    grid[r][0] += grid[r - 1][0];
   }
 
   //fill the remaining cells of the grid
-  for (let row = 1; row < m; row++) {
-    for (let col = 1; col < n; col++) {
-      grid[row][col] += Math.min(grid[row - 1][col], grid[row][col - 1])
+  for (let r = 1; r < m; r++) {
+    for (let c = 1; c < n; c++) {
+      grid[r][c] += Math.min(grid[r - 1][c], grid[r][c - 1])
     }
   }
 
@@ -2142,7 +2147,7 @@ var simplifyPath = function(path) {  //time O(n), space O(n)
       continue;
     } else if (dir === '..') {
       //we pop off the last dir added to the stack if we encounter '..'
-      if (stack.length) stack.pop();
+      if (stack.length > 0) stack.pop();
     } else {
       //if both earlier conditions are false then it's a valid directory to be added 
       stack.push(dir);
@@ -2151,6 +2156,9 @@ var simplifyPath = function(path) {  //time O(n), space O(n)
   
   return '/' + stack.join('/');
 };
+
+//L.72 (Medium)
+
 
 //L.73 (Medium)
 var setZeroes = function(matrix) { //time O(m * n), spae O(1)
@@ -2207,18 +2215,23 @@ var searchMatrix = function(matrix, target) { // time O(log(m*n)), space O(1)
   const n = matrix[0].length;
 
   let left = 0;
-  let right = m * n - 1;
+  let right = (m * n) - 1;
   while (left <= right) {
-    let pivotIdx = Math.floor((left + right) / 2);
-    let pivotEl = matrix[Math.floor(pivotIdx/n)][pivotIdx % n];
+    const pivotIdx = Math.floor((left + right) / 2);
+
+    const pivotRow = Math.floor(pivotIdx / n);
+    const pivotCol = pivotIdx % n;
+    const pivotEl = matrix[pivotRow][pivotCol];
+    
     if (target === pivotEl) {
-      return true
+      return true;
     } else if (target > pivotEl) {
       left = pivotIdx + 1;
     } else {
       right = pivotIdx - 1;
     }
   }
+
   return false;
 };
 
@@ -2233,10 +2246,14 @@ var sortColors = function(nums) { //time O(n) {1 pass}, space O(1)
   let i = 0;
   while (i <= right) {
     if (nums[i] === 0) {
+      //cause we're swapping with left (LHS sorted), we're certain the value inserted 
+      //into pos i from left is on it's final sort position (so i can move forward)
       swap(left, i);
       left++;
       i++;
     } else if (nums[i] === 2) {
+      //cause we're swapping with right (RHS unsorted), we're not certain the value 
+      //inserted into pos i from right is on it's final sort position (so i stays)
       swap(i, right);
       right--;
     } else {
@@ -2323,13 +2340,14 @@ var search = function(nums, target) { // time: at best O(logn), at worst O(n) {w
 };
 
 //L.82 (Medium)
-var deleteDuplicates = function(head) {
+var deleteDuplicates = function(head) { //time O(n) {only 1 pass accross the list}, space O(1)
   let dummyHead = new ListNode(-1, head);
+  //DH is needed cause the list's head can get deleted if it is a duplicated node
 
   let left = dummyHead;
   let right = head;
 
-  while (right && right.next) { //time O(n) {only 1 pass accross the list}, space O(1)
+  while (right && right.next) { //there must be at leat two nodes to check for duplicacy
     let isDuplicated = false;
     while (right && right.next && right.val === right.next.val) {
       isDuplicated = true;
@@ -2338,11 +2356,10 @@ var deleteDuplicates = function(head) {
 
     if (isDuplicated) {
       left.next = right.next;
-      right = right.next
     } else {
-      left = right;
-      right = right.next
+      left = left.next;
     }
+    right = right.next;
   }
   return dummyHead.next;
 };
@@ -2408,30 +2425,28 @@ var numDecodings = function(s) { // time O(n), space O(n)
 //L.92 (Medium)
 var reverseBetween = function(head, left, right) { //time O(n), space O(1)
   let dummyHead = new ListNode(-1, head);
-  let prev = dummyHead;
-  let curr = head;
+  let leftNode = dummyHead;
+  let rightNode = head;
 
-  //move both pointers till curr is on the starting node of the sublist to be reversed (left 
-  //position) and prev is on the node just before it
+  //move both pointers till rightNode is on the starting node of the sublist to be reversed 
+  //(left position) and leftNode is on the node just before it
   for (let i = 0; i < left - 1; i++) {
-    prev = curr;
-    curr = curr.next;
+    leftNode = rightNode;
+    rightNode = rightNode.next;
   }
 
-  //save a pointer to prev, then set prev to null (as the tail of the sublist after it has
-  //been reversed will point to that {tail.next = null}). Then the sublist is reversed
-  let prevRef = prev;
-  prev = null;
-  for (let i = 0; i < right - left + 1; i++) {
-    let next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
+  //reverse the sublist
+  let prev = null
+  for (let i = 0; i <= right - left; i++) {
+    let next = rightNode.next;
+    rightNode.next = prev;
+    prev = rightNode;
+    rightNode = next;
   }
 
-  //curr stops on the node just after the right position. connect the now reversed sub list 
-  prevRef.next.next = curr;
-  prevRef.next = prev;
+  //connect the now reversed sublist to the other nodes of the list
+  leftNode.next.next = rightNode;
+  leftNode.next = prev;
   return dummyHead.next;   
 };
 
@@ -2439,25 +2454,47 @@ var reverseBetween = function(head, left, right) { //time O(n), space O(1)
 const hasLeadingZero = str => str !== '0' && str[0] === '0';
 const ipIsValid = nums => nums.every(num => !hasLeadingZero(num) && parseInt(num) <= 255);
 
-// a valid ip address would have 4 parts separated by dots
+// a valid ip address would have 4 parts separated by dots -> a.b.c.d
 // we iterate through `s` to insert 3 dots and separate the string into 4 segments
 // for each segment, we check if it is valid
 // if all 4 segments are valid, we combine those 4 segments with dots and push to the result
-var restoreIpAddresses = function(s) { //time O(n) {fixed range nested loops}, space O(1)
-  const n = s.length;
+var restoreIpAddresses = function(s) { //time O(1) {fixed range nested loops}, space O(1)
   const res = [];
-  // i determines the 1st dot's placement - we just need to run it 3 times at most
-  // e.g. for 25523..., we can place the first dot at `2.55`, `25.5` or `255.`
-  // we place the 2nd and 3rd dots in a similar way
-  for (let i = 1; i < 4 && i < n - 2; i++) {
-    for (let j = i + 1; j < i + 4 && j < n - 1; j++) {
-      for (let k = j + 1; k < j + 4 && k < n; k++) {
+  
+  //i determines the 1st dot's placement - we just need to run it 3 times at most e.g. for 
+  //25523..., we can place the first dot at `2.55`, `25.5` or `255.` to get a valid 1st
+  //segment of the IP. we place also the 2nd and 3rd dots in a similar way
+  for (let i = 1; i < 4; i++) {
+    for (let j = i + 1; j < i + 4; j++) {
+      for (let k = j + 1; k < j + 4; k++) {
         const ip = [s.slice(0, i), s.slice(i, j), s.slice(j, k), s.slice(k)];
         if (ipIsValid(ip)) res.push(ip.join('.'));
       }
     }
   }
+  
   return res;
+};
+
+//L.95 (Medium) ???
+var generateTrees = function(n) {
+  function helper(first, last) {
+    if (first > last) return [null];
+
+    const trees = [];
+    for (let root = first; root < last + 1; root++) {
+      for (let left of helper(first, root - 1)) {
+        for (let right of helper(root + 1, last)) {
+          let node = new TreeNode(root);
+          node.left = left;
+          node.right = right;
+          trees.push(node);
+        }
+      }
+    }
+    return trees;
+  }
+  return helper(1, n);
 };
 
 //L.96 (Medium) 
