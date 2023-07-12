@@ -179,7 +179,7 @@ BST.insert(3);
 BST.insert(15);
 BST.insert(6);
 console.log(BST.insert(8));
-// console.log(BST.preOrderDepthFirstSearch());
+console.log(BST.preOrderDepthFirstSearch());
 // console.log(BST.postOrderDepthFirstSearch());
 // console.log(BST.inOrderDepthFirstSearch());
 console.log(BST.breatheFirstSearch());

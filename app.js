@@ -2476,27 +2476,6 @@ var restoreIpAddresses = function(s) { //time O(1) {fixed range nested loops}, s
   return res;
 };
 
-//L.95 (Medium) ???
-var generateTrees = function(n) {
-  function helper(first, last) {
-    if (first > last) return [null];
-
-    const trees = [];
-    for (let root = first; root < last + 1; root++) {
-      for (let left of helper(first, root - 1)) {
-        for (let right of helper(root + 1, last)) {
-          let node = new TreeNode(root);
-          node.left = left;
-          node.right = right;
-          trees.push(node);
-        }
-      }
-    }
-    return trees;
-  }
-  return helper(1, n);
-};
-
 //L.96 (Medium) 
 var numTrees = function(n) { //time O(n^2), space O(1) {numTree to keep the intermediate solutions before n}
   //idx 0 to idx n (in arr of length n + 1) rep the no of nodes to form the unique BST's and
@@ -2543,23 +2522,47 @@ var generateTrees = function(n) {
 };
 
 //L.97 (Medium) ???
+var isInterleave = function(s1, s2, s3) {
+  if (s1.length + s2.length < s3.length) return false;
+
+  const memo = new Map();
+  
+  function helper(i1, i2) {
+    if (i1 === s1.length && i2 === s2.length) return true;
+
+    if (memo.has(`${i1},${i2}`)) return memo.get(`${i1},${i2}`);
+
+    if (i1 < s1.length && s1[i1] === s3[i1 + i2] && helper(i1 + 1, i2)) return true;
+
+    if (i2 < s2.length && s2[i2] === s3[i1 + i2] && helper(i1, i2 + 1)) return true;
+
+    memo.set(`${i1},${i2}`, false);
+
+    return false;
+  }
+
+  return helper(0, 0);
+};
 
 //L.98 (Medium) 
-var isValidBST = function(root) {
+var isValidBST = function(root) {//time O(n) {each node visited once}, space O(heightOfTree)
 
-  function helper(node, min, max) {//time O(n) {each node visited once}, space O(heightOfTree)
+  function helper(node, min, max) {
     //a null node is a valid BST
     if (!node) return true;
 
     //a node whose val is <= min OR >= max is an invalid BST
     if (node.val <= min || node.val >= max) return false;
 
-    let leftSubTreeIsValid = helper(node.left, min, node.val);
+    //no node in the left sub tree should have val >= node.val 
+    let leftSubTreeIsValid = helper(node.left, min, node.val); 
+    //no node in the right sub tree should have val <= node.val 
     let rightSubTreeIsValid = helper(node.right, node.val, max);
+
     return leftSubTreeIsValid && rightSubTreeIsValid;
   }
 
-  return helper(root, -Infinity, Infinity)
+  return helper(root, -Infinity, Infinity);
 };
 
 //L.99 (Medium) ???
@@ -2689,7 +2692,7 @@ var flatten = function(root) { //AFM. time O(n), space O(n) {stack used}
   if (!root) return root;
 
   const stack = [root];
-  let curr = new TreeNode();
+  let curr = new TreeNode(-1);
   while (stack.length > 0) {
     let node = stack.pop();
     if (node.right) stack.push(node.right);
@@ -2705,16 +2708,17 @@ var connect = function(root) { //ABA. time O(n), space O(1)
   if (!root) return root;
 
   //the curr level is used to connect the next pointers of the level below it
+  //since it's a perfect BT, we're always certain of how to move to the next level's leftmost
   let currLevelLeftmost = root;
   while (currLevelLeftmost.left) {
     let curr = currLevelLeftmost;
 
-    //iterate across curr level connecting the next pointers of the level just below it
+    //iterate across curr level connecting the next pointers of the next level
     while (curr) {
-      //establish siblings' connection
+      //establish siblings' connection of level below
       curr.left.next = curr.right;
 
-      //establish cousins' connection (if there are to be any)
+      //establish cousins' connection of level below (if there are to be any)
       if (curr.next) curr.right.next = curr.next.left;
 
       //progress curr pointer in the curr level "linked list"
@@ -2733,6 +2737,7 @@ var connect = function(root) { //BAM. time O(n), space O(1)
   if (!root) return root;
 
   //the curr level is used to connect the next pointers of the level just below it
+  //it's not a perfect BT so we're never certain of how to move to the next level's leftmost (we've to determine for each level)
   let curr = root;
   let nextLevelLeftmost = null;
   let nextLevelRightmost = null;
@@ -2741,7 +2746,7 @@ var connect = function(root) { //BAM. time O(n), space O(1)
     while (curr) {
       if (curr.left) {
         if (!nextLevelLeftmost) {
-          //if leftmost & rightmost havent been set, set them them to the left of curr
+          //if leftmost & rightmost havent been set, set them to the left of curr
           nextLevelLeftmost = curr.left;
           nextLevelRightmost = curr.left;
         } else {
@@ -2753,7 +2758,7 @@ var connect = function(root) { //BAM. time O(n), space O(1)
 
       if (curr.right) {
         if (!nextLevelLeftmost) {
-          //if leftmost & rightmost havent been set, set them them to the right of curr
+          //if leftmost & rightmost havent been set, set them to the right of curr
           nextLevelLeftmost = curr.right;
           nextLevelRightmost = curr.right;
         } else {
