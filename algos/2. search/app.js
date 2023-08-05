@@ -12,22 +12,24 @@
 //BINARY SEARCH works on sorted array where instead of eliminating one element at a time, we eliminate half of the remaining elements of the array at a time
 //worst/average case --> O(logn), best case --> O(1)
 // function binary(arr, val) {
-//   let start = 0;
-//   let end = arr.length - 1;
-//   let middle = Math.ceil((start + end) / 2);
+//   let left = 0;
+//   let right = arr.length - 1;
 
-//   while (arr[middle] !== val && start <= end) {
-//     if (val < arr[middle]) {
-//       end = middle - 1;
+//   while (left <= right) {
+//     let mid = Math.floor((left + right)/2);
+    
+//     if (val === arr[mid]) {
+//       return mid;
+//     } else if (val > arr[mid]) {
+//       left = mid + 1;
 //     } else {
-//       start = middle + 1;
+//       right = mid - 1;
 //     }
-//     middle = Math.ceil((start + end) / 2);
 //   }
 
-//   return arr[middle] === val ? middle : -1;
+//   return -1;
 // }
-// console.log(binary([2, 5, 9, 14, 17, 28], 28));
+// console.log(binary([2, 5, 9, 14, 17, 28], 15));
 
 //NAIVE STRING SEARCH e.g count the no of times a smaller string appear in a longer string
 function naiveSearch(long, short) {

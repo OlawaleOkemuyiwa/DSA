@@ -556,13 +556,13 @@ var strStr = function(haystack, needle) { //first occurence of a substring
   let m = haystack.length;
   let n = needle.length;
 
-  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
-    for (let i = 0; i < n; i++) {
-      //as i moves over needle, also use i to move windowStart rightwards over haystack 
-      if (needle[i] !== haystack[windowStart + i]) break;
+  for (let i = 0; i <= m - n; i++) {
+    for (let j = 0; j < n; j++) {
+      //as j moves over needle, also use j to move i rightwards over haystack 
+      if (needle[j] !== haystack[i + j]) break;
       
-      //if the last char of needle corresponds to the equivalent char of haystack we done 
-      if (i === n - 1) return windowStart;
+      //if the last char of needle corresponds to the equivalent char of haystack we've found needle in haystack
+      if (j === n - 1) return i;
     }
   }
 
@@ -574,18 +574,16 @@ var strStrII = function(haystack, needle) { //last occurence of a substring
   let n = needle.length;
   let lastIdx = -1;
 
-  for (let windowStart = 0; windowStart <= m - n; windowStart++) {
-    for (let i = 0; i < n; i++) {
-      //as i moves over needle, also use i to move windowStart rightwards over haystack 
-      if (needle[i] !== haystack[windowStart + i]) break;
+  for (let i = 0; i <= m - n; i++) {
+    for (let j = 0; j < n; j++) {
+      //as j moves over needle, also use j to move i rightwards over haystack 
+      if (needle[j] !== haystack[i + j]) break;
       
-
-      //if the last char of needle corresponds to the equivalent char of haystack we update the idx
-      if (i === n - 1) lastIdx = windowStart;
-      
+      //if the last char of needle corresponds to the equivalent char of haystack we've found needle in haystack
+      if (j === n - 1) lastIdx = i;
     }
   }
-
+  
   return lastIdx;
 };
 
@@ -1047,9 +1045,8 @@ var postorderTraversal = function(root) {
 var reverseList = function(head) { //time O(n), space O(1)
   if(!head) return head;
 
-  let curr = head;
   let prev = null;
-
+  let curr = head;
   while (curr) {
     let next = curr.next;
     curr.next = prev;
@@ -2638,8 +2635,8 @@ var buildTree = function(inorder, postorder) { //AG. time O(n^2), space O(n^2)
   let val = postorder.pop();
   let root = new TreeNode(val);
   let index = inorder.indexOf(val);
-  root.right = buildTree(inorder.slice(index + 1), postorder);
   root.left = buildTree(inorder.slice(0, index), postorder);
+  root.right = buildTree(inorder.slice(index + 1), postorder);
   return root;
 };
 
@@ -2803,8 +2800,9 @@ var rightSideView = function(root) { //BAF. time O(n), space O(n) {queue used}
 
 //L.120 (Medium)
 var minimumTotal = function(triangle) { //AA. time O(n^2), space O(n)
-  //the length of the row that comes after the last row == length of last row of triangle
-  //(which is also the length of triangle) + 1. dp is initialized to this array
+  //dp is an arr used to store the minimum sum path values at each position. dp has a length
+  //of (triangle.length + 1) because it includes an additional element to handle the 
+  //boundaries of the triangle. The initial value of each element in dp is set to 0.
   const dp = new Array(triangle.length + 1).fill(0);
 
   //starting from the last row determine the min sum path from bottom up while overwriting
@@ -2814,7 +2812,7 @@ var minimumTotal = function(triangle) { //AA. time O(n^2), space O(n)
       dp[c] = triangle[r][c] + Math.min(dp[c], dp[c + 1]);
     }
   }
-    
+  
   return dp[0];
 };
 
@@ -2830,7 +2828,7 @@ var maxProfit = function(prices) { //BA. time O(n), space O(1)
       totalProfit += (dayprice - prevDayprice);
     }
   }
-  //PS: you can sell a stock in a day (for profit) then buy again that same day to sell later
+  //PS: you can also sell a stock in a day (for profit) then buy again that same day to sell later
   return totalProfit;
 };
 
@@ -2847,7 +2845,7 @@ var longestConsecutive = function(nums) { //AGA. time O(n) {set.has() is O(1)}, 
 
   for (let num of numsSet) {
     //check if num is the start of a sequence
-    if (!numsSet.has(num - 1)) {
+    if (!numsSet.has(num - 1)) { //if the num b4 it is not in the set then it is a start
       let currentNum = num;
       let sequenceLength = 1;
 
@@ -2884,19 +2882,19 @@ var sumNumbers = function(root) { //time O(n) {all nodes visited}, space 0(treeH
 
 //L.130 (Medium)
 var solve = function(board) {//AG. time O(N) {N is board cells}. space O(N) {call stack}
-  //capture surrounded regions == capture everything except unsurrounded regions
-
+  //the approach here is to mark all unsurrounded 'O's with an indicator then flip the 
+  //'O's unmarked (surrounded 'O's) to 'X's while leaving the unsurrounded ones as 'O's
   const rows = board.length, cols = board[0].length;
   
-  function capture (r, c) {
+  function mark (r, c) {
     if (r < 0 || r === rows || c < 0 || c === cols || board[r][c] !== 'O') {
       return;
     }
     board[r][c] = 'U';
-    capture(r + 1, c);
-    capture(r - 1, c);
-    capture(r, c + 1);
-    capture(r, c - 1);
+    mark(r - 1, c);
+    mark(r + 1, c);
+    mark(r, c - 1);
+    mark(r, c + 1);
   }
 
   //find all unsurrounded 'O's and replace them with an indicator, let's say 'U' (O -> U).
@@ -2904,7 +2902,7 @@ var solve = function(board) {//AG. time O(N) {N is board cells}. space O(N) {cal
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       if (board[r][c] == 'O' && r == 0 || r == rows - 1 || c == 0 || c == cols - 1) {
-        capture(r, c);
+        mark(r, c);
       }
     }
   }
@@ -2994,13 +2992,14 @@ var copyRandomList = function(head) { //AFB. time O(n), space O(n)
   //1st pass is to map old nodes to their respective newly created copies
   let curr = head;
   while (curr) {
-    let copy = new Node(curr.val);
+    let copy = new Node(curr.val, null, null);
     oldToCopy.set(curr, copy);
+
     curr = curr.next;
   }
 
   //this is done because when we try to determine the copy of curr.next/random from our map in
-  //the 2nd pass, if the value is null, oldToCopy.get(null) would return null instead of error
+  //the 2nd pass, if the value is null, oldToCopy.get(null) would return null instead of undefined
   oldToCopy.set(null, null);
 
   //2nd pass is to update each copy's next and random pointers in accordance to the old list
@@ -3009,6 +3008,7 @@ var copyRandomList = function(head) { //AFB. time O(n), space O(n)
     let copy = oldToCopy.get(curr);
     copy.next = oldToCopy.get(curr.next);
     copy.random = oldToCopy.get(curr.random);
+
     curr = curr.next;
   }
 
@@ -3017,16 +3017,16 @@ var copyRandomList = function(head) { //AFB. time O(n), space O(n)
 
 //L.139 (Medium)
 var wordBreak = function(s, wordDict) {//BAA. time O(n^3). space O(n) {n == length of s}
-  //dp[i] rep validation of the substr formed from idx i as a valid sequence of substrs of s
+  //dp[i] rep validation of the substr formed from idx i to the right of string s as a valid sequence of substrs of s
   const dp = new Array(s.length + 1).fill(false); 
-  dp[dp.length - 1] = true; //base case {substr after the last substr of s ("") is validated}
+  dp[dp.length - 1] = true; //base case {substr after the last substr of s ('') is validated}
 
   for (let i = s.length - 1; i >= 0; i--) {
-    for (let w of wordDict) {
+    for (let word of wordDict) {
       //from idx i of s, check if s has enough chars to the right to compare with cur w
-      if (i + w.length <= s.length && s.substring(i, i + w.length) === w) {
+      if (i + word.length <= s.length && s.substring(i, i + word.length) === word) {
         //cur substr will only be valid if the substr just after it has been validated
-        dp[i] = dp[i + w.length];
+        dp[i] = dp[i + word.length];
       }
       //if the substr from i has already been found in wordDict, no need for further look
       if (dp[i]) break;
@@ -3045,9 +3045,10 @@ var detectCycle = function(head) { //ABM. Floyd's tortoise & hare. time O(n). sp
   while (fast && fast.next) {
     slow = slow.next;
     fast = fast.next.next;
-    //if the list has a cycle in it, slow and fast will meet at some point in the list
+    //if the list has a cycle in it, slow and fast would meet at some point in the list
     if (slow === fast) {
       slow = head;
+      //the node where the slow and fast pointers meet is where the cycle begins
       while (slow !== fast) {
         slow = slow.next;
         fast = fast.next;
@@ -3059,8 +3060,19 @@ var detectCycle = function(head) { //ABM. Floyd's tortoise & hare. time O(n). sp
 };
 
 //L.143 (Medium)
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {void} Do not return anything, modify head in-place instead.
+ */
 var reorderList = function(head) { //AAM. time O(n). space O(1)
-  //find the middle node of the linked list
+  //find the ceil middle node of the linked list
   let slow = head;
   let fast = head;
   while (fast && fast.next) {
@@ -3071,25 +3083,24 @@ var reorderList = function(head) { //AAM. time O(n). space O(1)
   //reverse the 2nd part of the list (slow now points to the head node of the 2nd part)
   let prev = null;
   let curr = slow;
-  let next;
   while (curr) {
-    next = curr.next
+    let next = curr.next
     curr.next = prev;
     prev = curr;
     curr = next;
   }
 
   //merge the two lists (prev now points to the head node of the 2nd part)
-  let list1 = head;
-  let list2 = prev;
-  while (list1.next && list2.next) {
-    next = list1.next;
-    list1.next = list2;
-    list1 = next;
+  let l1 = head;
+  let l2 = prev;
+  while (l1.next && l2.next) {
+    let next = l1.next;
+    l1.next = l2;
+    l1 = next;
 
-    next = list2.next;
-    list2.next = list1;
-    list2 = next;
+    next = l2.next;
+    l2.next = l1;
+    l2 = next;
   }
 };
 
@@ -3102,9 +3113,9 @@ var Node = function(key, val) {
 }
 var LRUCache = function(capacity) { //ABA. time O(1), space O(capacity) {hashMap used}
   this.capacity = capacity;
-  this.cache = new Map(); //a map of the key of each node el to a pointer to the node in memory
-  this.left = new Node(0, 0); //a dummy node to help find the LRU el
-  this.right = new Node(0, 0); //a dummy node to help find the MRU el
+  this.cache = new Map(); //a map of the key of each node to a pointer to each node in memory
+  this.left = new Node(0, 0); //a dummy node to help swiftly find the LRU el
+  this.right = new Node(0, 0); //a dummy node to help swiftly find the MRU el
   this.left.next = this.right;
   this.right.prev = this.left;
 };
@@ -3174,9 +3185,10 @@ var insertionSortList = function(head) { //MAG. time O(n^2) at worst. space O(1)
   let dummyHead = new ListNode(-1, head);
   let prev = head;
   let curr = head.next;
+
   while (curr) {
-    //if val of the node just b4 curr is <= curr.val then move to next d node (it's sorted)
-    if (prev.val <= curr.val) {
+    //if curr.val >= val of the node just b4 it then move to next the node (it's sorted)
+    if (curr.val >= prev.val) {
       prev = curr;
       curr = curr.next;
       continue;
@@ -3184,9 +3196,9 @@ var insertionSortList = function(head) { //MAG. time O(n^2) at worst. space O(1)
 
     //else find the suitable position to insert curr node
     let temp = dummyHead;
-    while (curr.val > temp.next.val) {
-      //we stop this iteration on temp when the val of curr node to insert is <= to the 
-      //val of temp.next. Then curr can be inserted in between temp and temp.next
+    while (curr.val >= temp.next.val) {
+      //we stop this iteration on temp when the val of curr node to insert < val of 
+      //temp.next. Then curr can be inserted in between temp and temp.next
       temp = temp.next;
     }
     prev.next = curr.next;
@@ -3195,6 +3207,7 @@ var insertionSortList = function(head) { //MAG. time O(n^2) at worst. space O(1)
 
     curr = prev.next;
   }
+
   return dummyHead.next;
 };
 
@@ -3255,17 +3268,17 @@ var evalRPN = function(tokens) { //AGL. time O(n). space O(n)
     if (!isNaN(token)) {
       stack.push(parseInt(token));
     } else {
-      let a = stack.pop();
       let b = stack.pop();
+      let a = stack.pop();
 
       if (token === '+') {
-        stack.push(b + a);
+        stack.push(a + b);
       } else if (token === '-') {
-        stack.push(b - a);
+        stack.push(a - b);
       } else if (token === '*') {
-        stack.push(b * a);
+        stack.push(a * b);
       } else {
-        stack.push(Math.trunc(b/a));
+        stack.push(Math.trunc(a/b));
       }
     }
   }
@@ -3279,14 +3292,14 @@ var reverseWords = function(s) { //AMA. time O(n). space O(n)
 
   let i = 0;
   while (i < n) {
-    //skip white spaces till we get to the 1st letter of a substring
+    //skip white spaces till we get to the 1st letter of a word substring
     while (i < n && s.charAt(i) === ' ') i++;
 
     //if i ever goes out of bound while skipping white spaces then we're done
     if (i >= n) break;
 
     //else i is on the 1st letter of a sub in s. j is then used to determine the cur sub 
-    //j stops when it goes out of bound or when j is on a white space after cur sub
+    //j stops when j is on a white space after cur sub or when it goes out of bound or
     let j = i + 1;
     while (j < n && s.charAt(j) !== ' ') j++;
 
@@ -3309,15 +3322,14 @@ var maxProduct = function(nums) { //ALM. time O(n). space O(1)
   let maxProduct = -Infinity;
   let curMin = 1, curMax = 1;
   for (let num of nums) {
-    let tempMax = Math.max(num, curMin * num, curMax * num);
+    let curMaxTemp = Math.max(num, curMin * num, curMax * num);
     curMin = Math.min(num, curMin * num, curMax * num);
 
-    curMax = tempMax;
+    curMax = curMaxTemp;
     maxProduct = Math.max(maxProduct, curMax);
   }
   return maxProduct;
 };
-
 //L.153 (Medium)
 var findMin = function(nums) { //AMF. time O(logn). space O(1)
   //to rotate by 4 is to take the 4 rightmost nums and put in the beginning of the array
@@ -3338,7 +3350,7 @@ var findMin = function(nums) { //AMF. time O(logn). space O(1)
       //search the right side as it contains the smaller digits
       left = mid + 1;
     } else {
-      //search the left side as it contains the larger digits
+      //search left side as it now contains the smaller digits
       right = mid - 1;
     }
   }

@@ -33,7 +33,7 @@
 
 // function selectionSort(arr) {
 //   for (let i = 0; i < arr.length; i++) {   //i also serves as the pointer guard here and j does the comparisons to determine the smallest number in a loop to be selected
-//     let minIndex = i;      //we begin by assuming the first element of the outer loop is the smallest digity
+//     let minIndex = i;      //we begin by assuming the first element of the outer loop is the smallest digit
 //     for (let j = i + 1; j < arr.length; j++) {
 //       if (arr[j] < arr[minIndex]) {
 //         minIndex = j;
@@ -50,7 +50,7 @@
 // }
 // console.log(selectionSort([-20, 19, -5, 44, 38, 5, 47, 15, -11]));
 
-//INSERTION SORT --> we loop over the array starting from the 2nd (so we can have at least 1 value to compare to i.e arr[j]). Each value of the arrayarr[i] is then saved in a variable. Then the inner loop is used to compare that value with values before it and then logically inserted in the appropriate position that would sort the array left to right
+//INSERTION SORT --> we loop over the array starting from the 2nd (so we can have at least 1 value to compare to i.e arr[j]). Each value of the array arr[i] is then saved in a variable. Then the inner loop is used to compare that value with values before it and then logically inserted in the appropriate position that would sort the array left to right
 //BigO --> At worst O(n^2). At best O(n). IT IS THE MOST efficient of the three for small size arrays or when the array data is almost sorted e.g [1, 3, 4, 2]). Also because in insertion sort we keep one side of the data sorted (the left), it is efficient for when we wish to continously sort an array as new elements are added into it on the fly
 //BSI sort all have the space complexity of O(1)
 
@@ -59,11 +59,10 @@
 //     let numToInsert = arr[i];
 //     let j;
 //     for (j = i - 1; j >= 0; j--) {
-//       if (arr[j] <= numToInsert) {
-//         //if arr[j] is <= numToInsert then left of i is already sorted and we can simply insert num to the right of arr[j] (i.e insert num back into it's cur position i)
-//         break;
-//       } 
-//       //else arr[j] is > the num to inserted, we shift arr[j] to the right in order to potentially insert num to it's left
+//       //if numToInsert >= arr[j] then left of j is already sorted and we can simply insert num into the pos just after j (j + 1)
+//       if (numToInsert >= arr[j]) break;
+
+//       //else the num to inserted < arr[j], we shift arr[j] to the right in order to potentially insert num to it's left
 //       arr[j + 1] = arr[j];
 //     }
 //     arr[j + 1] = numToInsert;

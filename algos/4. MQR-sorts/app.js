@@ -21,9 +21,9 @@ function merge(arr1, arr2) {
   }
 
   if (i < arr1.length) {
-    merged = merged.concat(arr1.slice(i));
+    merged.push(...arr1.slice(i));
   } else if (j < arr2.length) {
-    merged = merged.concat(arr2.slice(j));
+    merged.push(...arr2.slice(j));
   }
 
   return merged;
@@ -32,9 +32,9 @@ console.log(merge([8, 10, 41, 50, 51], [7, 11, 31]));
 
 function mergeSort(arr) {
   if (arr.length <= 1) return arr;
-  const mid = Math.ceil((arr.length - 1) / 2);
-  const sortedLeft = mergeSort(arr.slice(0, mid));
-  const sortedright = mergeSort(arr.slice(mid));
+  const mid = Math.floor((arr.length - 1) / 2);
+  const sortedLeft = mergeSort(arr.slice(0, mid + 1));
+  const sortedright = mergeSort(arr.slice(mid + 1));
   return merge(sortedLeft, sortedright);
 }
 console.log(mergeSort([8, 7, 5, 1, 3]));
