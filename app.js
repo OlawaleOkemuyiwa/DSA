@@ -3350,7 +3350,7 @@ var findMin = function(nums) { //AMF. time O(logn). space O(1)
       //search the right side as it contains the smaller digits
       left = mid + 1;
     } else {
-      //search left side as it now contains the smaller digits
+      //else search left side as it now contains the smaller digits
       right = mid - 1;
     }
   }
