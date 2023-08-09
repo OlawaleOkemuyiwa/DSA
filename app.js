@@ -3381,3 +3381,29 @@ MinStack.prototype.top = function() {
 MinStack.prototype.getMin = function() {
   return this.stack[this.stack.length - 1][1];
 };
+
+
+//L.1143 (Medium)
+var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
+  const m = text1.length;
+  const n = text2.length;
+
+  const dp = new Array(m + 1).fill(0);
+  for (let i = 0; i < dp.length; i++) {
+      dp[i] = new Array(n + 1).fill(0);
+  }
+  
+  //iterate backwards over dp comparing text1 and text2 characters in position
+  for (let r = m - 1; r >= 0; r--) {
+      for (let c = n - 1; c >= 0; c--) {
+          //if the 2 chars match then we add 1 to dp value diagonal to cur position
+          if (text1[r] === text2[c]) {
+              dp[r][c] = 1 + dp[r + 1][c + 1];
+          } else {
+              dp[r][c] = Math.max(dp[r][c + 1], dp[r + 1][c]);
+          }
+      }
+  }
+
+  return dp[0][0];
+};
