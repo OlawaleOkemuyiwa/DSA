@@ -2155,7 +2155,50 @@ var simplifyPath = function(path) {  //time O(n), space O(n)
 };
 
 //L.72 (Medium)
+var minDistance = function(word1, word2) {
+  //base cases: if word1 and word2 are both empty, then no of operations == 0
+  //if word1 has length > 0 and word2 is empty. no of operations == length of word1 
+  //if word1 is empty and word2 has length > 0. no of operations == length of word2
 
+  const m = word1.length;
+  const n = word2.length;
+
+  //each cell in dp rep the minumum number of operations it will take to convert the substr
+  //starting at cur position in word1 to substr at cur position in word2. The substrs are 
+  //constructed left to right till we get to the 1st char of both words (substr starting at 
+  //0,0 in both words are the words themselves) => res == dp[0][0]
+  const dp = new Array(m + 1);
+  for (let i = 0; i < dp.length; i++) {
+    dp[i] = new Array(n + 1);
+  }
+
+  //fill up the last row of dp (base case: word1 is an empty string)
+  for (let c = 0; c <= n; c++) {
+    dp[m][c] = n - c;
+  }
+  
+  //fill up the last column of dp (base case: word2 is an empty string)
+  for (let r = 0; r <= m; r++) {
+    dp[r][n] = m - r;
+  }
+
+  //iterate backwards over both words (and simultaneously over dp nested array)
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = n - 1; j >= 0; j--) {
+      //if the 2 chars match then no need for any operation. The min op at dp[i][j]
+      //is then the res of the substrs formed after them: text1[i + 1] and text2[j + 1]
+      if (word1[i] === word2[j]) {
+        dp[i][j] = dp[i + 1][j + 1];
+      } else {
+      //else if they're not equal, we have 3 operations to choose from so we choose
+      //1 out of the 3 which will make us achieve overall minimum no of operations 
+        dp[i][j] = 1 + Math.min(dp[i][j + 1], dp[i + 1][j], dp[i + 1][j + 1]);
+      }
+    }
+  }
+  // console.log(dp);
+  return dp[0][0];
+};
 
 //L.73 (Medium)
 var setZeroes = function(matrix) { //time O(m * n), spae O(1)
@@ -3385,25 +3428,33 @@ MinStack.prototype.getMin = function() {
 
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
+  //base case: if any or both of the texts are empty LCS is 0
+
   const m = text1.length;
   const n = text2.length;
 
-  const dp = new Array(m + 1).fill(0);
+  //each cell in dp rep the longest common subseqeunce between the current substr starting  
+  //at cur position in word1 and word2. The substrs are constructed left to right till we get
+  //to the 1st char of both words (substr starting at 0,0 are the words) => res == dp[0][0]
+  const dp = new Array(m + 1);
   for (let i = 0; i < dp.length; i++) {
-      dp[i] = new Array(n + 1).fill(0);
+    dp[i] = new Array(n + 1).fill(0);
   }
   
-  //iterate backwards over dp comparing text1 and text2 characters in position
-  for (let r = m - 1; r >= 0; r--) {
-      for (let c = n - 1; c >= 0; c--) {
-          //if the 2 chars match then we add 1 to dp value diagonal to cur position
-          if (text1[r] === text2[c]) {
-              dp[r][c] = 1 + dp[r + 1][c + 1];
-          } else {
-              dp[r][c] = Math.max(dp[r][c + 1], dp[r + 1][c]);
-          }
+  //iterate backwards over both words (and simultaneously over dp nested array)
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = n - 1; j >= 0; j--) {
+      //if the 2 chars match then we add 1 (1 cause we just found 1 valid subsequence) 
+      //plus the res of the substrs formed by text1[i + 1] and text2[j + 1]
+      if (text1[i] === text2[j]) {
+        dp[i][j] = 1 + dp[i + 1][j + 1];
+      } else {
+      //else we figure out which will give the LCS between the substr formed by
+      //text1[i] and text2[j + 1] OR the substr formed by text1[i + 1] and text2[j]
+        dp[i][j] = Math.max(dp[i][j + 1], dp[i + 1][j]);
       }
+    }
   }
-
+  //console.log(dp);
   return dp[0][0];
 };
