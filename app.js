@@ -2727,6 +2727,35 @@ var sortedListToBST = function(head) { //FAM. time O(n), space O(n) {cause of nu
   return helper(0, nums.length - 1);
 };
 
+//L.113 (Medium)
+var pathSum = function(root, targetSum) {
+  const paths = [];
+
+  function helper (node, curSum, curPath) {
+    //if we're dealing with a null tree, then return result paths has []
+    if (!node) return;
+
+    //increment curSum with the value of the current node and add cur node to curPath
+    curSum += node.val;
+    curPath.push(node.val);
+    
+    //check if current node is a leaf node (desired)
+    if (!node.left && !node.right && curSum === targetSum) {
+      paths.push([...curPath]);
+      // return;
+    }
+
+    //continue down both the left and right subtree.
+    helper(node.left, curSum, curPath);
+    helper(node.right, curSum, curPath);
+
+    curPath.pop();
+  }
+
+  helper(root, 0, []);  
+  return paths;
+};
+
 //L.114 (Medium)
 var flatten = function(root) { //AFM. time O(n), space O(n) {stack used}
   if (!root) return root;
@@ -2906,17 +2935,18 @@ var longestConsecutive = function(nums) { //AGA. time O(n) {set.has() is O(1)}, 
 };
 
 //L.129 (Medium)
-var sumNumbers = function(root) { //time O(n) {all nodes visited}, space 0(treeHeight) 
+var sumNumbers = function(root) { //BFM. time O(n) {all nodes visited}, space 0(treeHeight) 
   let totalSum = 0;
 
   function helper (node, pathSum) {
+    if (!node) return;
     pathSum = (pathSum * 10) + node.val;
     if (!node.left && !node.right) {
       totalSum += pathSum;
       return;
     }
-    if (node.left) helper(node.left, pathSum);
-    if (node.right) helper(node.right, pathSum);
+    helper(node.left, pathSum);
+    helper(node.right, pathSum);
   }
   helper(root, 0);
 
