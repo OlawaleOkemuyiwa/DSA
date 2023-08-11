@@ -2739,17 +2739,18 @@ var pathSum = function(root, targetSum) {
     curSum += node.val;
     curPath.push(node.val);
     
-    //check if current node is a leaf node (desired)
+    //check if current node is a leaf node (desired) and satisfies condition
     if (!node.left && !node.right && curSum === targetSum) {
-      paths.push([...curPath]);
-      // return;
+      paths.push(curPath.concat());
     }
 
     //continue down both the left and right subtree.
-    helper(node.left, curSum, curPath);
-    helper(node.right, curSum, curPath);
+    if (node.left) helper(node.left, curSum, curPath);
+    if (node.right) helper(node.right, curSum, curPath);
 
-    curPath.pop();
+    //finally from the curPath arr in memory remove the recently pushed el to it so as 
+    //to return it to the state it was in order to correctly push the next node val into it
+    curPath.pop(); 
   }
 
   helper(root, 0, []);  
@@ -2945,8 +2946,8 @@ var sumNumbers = function(root) { //BFM. time O(n) {all nodes visited}, space 0(
       totalSum += pathSum;
       return;
     }
-    helper(node.left, pathSum);
-    helper(node.right, pathSum);
+    if (node.left) helper(node.left, pathSum);
+    if (node.right) helper(node.right, pathSum);
   }
   helper(root, 0);
 
