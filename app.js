@@ -2728,10 +2728,11 @@ var sortedListToBST = function(head) { //FAM. time O(n), space O(n) {cause of nu
 };
 
 //L.113 (Medium)
-var pathSum = function(root, targetSum) {
+var pathSum = function(root, targetSum) { //AAD. time O(n^2) [O(n) to visit all nodes, O(n) to copy the el of curPath on a node whose path satisfies the cond], space O(n) --> the curPath arr created
   const paths = [];
+  const curPath = [];
 
-  function helper (node, curSum, curPath) {
+  function helper (node, curSum) {
     //if we're dealing with a null tree, then return result paths has []
     if (!node) return;
 
@@ -2741,19 +2742,19 @@ var pathSum = function(root, targetSum) {
     
     //check if current node is a leaf node (desired) and satisfies condition
     if (!node.left && !node.right && curSum === targetSum) {
-      paths.push(curPath.concat());
+      paths.push(curPath.slice());
     }
 
     //continue down both the left and right subtree.
-    if (node.left) helper(node.left, curSum, curPath);
-    if (node.right) helper(node.right, curSum, curPath);
+    if (node.left) helper(node.left, curSum);
+    if (node.right) helper(node.right, curSum);
 
     //finally from the curPath arr in memory remove the recently pushed el to it so as 
     //to return it to the state it was in order to correctly push the next node val into it
     curPath.pop(); 
   }
 
-  helper(root, 0, []);  
+  helper(root, 0);  
   return paths;
 };
 
@@ -2994,7 +2995,38 @@ var solve = function(board) {//AG. time O(N) {N is board cells}. space O(N) {cal
   }
 };
 
-//L.131 (Medium) ???
+//L.131 (Medium)
+function isPalindrome (s, i, j) {
+  while (i < j) {
+      if (s[i] !== s[j]) return false;
+      i++;
+      j--;
+  }
+  return true;
+}
+
+var partition = function(s) {
+  const partitions = [];
+  const curPartition = [];
+
+  function helper (i) {
+    if (i >= s.length) {
+      partitions.push(curPartition.slice());
+      return;
+    }
+
+    for (let j = i; j < s.length; j++) {
+      if (isPalindrome(s, i, j)) {
+        curPartition.push(s.substring(i, j + 1));
+        helper(j + 1);
+        curPartition.pop();
+      }
+    }
+  }
+
+  helper(0);
+  return partitions;
+};
 
 //L.133 (Medium)
 var cloneGraph = function(node) { //FAA. time O(no of nodes + no of edges). space O(no of nodes)
