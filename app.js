@@ -1358,12 +1358,12 @@ var threeSumClosest = function(nums, target) {
   return closetSum;
 };
 
-//L.17 (Medium) ???
-var letterCombinations = function(digits) { //backtracking
-  const res = [];
+//L.17 (Medium)
+var letterCombinations = function(digits) { //AAB. time O(4^n * n). Space O(n) --> recursion call stack
+  const res = []; //backtracking
   if (digits.length === 0) return res;
   
-  const obj = {
+  const lookup = {
     2: 'abc', 
     3: 'def', 
     4: 'ghi', 
@@ -1374,16 +1374,19 @@ var letterCombinations = function(digits) { //backtracking
     9: 'wxyz'
   };
 
-  function helper(i, curStr) {
-    if (curStr.length === digits.length) {
+  function helper(i, curStr) { 
+    if (i >= digits.length) {
       //every single digit has been mapped to a char, push curStr to res and we're done
       res.push(curStr);
       return;
     } 
-    for (let char of obj[digits[i]]) {
+
+    let curDigitLetters = lookup[digits[i]];
+    for (let char of curDigitLetters) {
       helper(i + 1, curStr + char);
     }
   }
+
   helper(0, '');
   return res;
 };
@@ -3005,8 +3008,8 @@ function isPalindrome (s, i, j) {
   return true;
 }
 
-var partition = function(s) {
-  const partitions = [];
+var partition = function(s) { //AAB. time O(n * 2^n). space O(n) --> to store recursion stack
+  const partitions = []; //backtracking
   const curPartition = [];
 
   function helper (i) {
