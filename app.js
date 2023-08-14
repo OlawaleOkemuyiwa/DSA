@@ -1453,28 +1453,25 @@ var removeNthFromEnd = function(head, n) {
 };
 
 //L.22 (Medium)
-var generateParenthesis = function(n) { //backtracking
+var generateParenthesis = function(n) { //AMA. backtracking
   const res = [];
 
   function helper(open, close, curStr) {
-    //open = no of opening parantheses ("(") we have left to combine
-    //close = no of closing parantheses (")") we have left to combine
-      
-    if (open === 0 && close === 0) {//OR if curStr.length === n * 2
+    //open = the count of opening parantheses in curStr
+    //close = the count of closing parantheses in curStr
+    if (open === n && close === n) {
       res.push(curStr);
       return;
     }
 
-    if (open > 0) {
-      helper(open - 1, close, curStr + '(');
-    }
+    //we can only add a "(" to curStr if open < n
+    if (open < n) helper(open + 1, close, curStr + '(')
 
-    if (close > open) {
-      helper(open, close - 1, curStr + ')');
-    } 
+    //we can only add a ")" to curStr if open > close
+    if (open > close) helper(open, close + 1, curStr + ')')
   }
-  //at start we've n opening and closing paranthesis to combine to form a valid parentheses
-  helper(n, n, '');
+  
+  helper(0, 0, '');
   return res;
 };
 
