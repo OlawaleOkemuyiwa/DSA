@@ -1661,24 +1661,32 @@ var countAndSay = function(n) {
 };
 
 //L.39 (Medium) ???
-var combinationSum = function(candidates, target) {
-  const res = [];
+var combinationSum = function(candidates, target) { //AAG. 
+  const combinations = [];
+  const curCombination = [];
 
-  function helper(i, arr, sum) {
-    if (i >= candidates.length || sum > target) return;
+  function helper(i, curSum) {
+    if (i >= candidates.length || curSum > target) return;
 
-    if (sum === target) {
-      res.push(arr.slice());
+    if (curSum === target) {
+      combinations.push(curCombination.slice());
       return;
     }
     
-    arr.push(candidates[i]);
-    helper(i, arr, sum + candidates[i]);
-    arr.pop();
-    helper(i + 1, arr, sum); 
+    //we can either add the candidate at i to the curCombination and it's value to curSum
+    curCombination.push(candidates[i]);
+    helper(i, curSum + candidates[i]);
+
+    //clean up the curCombination arr after first decision
+    curCombination.pop();
+
+    //OR we skip the already included candidate at i (for unique combinations) and move
+    //to the next candidate after i, keeping curSum the same
+    helper(i + 1, curSum); 
   }
-  helper(0, [], 0);
-  return res;
+
+  helper(0, 0);
+  return combinations;
 };
 
 //L.40 (Medium) ???
