@@ -1660,20 +1660,21 @@ var countAndSay = function(n) {
   return s;
 };
 
-//L.39 (Medium) ???
-var combinationSum = function(candidates, target) { //AAG. 
+//L.39 (Medium)
+var combinationSum = function(candidates, target) { //AAG
   const combinations = [];
   const curCombination = [];
 
   function helper(i, curSum) {
-    if (i >= candidates.length || curSum > target) return;
-
     if (curSum === target) {
       combinations.push(curCombination.slice());
       return;
     }
     
-    //we can either add the candidate at i to the curCombination and it's value to curSum
+    if (i >= candidates.length || curSum > target) return;
+    
+    //we can either add the candidate at i to the curCombination and it's value to curSum.
+    //a candidate can be used more than once so candidate[i] is still considered next 
     curCombination.push(candidates[i]);
     helper(i, curSum + candidates[i]);
 
@@ -1689,29 +1690,39 @@ var combinationSum = function(candidates, target) { //AAG.
   return combinations;
 };
 
-//L.40 (Medium) ???
-var combinationSum2 = function(candidates, target) {
-  const res = [];
+//L.40 (Medium)
+var combinationSum2 = function(candidates, target) { //AAU
+  const combinations = [];
+  const curCombination = [];
+
+  //candidates are sorted to bring the same numbers together in order to skip the duplicates
+  //and enforce each number is used only once in a combination
   candidates.sort((a, b) => a - b);
 
-  function helper(index, arr, sum) {
-    if (sum > target) return;
-
-    if (sum === target) {
-      res.push(arr.slice());
+  function helper (i, curSum) {
+    if (curSum === target) {
+      combinations.push(curCombination.slice());
       return;
     }
 
-    for (let i = index; i < candidates.length; i++) {
-      if (i > index && candidates[i] === candidates[i - 1]) continue;
-      if (target - sum < candidates[i]) break;
-      arr.push(candidates[i]);
-      helper(i + 1, arr, sum + candidates[i]);
-      arr.pop();
-    } 
-  }
-  helper(0, [], 0);
-  return res;
+    if (i >= candidates.length || curSum > target) return;
+
+    //we can either add the candidate at i to the curCombination and it's value to curSum.
+    //a candidate can be used only once in a comb so we move to i + 1 for the next cand
+    curCombination.push(candidates[i]);
+    helper(i + 1, curSum + candidates[i]); 
+
+    curCombination.pop();
+
+    //OR we skip the already included candidate at i (for unique combinations) and move
+    //to the next candidate after i keeping curSum the same. if the next candidate after i
+    //is a duplicate, it is also skipped.
+    while (i + 1 < candidates.length && candidates[i] === candidates[i + 1]) i++;
+    helper(i + 1, curSum);
+  };
+
+  helper(0, 0);
+  return combinations;
 };
 
 //L.216 (Medium) ???
