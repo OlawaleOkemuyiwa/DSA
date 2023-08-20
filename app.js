@@ -1826,7 +1826,29 @@ var jump = function(nums) { //Greedy --> time O(n), space O(1)
   return noOfJumps;
 };
 
-//L.46 (Medium) ???
+//L.46 (Medium)
+var permute = function(nums) { //BAA. time O(n*n!). space O(n) --> recursion stack
+  const permutations = [];
+  const curPermutation = [];
+
+  function helper() {
+    if (curPermutation.length === nums.length) {
+      permutations.push(curPermutation.slice())
+      return;
+    }
+
+    for (let num of nums) {
+      if (curPermutation.includes(num)) continue;
+
+      curPermutation.push(num);
+      helper();
+      curPermutation.pop();
+    }
+  }
+
+  helper();
+  return permutations;
+};
 
 //L.47 (Medium) ???
 
