@@ -1670,11 +1670,11 @@ var combinationSum = function(candidates, target) { //AAG
       combinations.push(curCombination.slice());
       return;
     }
-    
-    if (i >= candidates.length || curSum > target) return;
-    
-    //we can either add the candidate at i to the curCombination and it's value to curSum.
-    //a candidate can be used more than once so candidate[i] is still considered next 
+
+    if (curSum > target || i >= candidates.length) return;
+
+    //we can either add the candidate at i to the curCombination and it's value to curSum
+    //(a candidate can be used more than once so candidate[i] is still considered next)
     curCombination.push(candidates[i]);
     helper(i, curSum + candidates[i]);
 
@@ -1705,7 +1705,7 @@ var combinationSum2 = function(candidates, target) { //AAU
       return;
     }
 
-    if (i >= candidates.length || curSum > target) return;
+    if (curSum > target || i >= candidates.length) return;
 
     //we can either add the candidate at i to the curCombination and it's value to curSum.
     //a candidate can be used only once in a comb so we move to i + 1 for the next cand
@@ -1725,27 +1725,33 @@ var combinationSum2 = function(candidates, target) { //AAU
   return combinations;
 };
 
-//L.216 (Medium) ???
-var combinationSum3 = function(k, n) {
-  const res = []
+//L.216 (Medium)
+var combinationSum3 = function(k, n) { //MGA
+  const combinations = [];
+  const curCombination = [];
 
-  function helper(arr, start, sum) {
-    //when the running sum exceeds target n, then we're out of bound
-    if (sum > n) return;
-    
-    //when arr being constructed becomes of length k (max length arr can be), then we done  
-    //check  if the running sum is equal desired value n and push to result.
-    if (arr.length === k) {
-      if (sum === n) res.push(arr);
+  function helper(i, curSum) {
+    //when the length of curCombination being constructed === k, then we done.
+    //check if running curSum is equal the desired value n and push to result. 
+    if (curCombination.length === k) {
+      if (curSum === n) combinations.push(curCombination.slice());
       return;
     }
-    
-    for (let i = start; i < 10; i++) {
-      helper(arr.concat(i), i + 1, sum + i);
+
+    //when the running curSum exceeds target n, then we're out of bound
+    if (curSum > n) return;
+
+    for (let j = i; j < 10; j++) {
+      curCombination.push(j);
+
+      helper(j + 1, curSum + j);
+
+      curCombination.pop();
     }
   }
-  helper([], 1, 0);
-  return res;
+
+  helper(1, 0);
+  return combinations;
 };
 
 //L.43 (Medium)
