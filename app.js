@@ -2380,22 +2380,28 @@ var sortColors = function(nums) { //time O(n) {1 pass}, space O(1)
   }
 };
 
-// L.77 (Medium) ???
-var combine = function(n, k) { //backtracking
-  const result = [];
+// L.77 (Medium)
+var combine = function(n, k) { //AMA.
+  const combinations = [];
+  const curCombination = [];
 
-  function helper(arr, start) {
-    if (arr.length === k) {
-      result.push(arr.slice());
+  function helper(i) {
+    if (curCombination.length === k) {
+      combinations.push(curCombination.slice());
       return;
     }
 
-    for (let i = start; i <= n; i++) {
-      helper(arr.concat(i), i + 1);
+    for (let j = i; j <= n; j++) {
+      curCombination.push(j);
+
+      helper(j + 1);
+
+      curCombination.pop();
     }
   }
-  helper([], 1);
-  return result;
+
+  helper(1);
+  return combinations;
 };
 
 //L.78 (Medium) ???
