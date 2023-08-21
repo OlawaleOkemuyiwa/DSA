@@ -2404,7 +2404,29 @@ var combine = function(n, k) { //AMA.
   return combinations;
 };
 
-//L.78 (Medium) ???
+//L.78 (Medium)
+var subsets = function(nums) { //AAG.
+  const subsets = [];
+  const curSubset = [];
+
+  function helper(i) {
+    if (i >= nums.length) {
+      subsets.push(curSubset.slice())
+      return;
+    }
+
+    //decision to include nums[i]
+    curSubset.push(nums[i]);
+    helper(i + 1);
+
+    //decision to NOT include nums[i]
+    curSubset.pop();
+    helper(i + 1);
+  }
+
+  helper(0);
+  return subsets;
+};
 
 //L.79 (Medium) ???
 
