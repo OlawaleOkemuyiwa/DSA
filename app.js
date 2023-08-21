@@ -1850,7 +1850,38 @@ var permute = function(nums) { //BAA. time O(n*n!). space O(n) --> recursion sta
   return permutations;
 };
 
-//L.47 (Medium) ???
+//L.47 (Medium)
+var permuteUnique = function(nums) { //AMA. 
+  const permutations = [];
+  const curPermutation = [];
+  const counter = new Map();
+
+  for (const num of nums) {
+    counter.set(num, (counter.get(num) || 0) + 1);
+  }
+
+  function helper() {
+    if (curPermutation.length === nums.length) {
+      permutations.push(curPermutation.slice())
+      return;
+    }
+
+    for (const num of counter.keys()) {
+      if (counter.get(num) <= 0) continue;
+
+      curPermutation.push(num);
+      counter.set(num, counter.get(num) - 1);
+
+      helper();
+
+      counter.set(num, counter.get(num) + 1);
+      curPermutation.pop();
+    }
+  }
+
+  helper();
+  return permutations;
+};
 
 //L.48 (Medium)
 var rotate = function(matrix) { // O(n^2) time, O(1) space
