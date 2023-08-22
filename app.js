@@ -2415,11 +2415,11 @@ var subsets = function(nums) { //AAG.
       return;
     }
 
-    //decision to include nums[i]
+    //decision to include nums[i] in curSubset
     curSubset.push(nums[i]);
     helper(i + 1);
 
-    //decision to NOT include nums[i]
+    //decision to NOT include nums[i] in curSubset
     curSubset.pop();
     helper(i + 1);
   }
@@ -2428,7 +2428,48 @@ var subsets = function(nums) { //AAG.
   return subsets;
 };
 
-//L.79 (Medium) ???
+//L.79 (Medium)
+var exist = function(board, word) { //TBA.
+  //O(N * 3^L), N == board cells, l == word length. space O(L)
+  
+  const ROWS = board.length;
+  const COLS = board[0].length;
+
+  //since we can't revisit a char twice within the same path, we use a set to house
+  //the pos in the current path to make sure we don't revisit the same pos twice
+  const visited = new Set();
+
+  //r,c rep the cur pos on the board that we at, i rep the cur char within the target word
+  function helper(r, c, i) {
+    //if i ever successfully get to the end of word. Then the word has been found
+    if (i === word.length) return true;
+
+    if (r < 0 || r === ROWS || 
+      c < 0 || c === COLS || 
+      visited.has(`${r},${c}`) ||
+      board[r][c] !== word[i]
+    ) return false;
+
+    //we've found word[i] in the board
+    visited.add(`${r},${c}`);
+    
+    let res = helper(r - 1, c, i + 1) || helper(r + 1, c, i + 1) ||
+      helper(r, c - 1, i + 1) || helper(r, c + 1, i + 1);
+
+    visited.delete(`${r},${c}`);
+    return res;
+  }
+
+
+  //we have to consider every cell in the board as a starting point.
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (helper(r, c, 0)) return true;
+    }
+  }
+
+  return false;
+};
 
 //L.80 (Medium)
 var removeDuplicates = function(nums) { //time O(n), space O(1)
@@ -3082,7 +3123,7 @@ var solve = function(board) {//AG. time O(N) {N is board cells}. space O(N) {cal
   //unsurrounded 'O's are either on the edge of board or neighbouring 'O's of such edge 'O's
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      if (board[r][c] == 'O' && r == 0 || r == rows - 1 || c == 0 || c == cols - 1) {
+      if (board[r][c] == 'O' && (r == 0 || r == rows - 1 || c == 0 || c == cols - 1)) {
         mark(r, c);
       }
     }
