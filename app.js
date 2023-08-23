@@ -2575,7 +2575,32 @@ var partition = function(head, x) { // time O(n), space O(1) {2 linked lists, ea
 
 //L.89 (Medium) ???
 
-//L.90 (Medium) ???
+//L.90 (Medium)
+var subsetsWithDup = function(nums) { //ABY. time O(n * 2^n). space O(n)
+  const subsets = [];
+  const curSubset = [];
+
+  nums.sort((a, b) => a - b);
+
+  function helper(i) {
+    if (i >= nums.length) {
+      subsets.push(curSubset.slice());
+      return;
+    }
+
+    //decision to include nums[i] in curSubset
+    curSubset.push(nums[i]);
+    helper(i + 1);
+
+    //decision to NOT include nums[i] in curSubset
+    curSubset.pop();
+    while(i + 1 < nums.length && nums[i] === nums[i + 1]) i++;
+    helper(i + 1);
+  }
+
+  helper(0);
+  return subsets;
+};
 
 //L.91 (Medium) ???
 var numDecodings = function(s) { // time O(n), space O(n)
