@@ -1673,16 +1673,13 @@ var combinationSum = function(candidates, target) { //AAG
 
     if (curSum > target || i >= candidates.length) return;
 
-    //we can either add the candidate at i to the curCombination and it's value to curSum
-    //(a candidate can be used more than once so candidate[i] is still considered next)
+    //decision to include candidates[i] in curCombination
+    //a candidate can be used more than once so candidate[i] is still considered next
     curCombination.push(candidates[i]);
     helper(i, curSum + candidates[i]);
 
-    //clean up the curCombination arr after first decision
+    //decision to NOT include candidates[i] in curCombination
     curCombination.pop();
-
-    //OR we skip the already included candidate at i (for unique combinations) and move
-    //to the next candidate after i, keeping curSum the same
     helper(i + 1, curSum); 
   }
 
@@ -1695,7 +1692,7 @@ var combinationSum2 = function(candidates, target) { //AAU
   const combinations = [];
   const curCombination = [];
 
-  //candidates are sorted to bring the same numbers together in order to skip the duplicates
+  //candidates are sorted to bring duplicated values together so as to skip the duplicates
   //and enforce each number is used only once in a combination
   candidates.sort((a, b) => a - b);
 
@@ -1707,16 +1704,14 @@ var combinationSum2 = function(candidates, target) { //AAU
 
     if (curSum > target || i >= candidates.length) return;
 
-    //we can either add the candidate at i to the curCombination and it's value to curSum.
+    //decision to include candidates[i] in curCombination
     //a candidate can be used only once in a comb so we move to i + 1 for the next cand
     curCombination.push(candidates[i]);
     helper(i + 1, curSum + candidates[i]); 
 
+    //decision to NOT include candidates[i] in curCombination
+    //if candidates[i] is duplicated, the duplicates are skipped also
     curCombination.pop();
-
-    //OR we skip the already included candidate at i (for unique combinations) and move
-    //to the next candidate after i keeping curSum the same. if the next candidate after i
-    //is a duplicate, it is also skipped.
     while (i + 1 < candidates.length && candidates[i] === candidates[i + 1]) i++;
     helper(i + 1, curSum);
   };
@@ -2593,6 +2588,7 @@ var subsetsWithDup = function(nums) { //ABY. time O(n * 2^n). space O(n)
     helper(i + 1);
 
     //decision to NOT include nums[i] in curSubset
+    //if nums[i] is duplicated, the duplicates are skipped also
     curSubset.pop();
     while(i + 1 < nums.length && nums[i] === nums[i + 1]) i++;
     helper(i + 1);
