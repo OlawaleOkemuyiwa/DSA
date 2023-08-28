@@ -3689,3 +3689,46 @@ var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n
   //console.log(dp);
   return dp[0][0];
 };
+
+//L.4 (Hard)
+var findMedianSortedArrays = function(nums1, nums2) {
+  let A = nums1;
+  let B = nums2;
+
+  //we're to run binary search on the smaller array (make sure A points to the smaller arr)
+  if (nums2.length < nums1.length) {
+    A = nums2;
+    B = nums1;
+  }
+
+  //determine the total length of both arrays
+  const total = A.length + B.length;
+
+  //determine the integer half of the 2 arrays' total length
+  const half = Math.floor(total / 2);
+
+  let left = 0, right = A.length - 1;
+  while (true) {
+    let midA = Math.floor((left + right) / 2); 
+    let midB = half - (midA + 1) - 1;    
+
+    let Aleft = midA >= 0 ? A[midA] : -Infinity; //val in left partition of A
+    let Aright = midA + 1 < A.length ? A[midA + 1] : Infinity;//val in right partition of A
+    let Bleft = midB >= 0 ? B[midB] : -Infinity; //val in left partition of B
+    let Bright = midB + 1 < B.length ? B[midB + 1] : Infinity;//val in right partition of B
+
+    if (Aleft <= Bright && Aright > Bleft) {
+      //if partition is correct and the total no of elements is odd
+      if (total % 2 !== 0) return Math.min(Aright, Bright);
+      
+      //else if partition is correct and the total no of elements is even
+      return (Math.max(Aleft, Bleft) + Math.min(Aright, Bright)) / 2;  
+    } else if (Aleft >  Bright) {
+      //Aleft is too big, reduce the size of the left partition from A
+      right = midA - 1;
+    } else {
+      //Aleft is too small, increase the size of the left partition from A
+      left = midA + 1;
+    }
+  }
+}
