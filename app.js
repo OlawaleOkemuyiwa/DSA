@@ -3732,3 +3732,49 @@ var findMedianSortedArrays = function(nums1, nums2) {
     }
   }
 }
+
+//L.23 (hard)
+var merge = function(list1, list2) {
+  let dummyHead = new ListNode(-1);
+  let curr = dummyHead;
+
+  while(list1 && list2) {
+    if (list1.val < list2.val) {
+      curr.next = list1;
+      list1 = list1.next;
+    } else {
+      curr.next = list2;
+      list2 = list2.next;
+    }
+    curr = curr.next;
+  }
+
+  if (list1) {
+    curr.next = list1;
+  } else if (list2) {
+    curr.next = list2;
+  }
+
+  return dummyHead.next;
+};
+
+var mergeKLists = function(lists) {
+  if (lists.length === 0) return null;
+
+  while (lists.length > 1) {
+    const merged = [];
+
+    //merge the LLs in the lists arr in pairs and push each resulting list to the merged arr
+    for (let i = 0; i < lists.length; i+=2) {
+      let l1 = lists[i];
+      let l2 = i + 1 < lists.length ? lists[i + 1] : null;
+      merged.push(merge(l1, l2));
+    }
+
+    //now lists arr with e.g 8 LLs has now been merged into the merged arr with e.g 4 LLs
+    //lists now becomes the merged arr and we do this till we've merged all LLs into 1 final LL
+    lists = merged;
+  }
+
+  return lists[0];
+};
