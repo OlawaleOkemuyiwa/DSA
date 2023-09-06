@@ -1041,6 +1041,37 @@ var postorderTraversal = function(root) {
   return visited.reverse();
 };
 
+//L.169 (Easy)
+var majorityElement = function(nums) { //
+  /*
+  const count = new Map();
+
+  for (let num of nums) {
+    count.set(num, (count.get(num) || 0) + 1);
+
+    if (count.get(num) > nums.length / 2) return num;
+  }
+  */
+  let candidate;
+  let cummCount = 0;
+
+  for (let num of nums) {
+    if (cummCount === 0) {
+      //if cummulative count is 0, then no candidate is being considered atm
+      candidate = num;
+    }
+
+    //the cur candidate under consideration either gets its count increased/decreased
+    if (num === candidate) {
+      cummCount++
+    } else {
+      cummCount--;
+    }
+  }
+
+  return candidate;
+};
+
 //L.206 (Easy)
 var reverseList = function(head) { //time O(n), space O(1)
   if(!head) return head;
@@ -3758,7 +3789,7 @@ var merge = function(list1, list2) {
   return dummyHead.next;
 };
 
-var mergeKLists = function(lists) {
+var mergeKLists = function(lists) { //GTA. time O(nlogk). space O(1)
   if (lists.length === 0) return null;
 
   while (lists.length > 1) {
