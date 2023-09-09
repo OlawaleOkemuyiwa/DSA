@@ -1072,6 +1072,23 @@ var majorityElement = function(nums) { //
   return candidate;
 };
 
+//L.203 (Easy)
+var removeElements = function(head, val) { //ABA. time O(n), space O(1)
+  let dummyHead = new ListNode(-1);
+  let curr = dummyHead;
+  curr.next = head;
+
+  while(curr && curr.next) {
+    if (curr.next.val === val) {
+      curr.next = curr.next.next;
+    } else {
+      curr = curr.next;
+    }
+  }
+
+  return dummyHead.next;
+};
+
 //L.206 (Easy)
 var reverseList = function(head) { //time O(n), space O(1)
   if(!head) return head;
