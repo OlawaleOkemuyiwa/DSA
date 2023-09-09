@@ -3687,6 +3687,37 @@ MinStack.prototype.getMin = function() {
   return this.stack[this.stack.length - 1][1];
 };
 
+//L.200 (Medium)
+var numIslands = function(grid) { //AGF. time O(N) {N is board cells}, space O(N) {call stack}
+  const rows = grid.length;
+  const cols = grid[0].length;
+
+  let islands = 0;
+
+  function visit(r, c) {
+    //if r/c gets out of bound or we visit water or we visit an already visited land
+    if (r < 0 || r === rows || c < 0 || c === cols 
+      || grid[r][c] === '0' || grid[r][c] === 'I') return;
+
+    grid[r][c] = 'I';
+    visit(r - 1, c);
+    visit(r + 1, c);
+    visit(r, c - 1);
+    visit(r, c + 1);
+  }
+
+  //visit all unvisited land grid cell and mark neigbouring lands as an island (I)
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === '1') {
+        visit(r, c);
+        islands++;
+      }
+    }
+  }
+
+  return islands;    
+};
 
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
@@ -3720,6 +3751,7 @@ var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n
   //console.log(dp);
   return dp[0][0];
 };
+
 
 //L.4 (Hard)
 var findMedianSortedArrays = function(nums1, nums2) {
