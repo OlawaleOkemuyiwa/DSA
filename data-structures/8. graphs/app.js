@@ -30,14 +30,14 @@ class Graph {
 
   DFSRecusive(starterVertex) { //DFS of a graph basically means to follow the neigbouring adjacent nodes/starterVertexes before backtracking
     const result = [];
-    const visited = {};
     const adjacencyList = this.adjacencyList;
+    const visited = new Set();
     
     function helper(vertex) {
       result.push(vertex);
-      visited[vertex] = true;
+      visited.add(vertex);
       for (let adjacentVertex of adjacencyList[vertex]) {
-        if(!(visited[adjacentVertex])) helper(adjacentVertex);
+        if(!visited.has(adjacentVertex)) helper(adjacentVertex);
       }
     }
     helper(starterVertex);
@@ -46,18 +46,18 @@ class Graph {
 
   DFSIterative(starterVertex) { //A vertex is noted to have been visited when it has been added to the stack for processing
     const result = [];
-    const visited = {};
+    const visited = new Set();
     const stack = [starterVertex];
-    visited[starterVertex] = true;
+    visited.add(starterVertex);
 
     while (stack.length) {
       let currentVertex = stack.pop();
       result.push(currentVertex);
 
       for (let adjacentVertex of this.adjacencyList[currentVertex]) {
-        if (!visited[adjacentVertex]) {
+        if (!visited.has(adjacentVertex)) {
           stack.push(adjacentVertex);
-          visited[adjacentVertex] = true;
+          visited.add(adjacentVertex);
         }
       }
     }
@@ -66,18 +66,18 @@ class Graph {
 
   BFS(starterVertex) { //BFS priotizes visiting all of the adjacent vertexes (neigbors) at a given depth before moving downwards
     const result = [];
-    const visited = {};
+    const visited = new Set();
     const queue = [starterVertex];
-    visited[starterVertex] = true;
+    visited.add(starterVertex);
 
     while(queue.length) {
       let currentVertex = queue.shift();
       result.push(currentVertex);
     
       for (let adjacentVertex of this.adjacencyList[currentVertex]) {
-        if (!visited[adjacentVertex]) {
-          visited[adjacentVertex] = true;
+        if (!visited.has(adjacentVertex)) {
           queue.push(adjacentVertex);
+          visited.add(adjacentVertex);
         }
       }
     }
