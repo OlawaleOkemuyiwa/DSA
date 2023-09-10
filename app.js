@@ -3736,6 +3736,56 @@ var numIslands = function(grid) { //AGF. time O(N) {N is board cells}, space O(N
   return islands;    
 };
 
+//L.206 (Nedium)
+var canFinish = function(numCourses, prerequisites) { //GAA. time, space O(m + n) 
+  //initialize a barebones adjacency list using each of the courses.
+  const adjacencyList = {};
+  for (let i = 0; i < numCourses; i++) {
+    adjacencyList[i] = [];
+  };
+
+  //map each course (vertex) to their prerequisites [A DIRECTED GRAPH]
+  for (const [course, pre] of prerequisites) {
+    adjacencyList[course].push(pre);
+  }
+
+  //a set to keep track of already visited vertices in the current path check
+  const visited = new Set();
+
+  function canFinishCheck (course) {
+    //if the course has already been visited i.e a loop (so it cannot be finished)
+    if (visited.has(course)) return false;
+
+    //if the course has no prerequisites, then it can be finished
+    if (!adjacencyList[course].length) return true;
+
+    visited.add(course);
+
+    for (let pre of adjacencyList[course]) {
+      //if a pre of a course can't be finished. Then the course itself can't be finished
+      if (!canFinishCheck(pre)) return false;
+    }
+
+    //else it is possible to finish the course
+    //remove the course from the visited set cause we're done visiting it in cur path check
+    visited.delete(course);
+
+    //at this point we're sure the course can be finished so we clear out it's prereqs
+    adjacencyList[course] = [];
+
+    return true;
+  }
+
+  //since we're not certain all vertices are connected e.g if we have a graph {0:[1], 2:[3]}
+  //then we need to visit all vertexes. if any course is impossible, then we can't finish all
+  for (let i = 0; i < numCourses; i++) {
+    if (!canFinishCheck(i)) return false;
+  };
+
+  //if the loop completes successfully, then it's possible to finish all courses
+  return true;
+};
+
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
   //base case: if any or both of the texts are empty LCS is 0
