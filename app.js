@@ -3786,6 +3786,54 @@ var canFinish = function(numCourses, prerequisites) { //GAA. time, space O(m + n
   return true;
 };
 
+//L.211 (Medium)
+var TrieNode = function() {
+  this.children = {}; // { b: TrieNode(), a: TrieNode() }
+  this.word = false;
+};
+
+var WordDictionary = function() {
+  this.root = new TrieNode();
+};
+
+WordDictionary.prototype.addWord = function(word) {
+  let curr = this.root;
+
+  //insert every character in word into our Trie
+  for (let c of word) {
+    if (!(c in curr.children)) {
+      curr.children[c] = new TrieNode();
+    }
+    curr = curr.children[c];
+  }
+
+  curr.word = true;    
+};
+
+WordDictionary.prototype.search = function(word) {
+  function dfs (i, root) {
+    let curr = root;
+
+    for (let j = i; j < word.length; j++) {
+      let c = word[j];
+
+      if (c === '.') {
+        for (let child of Object.values(curr.children)) {
+          if (dfs(j + 1, child)) return true;
+        }
+        return false;
+      } else {
+        if (!(c in curr.children)) return false;
+        curr = curr.children[c];
+      }
+    }
+    return curr.word;
+  }
+  
+  return dfs(0, this.root);
+};
+
+
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
   //base case: if any or both of the texts are empty LCS is 0

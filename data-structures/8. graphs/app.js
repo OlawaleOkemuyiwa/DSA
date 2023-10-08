@@ -46,8 +46,8 @@ class Graph {
 
   DFSIterative(starterVertex) { //A vertex is noted to have been visited when it has been added to the stack for processing
     const result = [];
-    const visited = new Set();
     const stack = [starterVertex];
+    const visited = new Set();
     visited.add(starterVertex);
 
     while (stack.length) {
@@ -66,8 +66,8 @@ class Graph {
 
   BFS(starterVertex) { //BFS priotizes visiting all of the adjacent vertexes (neigbors) at a given depth before moving downwards
     const result = [];
-    const visited = new Set();
     const queue = [starterVertex];
+    const visited = new Set();
     visited.add(starterVertex);
 
     while(queue.length) {
