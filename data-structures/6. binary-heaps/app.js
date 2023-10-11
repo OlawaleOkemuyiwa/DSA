@@ -4,14 +4,16 @@ class MaxBinaryHeap {
   }
 
   insert(value) {
-    //at best --> O(logn)
+    //at worst --> O(logn)
     this.values.push(value);
     //BUBBLE UP THE INSERTED VALUE TO ITS CORRECT POSITION
     let idx = this.values.length - 1;
     while (idx > 0) {
       const parentIndex = Math.floor((idx - 1) / 2);
       const parent = this.values[parentIndex];
+
       if (value <= parent) break;
+
       this.values[parentIndex] = value;
       this.values[idx] = parent;
 
@@ -20,29 +22,37 @@ class MaxBinaryHeap {
     return this.values;
   }
 
-  //search --> O(n)
+  //optionally build the max-heap from an array. At worst == O(n) {even though it's O(n) * O(log n), While you do perform O(log n) work for each insertion, it's important to note that only a few elements will need to be moved up the entire height of the tree O(log n), while most elements will require fewer operations since they will stop moving up after a few steps. These few elements do not significantly impact the overall time complexity which is O(n)}
+  buildMaxHeapFromArray(arr) {
+    for (const val of arr) {
+      this.insert(val);
+    }
+  }
+
+  //value searching == O(n)  { iterating over the entire max heap searching for the required value }
 
   extractMax() {
-    //at best --> O(logn)
+    //at worst --> O(logn)
     const arr = this.values;
     if (arr.length <= 0) return undefined;
+
     [arr[arr.length - 1], arr[0]] = [arr[0], arr[arr.length - 1]];
     const max = arr.pop();
-    const length = this.values.length;
 
+    const length = this.values.length;
     let idx = 0;
     const element = this.values[0]; //the last element which is now the first element is gonna be sunk down to it's correct position in the array. The element is gonna be the same all through but it's position(index) changes
     while (true) {
       const leftChildIdx = 2 * idx + 1;
       const rightChildIdx = 2 * idx + 2;
       let leftChild, rightChild;
-      let swap = null; //keeps track of the position to swap the element in the incorrect spot with. Can either be null, leftIndx or rightIdx
+      let swapIdx = null; //keeps track of the position to swap the element in the incorrect spot with. Can either be null, leftIndx or rightIdx
 
       if (leftChildIdx < length) {
         //check if leftChildIdx we wish to swap with is still in bound of the array
         leftChild = this.values[leftChildIdx];
         if (leftChild > element) {
-          swap = leftChildIdx;
+          swapIdx = leftChildIdx;
         }
       }
 
@@ -50,19 +60,19 @@ class MaxBinaryHeap {
         //check if rightChildIdx we wish to swap with is still in bound of the array
         rightChild = this.values[rightChildIdx];
         if (
-          //we only wish to swap with right child if the leftChild is not greater than the element (i.e swap still null) OR the leftChild is greater than the element (swap no longer null) and the right child is greater than the left child
-          (!swap && rightChild > element) ||
-          (swap && rightChild > leftChild)
+          //we only wish to swap with right child if the leftChild is not greater than the element (i.e swapIdx still null) OR the leftChild is greater than the element (swapIdx no longer null) and the right child is greater than the left child
+          (!swapIdx && rightChild > element) ||
+          (swapIdx && rightChild > leftChild)
         ) {
-          swap = rightChildIdx;
+          swapIdx = rightChildIdx;
         }
       }
 
-      if (!swap) break; //if no swap of the element with either left or right child then none are bigger than the parent and it is now in the correct position so we done
+      if (!swapIdx) break; //if no swap of the element with either left or right child then none are bigger than the parent and it is now in the correct position so we done
 
-      this.values[idx] = this.values[swap];
-      this.values[swap] = element;
-      idx = swap;
+      this.values[idx] = this.values[swapIdx];
+      this.values[swapIdx] = element;
+      idx = swapIdx;
     }
     return max;
   }
