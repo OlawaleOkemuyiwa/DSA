@@ -142,30 +142,30 @@ class PriorityQueue {
       const leftChildIdx = 2 * idx + 1;
       const rightChildIdx = 2 * idx + 2;
       let leftChild, rightChild;
-      let swap = null;
+      let swapIdx = null;
 
       if (leftChildIdx < length) {
         leftChild = this.values[leftChildIdx];
         if (leftChild.priority < node.priority) {
-          swap = leftChildIdx;
+          swapIdx = leftChildIdx;
         }
       }
 
       if (rightChildIdx < length) {
         rightChild = this.values[rightChildIdx];
         if (
-          (!swap && rightChild.priority < node.priority) ||
-          (swap && rightChild.priority < leftChild.priority)
+          (!swapIdx && rightChild.priority < node.priority) ||
+          (swapIdx && rightChild.priority < leftChild.priority)
         ) {
-          swap = rightChildIdx;
+          swapIdx = rightChildIdx;
         }
       }
 
-      if (!swap) break;
+      if (!swapIdx) break;
 
-      this.values[idx] = this.values[swap];
-      this.values[swap] = node;
-      idx = swap;
+      this.values[idx] = this.values[swapIdx];
+      this.values[swapIdx] = node;
+      idx = swapIdx;
     }
     return min;
   }
