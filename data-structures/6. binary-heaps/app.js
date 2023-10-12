@@ -22,7 +22,7 @@ class MaxBinaryHeap {
     return this.values;
   }
 
-  //optionally build the max-heap from an array. At worst == O(n) {even though it's O(n) * O(log n), While you do perform O(log n) work for each insertion, it's important to note that only a few elements will need to be moved up the entire height of the tree O(log n), while most elements will require fewer operations since they will stop moving up after a few steps. These few elements do not significantly impact the overall time complexity which is O(n)}
+  //optionally build a max-heap from an array. At worst == O(n) {even though it's O(n) * O(log n), While you do perform O(log n) work for each insertion, it's important to note that only a few elements will need to be moved up the entire height of the tree O(log n), while most elements will require fewer operations since they will stop moving up after a few steps. These few elements do not significantly impact the overall time complexity which is O(n)}
   buildMaxHeapFromArray(arr) {
     for (const val of arr) {
       this.insert(val);
@@ -42,7 +42,7 @@ class MaxBinaryHeap {
     const length = this.values.length;
     let idx = 0;
     const element = this.values[0]; //the last element which is now the first element is gonna be sunk down to it's correct position in the array. The element is gonna be the same all through but it's position(index) changes
-    while (true) {
+    while (idx < length - 1) {
       const leftChildIdx = 2 * idx + 1;
       const rightChildIdx = 2 * idx + 2;
       let leftChild, rightChild;
@@ -116,7 +116,9 @@ class PriorityQueue {
     while (idx > 0) {
       const parentIdx = Math.floor((idx - 1) / 2);
       const parentNode = this.values[parentIdx];
+
       if (priority >= parentNode.priority) break;
+
       this.values[parentIdx] = newNode;
       this.values[idx] = parentNode;
 
@@ -127,19 +129,21 @@ class PriorityQueue {
   }
 
   dequeue() {
-    const min = this.values[0];
-    const end = this.values.pop();
-    if (this.values.length <= 0) return end;
-    this.values[0] = end;
-    const length = this.values.length;
+    const arr = this.values;
+    if (arr.length <= 0) return undefined;
 
+    [arr[arr.length - 1], arr[0]] = [arr[0], arr[arr.length - 1]]
+    const min = this.values.pop();
+
+    const length = this.values.length;
     let idx = 0;
     const node = this.values[0];
-    while (true) {
+    while (idx < length - 1) {
       const leftChildIdx = 2 * idx + 1;
       const rightChildIdx = 2 * idx + 2;
       let leftChild, rightChild;
       let swap = null;
+
       if (leftChildIdx < length) {
         leftChild = this.values[leftChildIdx];
         if (leftChild.priority < node.priority) {
