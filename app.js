@@ -3833,6 +3833,69 @@ WordDictionary.prototype.search = function(word) {
   return dfs(0, this.root);
 };
 
+//L.215 (Medium)
+var findKthLargest = function(nums, k) { //FAG. time: O(n + klogn), spcace: O(n)
+  const maxHeap = [];
+  
+  //heapify the array
+  for (let num of nums) { //O(n)
+    maxHeap.push(num);
+
+    let idx = maxHeap.length - 1;
+    while (idx > 0) {
+      let parentIndex = Math.floor((idx - 1) / 2);
+      let parent = maxHeap[parentIndex];
+
+      if (num <= parent) break;
+
+      maxHeap[parentIndex] = num;
+      maxHeap[idx] = parent;
+
+      idx = parentIndex;
+    }
+  }
+
+  //extract from the maxHeap k times to determine the kth largest element
+  let kthLargest;
+  for (let i = 0; i < k; i++) { //O(klogn)
+    if (maxHeap.length <= 0) return undefined;
+
+    [maxHeap[maxHeap.length - 1], maxHeap[0]] = [maxHeap[0], maxHeap[maxHeap.length - 1]];
+    kthLargest = maxHeap.pop();
+
+    let length = maxHeap.length;
+    let idx = 0;
+    let el = maxHeap[0];
+    while (idx < length) {
+      let leftChildIdx = 2 * idx + 1;
+      let rightChildIdx = 2 * idx + 2;
+      let leftChild, rightChild;
+      let swapIdx = null; 
+
+      if (leftChildIdx < length) {
+        leftChild = maxHeap[leftChildIdx];
+        if (leftChild > el) {
+          swapIdx = leftChildIdx;
+      }
+      }
+
+      if (rightChildIdx < length) {
+        rightChild = maxHeap[rightChildIdx];
+        if ((!swapIdx && rightChild > el) || (swapIdx && rightChild > leftChild)) {
+          swapIdx = rightChildIdx;
+        }
+      }
+
+      if (!swapIdx) break; 
+
+      maxHeap[idx] = maxHeap[swapIdx];
+      maxHeap[swapIdx] = el;
+      idx = swapIdx;
+    }
+  }
+
+  return kthLargest;
+}
 
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)

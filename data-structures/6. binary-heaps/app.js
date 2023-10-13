@@ -3,7 +3,7 @@ class MaxBinaryHeap {
     this.values = [41, 39, 33, 18, 21, 12]; //we initialize the values with some values just for testing, should be []
   }
 
-  insert(value) {
+  insert(value) { //new (child) value is placed at the end of the max heap and then bubbled up to it's appropriate position by comparison of it's size to that of it's parent. If larger than parent then it swaps position with parent, if smaller or equal to parent then it's at it's appropriate position 
     //at worst --> O(logn)
     this.values.push(value);
     //BUBBLE UP THE INSERTED VALUE TO ITS CORRECT POSITION
@@ -31,7 +31,7 @@ class MaxBinaryHeap {
 
   //value searching == O(n)  { iterating over the entire max heap searching for the required value }
 
-  extractMax() {
+  extractMax() { //the cur max and the last element of the max heap are swapped which makes the max now be at the end of the array. The array is popped and the max is determined. The cur placeholder max is then sunk down to it's appropriate position by comparison to it's left and right children 
     //at worst --> O(logn)
     const arr = this.values;
     if (arr.length <= 0) return undefined;
@@ -108,7 +108,7 @@ class PriorityQueue {
     this.values = [];
   }
 
-  enqueue(val, priority) {
+  enqueue(val, priority) { //new (child) node is placed at the end of the min heap and then bubbled up to it's appropriate position by comparison of it's priority to that of it's parent. If lesser than parent then it swaps position with parent, if greater or equal to parent then it's at it's appropriate position 
     const newNode = new Node(val, priority);
     this.values.push(newNode);
 
@@ -128,7 +128,7 @@ class PriorityQueue {
     return this.values;
   }
 
-  dequeue() {
+  dequeue() { //the cur min and the last element of the min heap are swapped which makes the min now be at the end of the array. The array is popped and the min is determined. The cur placeholder min is then sunk down to it's appropriate position by comparison to it's left and right children 
     const arr = this.values;
     if (arr.length <= 0) return undefined;
 
