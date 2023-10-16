@@ -1104,6 +1104,18 @@ var reverseList = function(head) { //time O(n), space O(1)
   return prev;
 };
 
+//L.217 (Easy)
+var containsDuplicate = function(nums) { //time O(n), space O(n)
+  const map = new Map();
+
+  for (let num of nums) {
+    map.set(num, (map.get(num) || 0) + 1);
+    if (map.get(num) > 1) return true;
+  }
+
+  return false;
+};
+
 //L.876 (Easy)
 var middleNode = function(head) { //GAA. time O(n). space O(1)
   let slow = head;
