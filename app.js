@@ -3909,6 +3909,41 @@ var findKthLargest = function(nums, k) { //FAG. time: O(n + klogn), spcace: O(n)
   return kthLargest;
 }
 
+//L.227 (Medium)
+var calculate = function(s) { //time: O(n), space: O(n)
+  const stack = [];
+  let curNum = 0;
+  let operator = '+';
+
+  for (let i = 0; i < s.length; i++) {
+    const curChar = s.charAt(i);
+
+    //if current char is an integer (single or many digits integer)
+    if (curChar !== ' ' && !isNaN(curChar)) {
+      curNum = (curNum * 10) + parseInt(curChar);
+    }
+    
+    //if current char is an operator OR the char is the last char in s
+    if (curChar !== ' ' && isNaN(curChar) || i === s.length - 1) {
+      if (operator === '+') {
+        stack.push(curNum);
+      } else if (operator === '-') {
+        stack.push(-curNum);
+      } else if (operator === '*') {
+        stack.push(stack.pop() * curNum);
+      } else if (operator === '/') {
+        stack.push(Math.trunc(stack.pop() / curNum));
+      }
+
+      //reset curNum as a seperating operator has been encountered, also update operator
+      curNum = 0;
+      operator = curChar;
+    }
+  }
+  
+  return stack.reduce((acc, cur) => acc + cur, 0);
+};
+
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
   //base case: if any or both of the texts are empty LCS is 0
