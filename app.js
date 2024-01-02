@@ -3944,6 +3944,20 @@ var calculate = function(s) { //time: O(n), space: O(n)
   return stack.reduce((acc, cur) => acc + cur, 0);
 };
 
+//L.230 (Medium)
+var kthSmallest = function(root, k) { //time: O(n), space: O(n)
+  const visited = [];
+
+  function traverse(node) {
+    if (node.left) traverse(node.left);
+    visited.push(node.val);
+    if (node.right) traverse(node.right);
+  }
+  
+  traverse(root);
+  return visited[k - 1];
+};
+
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
   //base case: if any or both of the texts are empty LCS is 0
