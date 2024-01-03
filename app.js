@@ -3958,6 +3958,34 @@ var kthSmallest = function(root, k) { //time: O(n), space: O(n)
   return visited[k - 1];
 };
 
+//L.701 (Medium)
+var insertIntoBST = function(root, val) { //Time: O(logN) at best, O(N) worst. Space: O(1)
+  const newNode = new TreeNode(val);
+  if (!root) {
+    root = newNode;
+  } else {
+    let curNode = root;
+    while (true) {
+      if (val === curNode.val) return undefined;
+      if (val < curNode.val) {
+        if (!curNode.left) {
+          curNode.left = newNode;
+          break;
+        }
+        curNode = curNode.left;
+      } else {
+        if (!curNode.right) {
+          curNode.right = newNode;
+          break;
+        }
+        curNode = curNode.right;
+      }
+    }
+  }
+
+  return root;
+};
+
 //L.1143 (Medium)
 var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n)
   //base case: if any or both of the texts are empty LCS is 0
