@@ -63,12 +63,14 @@ class BinarySearchTree {
   preOrderDepthFirstSearch() {
     //PRE ORDER (CURRENT NODE BEFORE ITS CHILDREN: CURRENTNODE, LEFT, RIGHT) --> PUSH THE CURRENT NODE (root) INTO THE VISITED ARRAY BEFORE THEN TRAVERSING DOWNWARDS PUSHING THE CURRENT NODE ALONG THE WAY
     const visited = [];
+    if (!this.root) return visited;
 
     function traverse(node) {
       visited.push(node.value);
       if (node.left) traverse(node.left);
       if (node.right) traverse(node.right);
     }
+
     traverse(this.root);
     return visited;
   }
@@ -76,12 +78,14 @@ class BinarySearchTree {
   postOrderDepthFirstSearch() {
     //POST ORDER (CURRENT NODE AFTER ITS CHILDREN: LEFT, RIGHT, CURRENTNODE) --> TRANSVERSE DOWNWARDS FROM THE ROOT TO THE LAST DESCENDANT, PUSH THE LAST DESCENDANT THEN TO CONTINUE TO PUSH THE CURRENT NODE AS YOU GO BACK UP
     const visited = [];
+    if (!this.root) return visited;
 
     function traverse(node) {
       if (node.left) traverse(node.left);
       if (node.right) traverse(node.right);
       visited.push(node.value);
     }
+
     traverse(this.root);
     return visited;
   }
@@ -89,12 +93,14 @@ class BinarySearchTree {
   inOrderDepthFirstSearch() {
     //IN ORDER (LEFT CHILD BEFORE CURRENTNODE, THEN CURRENTNODE, THEN RIGHT CHILD)--> TRANSVERSE DOWNWARDS FROM THE ROOT TO THE LAST DESCENDANT, PUSH THE LAST DESCENDANT (THE LEFT) THEN PUSH THE PARENT , THEN PUSH THE RIGHT SO ON
     const visited = [];
+    if (!this.root) return visited;
 
     function traverse(node) {
       if (node.left) traverse(node.left);
       visited.push(node.value);
       if (node.right) traverse(node.right);
     }
+
     traverse(this.root);
     return visited;
   }
@@ -113,6 +119,7 @@ class BinarySearchTree {
       //we add the left node to the stack after the right node is added so it would be the 1st
       //we would add to the visited arr between the two i.e [node, left, right] PREORDER
     }
+    
     return visited;
   }
 
@@ -131,6 +138,7 @@ class BinarySearchTree {
       //the 1st we would add to the visited arr between the two i.e [node, right, left]
       //[node, right, left].reverse === [left, right, node] POSTORDER
     }
+
     return visited.reverse();
   }
 
@@ -146,10 +154,12 @@ class BinarySearchTree {
         stack.push(curr);
         curr = curr.left;
       }
+      
       curr = stack.pop();
       visited.push(curr.value);
       curr = curr.right;
     }
+
     return visited;
   }
 
@@ -165,6 +175,7 @@ class BinarySearchTree {
       if (node.left) unvisitedQueue.push(node.left);
       if (node.right) unvisitedQueue.push(node.right);
     }
+
     return visited;
   }
 

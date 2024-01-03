@@ -3945,17 +3945,21 @@ var calculate = function(s) { //time: O(n), space: O(n)
 };
 
 //L.230 (Medium)
-var kthSmallest = function(root, k) { //time: O(n), space: O(n)
-  const visited = [];
+var kthSmallest = function(root, k) {
+  //Time: O(logN + k) for a balanced tree, O(N + k) for a completely unbalanced tree 
+  //Space: O(logN) for a balanced tree, O(N) for a completely unbalanced tree 
+  const stack = [];
+  let curr = root;
+  while (curr || stack.length > 0) {
+    while (curr) {
+      stack.push(curr);
+      curr = curr.left;
+    }
 
-  function traverse(node) {
-    if (node.left) traverse(node.left);
-    visited.push(node.val);
-    if (node.right) traverse(node.right);
+    curr = stack.pop();
+    if (--k === 0) return curr.val;
+    curr = curr.right;
   }
-  
-  traverse(root);
-  return visited[k - 1];
 };
 
 //L.701 (Medium)
