@@ -3946,8 +3946,8 @@ var calculate = function(s) { //time: O(n), space: O(n)
 
 //L.230 (Medium)
 var kthSmallest = function(root, k) {
-  //Time: O(logN + k) for a balanced tree, O(N + k) for a completely unbalanced tree 
-  //Space: O(logN) for a balanced tree, O(N) for a completely unbalanced tree 
+  //Time: O(logN + k) for a balanced tree, O(N + k) for a skewed tree 
+  //Space: O(logN) for a balanced tree, O(N) for a skewed tree 
   const stack = [];
   let curr = root;
   while (curr || stack.length > 0) {
@@ -3960,6 +3960,35 @@ var kthSmallest = function(root, k) {
     if (--k === 0) return curr.val;
     curr = curr.right;
   }
+};
+
+//L.450 (Medium)
+var deleteNode = function(root, key) { // Time: O(logN). Space: O(logN)
+  if (!root) return root;
+
+  if (key < root.val) {
+    root.left = deleteNode(root.left, key);
+  } else if (key > root.val) {
+    root.right = deleteNode(root.right, key);
+  } else {
+    // If the node to be deleted has no left node/subtree
+    if (!root.left) return root.right;
+
+    // If the node to be deleted has no right node/subtree
+    if (!root.right) return root.left;
+
+    // The node to be deleted has both left and right node/subtree
+    let curr = root.right;
+
+    // Curr stops on d smallest val in the right subtree (leftest node W/O a left node)
+    while (curr.left) curr = curr.left;
+    
+    // Assign left subtree of node to be deleted to the left of curr
+    curr.left = root.left;
+    return root.right;
+  }
+
+  return root;
 };
 
 //L.701 (Medium)

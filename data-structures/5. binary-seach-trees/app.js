@@ -38,12 +38,11 @@ class BinarySearchTree {
     return this;
   }
 
-  contains(val) {
+  search(val) {
     //At best O(logn), At worst O(n) => for binary trees that are constructed to be completely 1 sided (all nodes to the left or all to the right)
     if (!this.root) return false;
     let currentNode = this.root;
     while (true) {
-      console.log(currentNode.value);
       if (val > currentNode.value) {
         if (!currentNode.right) {
           return false;
@@ -58,6 +57,54 @@ class BinarySearchTree {
         return true;
       }
     }
+  }
+
+  searchRecursive(value) {
+
+    function search(val, currentNode) {
+      if (!currentNode) return false;
+      
+      if (val === currentNode.value) return true;
+
+      if (val < currentNode.value) return search(val, currentNode.left);
+      
+      if (val > currentNode.value) return search(val, currentNode.right);
+    }
+
+    return search(value, this.root);
+  }
+
+
+  delete(val) {
+
+    function deleteNode(node, val) {
+      if (!node) return node;
+  
+      if (val < node.value) {
+        node.left = deleteNode(node.left, val);
+      } else if (val > node.value) {
+        node.right = deleteNode(node.right, val);
+      } else {
+        // If the node to be deleted has no left node/subtree
+        if (!node.left) return node.right;
+
+        // If the node to be deleted has no right node/subtree
+        if (!node.right) return node.left;
+
+        // The node to be deleted has both left and right node/subtree
+        let curr = node.right;
+
+        // Curr stops on d smallest val in the right subtree (leftest node W/O a left node)
+        while (curr.left) curr = curr.left;
+        
+        // Assign left subtree of node to be deleted to the left of curr
+        curr.left = node.left;
+        return node.right;
+      }
+    }
+
+    deleteNode(this.root, val);
+    return this;
   }
 
   preOrderDepthFirstSearch() {
@@ -119,7 +166,7 @@ class BinarySearchTree {
       //we add the left node to the stack after the right node is added so it would be the 1st
       //we would add to the visited arr between the two i.e [node, left, right] PREORDER
     }
-    
+
     return visited;
   }
 
@@ -180,20 +227,20 @@ class BinarySearchTree {
   }
 
   //WHEN TO USE EITHER BFS || DFS ?
-  //Time complexity is the same for both as we end up visiting every node. But space complexity differs depending on the structure of the tree. DFS is preferable for a broader tree as BFS would require more space allocation for it's queue. BFS is preferable for narrow trees (tree similar to a linked list) as we've minimal nodes to keep in the queue
+  //Time complexity is the same for both as we end up visiting every node. But space complexity differs depending on the structure of the tree. DFS is preferable for a broader tree as BFS would require more space allocation for it's queue. BFS is preferable for skewed trees (tree similar to a linked list) as we've minimal nodes to keep in the queue
 }
 
 const BST = new BinarySearchTree();
 BST.insert(10);
-BST.insert(20);
+BST.insert(6);
 BST.insert(3);
 BST.insert(15);
-BST.insert(6);
+BST.insert(20);
 console.log(BST.insert(8));
-console.log(BST.preOrderDepthFirstSearch());
-// console.log(BST.postOrderDepthFirstSearch());
-// console.log(BST.inOrderDepthFirstSearch());
+console.log(BST.delete(6));
+console.log(BST.search(6));
+// console.log(BST.searchRecursive(3));
+console.log(BST.preOrderDepthFirstSearchIterative());
+console.log(BST.postOrderDepthFirstSearchIterative());
+console.log(BST.inOrderDepthFirstSearchIterative());
 console.log(BST.breatheFirstSearch());
-// console.log(BST.preOrderDepthFirstSearchIterative());
-// console.log(BST.postOrderDepthFirstSearchIterative());
-// console.log(BST.inOrderDepthFirstSearchIterative());
