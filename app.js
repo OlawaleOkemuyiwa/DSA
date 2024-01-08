@@ -3971,7 +3971,25 @@ var kthSmallest = function(root, k) {
   }
 };
 
-//L.2
+//L.236 (Medium)
+var lowestCommonAncestor = function(root, p, q) { // Time: O(N). Space: O(N)
+  // If either p or q is the root node then that's the LCA of both
+  if (p === root || q === root) return root;
+  
+  let left, right;
+  if (root.left) left = lowestCommonAncestor(root.left, p, q);
+
+  if (root.right) right = lowestCommonAncestor(root.right, p, q);
+
+  // If p and q were found in the left and right subtree then curr root node is the LCA
+  if (left && right) return root;
+
+  // If both were found in the left subtree, then the first encountered (p or q) is the LCA
+  if (left) return left;
+
+  // If both were found in the right subtree, then the first encountered (p or q) is the LCA
+  if (right) return right;
+};
 
 //L.450 (Medium)
 var deleteNode = function(root, key) { // Time: O(logN). Space: O(logN)
