@@ -237,7 +237,7 @@ BST.insert(3);
 BST.insert(15);
 BST.insert(20);
 console.log(BST.insert(8));
-console.log(BST.delete(6));
+// console.log(BST.delete(6));
 console.log(BST.search(6));
 // console.log(BST.searchRecursive(3));
 console.log(BST.preOrderDepthFirstSearchIterative());
