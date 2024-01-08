@@ -1116,6 +1116,15 @@ var containsDuplicate = function(nums) { //time O(n), space O(n)
   return false;
 };
 
+//L.231 (Easy)
+var isPowerOfTwo = function(n) { //Time: O(logn). Space: O(1)
+  if (n <= 0) return false;
+
+  while (n % 2 === 0) n /= 2;
+
+  return n === 1;
+};
+
 //L.876 (Easy)
 var middleNode = function(head) { //GAA. time O(n). space O(1)
   let slow = head;
@@ -3961,6 +3970,8 @@ var kthSmallest = function(root, k) {
     curr = curr.right;
   }
 };
+
+//L.2
 
 //L.450 (Medium)
 var deleteNode = function(root, key) { // Time: O(logN). Space: O(logN)
