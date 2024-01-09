@@ -1125,6 +1125,27 @@ var isPowerOfTwo = function(n) { //Time: O(logn). Space: O(1)
   return n === 1;
 };
 
+//L.242 (Easy)
+var isAnagram = function(s, t) { // Time: O(N). Space: O(N)
+  if (s.length !== t.length) return false;
+
+  const countI = new Map();
+  const countII = new Map();
+
+  for (let i = 0; i < s.length; i++) {
+    countI.set(s[i], (countI.get(s[i]) || 0) + 1);
+    countII.set(t[i], (countII.get(t[i]) || 0) + 1);
+  }
+  
+  for (let [key, value] of countI.entries()) {
+    if (!countII.get(key)) return false;
+
+    if (value !== countII.get(key)) return false;
+  }
+
+  return true;
+};
+
 //L.876 (Easy)
 var middleNode = function(head) { //GAA. time O(n). space O(1)
   let slow = head;
