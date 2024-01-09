@@ -3991,6 +3991,29 @@ var lowestCommonAncestor = function(root, p, q) { // Time: O(N). Space: O(N)
   if (right) return right;
 };
 
+//L.238 (Medium)
+var productExceptSelf = function(nums) { // Time: O(n). Auxiliary Space: O(1)
+  //the idea here is to multiply all ints before nums[i] and then multiply all ints after
+  //nums[i]. The product of these 2 values is product of all elements except nums[i]
+
+  const n = nums.length;
+  const res = [1];
+
+  // After this loop, res[i] reps the product of all integers before nums[i]
+  for (let i = 1; i < n; ++i) {
+    res[i] = res[i - 1] * nums[i - 1];
+  }
+  
+  // postProduct helps to keep track of the running product after nums[i]
+  let postProduct = 1;
+  for (let i = n - 1; i >= 0; --i) {
+    res[i] = res[i] * postProduct;
+    postProduct = postProduct * nums[i];
+  }
+
+  return res;
+};
+
 //L.450 (Medium)
 var deleteNode = function(root, key) { // Time: O(logN). Space: O(logN)
   if (!root) return root;
