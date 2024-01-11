@@ -1146,6 +1146,20 @@ var isAnagram = function(s, t) { // Time: O(N). Space: O(N)
   return true;
 };
 
+//L.252 (Easy)
+var canAttendMeetings = function(intervals) {
+
+  intervals.sort((a, b) => a[0] - b[0]);
+
+  for (let i = 0; i < intervals.length - 1; ++i) {
+
+    // If the 1st meeting ends after the 2nd meeting already started
+    if (intervals[i][1] > intervals[i + 1][0]) return false;
+  };
+
+  return true;
+};
+
 //L.876 (Easy)
 var middleNode = function(head) { //GAA. time O(n). space O(1)
   let slow = head;
