@@ -1153,7 +1153,7 @@ var canAttendMeetings = function(intervals) {
 
   for (let i = 0; i < intervals.length - 1; ++i) {
 
-    // If the 1st meeting ends after the 2nd meeting already started
+    // If the 2nd meeting starts before the 1st meeting has ended
     if (intervals[i][1] > intervals[i + 1][0]) return false;
   };
 
@@ -4048,6 +4048,31 @@ var productExceptSelf = function(nums) { // Time: O(n). Auxiliary Space: O(1)
 
   return res;
 };
+
+//L.253 (Medium)
+var minMeetingRooms = function(intervals) { // Time: O(NlogN). Space: O(N)
+  const start = intervals.map(el => el[0]).sort((a, b) => a - b);
+  const end = intervals.map(el => el[1]).sort((a, b) => a - b);
+
+  // Count is the running no of meetings going on at any given point in time
+  let count = 0, res = 0, s = 0, e = 0;
+
+  while (s < intervals.length) {
+    if (start[s] < end[e]) {
+      // If start[s] < end[e] then a new meeting has just begun
+      count++;
+      s++;
+    } else {
+      // Else if end[e] <= start[s] then a meeting has just ended
+      count--;
+      e++;
+    }
+
+    res = Math.max(res, count);
+  }
+
+  return res;
+}
 
 //L.450 (Medium)
 var deleteNode = function(root, key) { // Time: O(logN). Space: O(logN)
