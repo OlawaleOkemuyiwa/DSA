@@ -228,6 +228,35 @@ class BinarySearchTree {
 
   //WHEN TO USE EITHER BFS || DFS ?
   //Time complexity is the same for both as we end up visiting every node. But space complexity differs depending on the structure of the tree. DFS is preferable for a broader tree as BFS would require more space allocation for it's queue. BFS is preferable for skewed trees (tree similar to a linked list) as we've minimal nodes to keep in the queue
+
+  verticalOrder() {
+    const res = [];
+    if (!this.root) return res;
+    
+    // ColumnTable rep each column mapped to the node values that lie on them e.g {0 => [2, 1]}
+    const columnTable = new Map();
+    let minColumn = 0, maxColumn = 0;
+
+    const queue = [[this.root, 0]];
+    while (queue.length > 0) {
+      const [node, column] = queue.shift();
+    
+      if (!columnTable.has(column)) columnTable.set(column, []);
+      columnTable.get(column).push(node.value);
+
+      minColumn = Math.min(minColumn, column);
+      maxColumn = Math.max(maxColumn, column);
+
+      if (node.left) queue.push([node.left, column - 1]);
+      if (node.right) queue.push([node.right, column + 1]);
+    }
+
+    for (let i = minColumn; i <= maxColumn; i++) {
+      res.push(columnTable.get(i));
+    }
+
+    return res;
+  }
 }
 
 const BST = new BinarySearchTree();
@@ -244,3 +273,4 @@ console.log(BST.preOrderDepthFirstSearchIterative());
 console.log(BST.postOrderDepthFirstSearchIterative());
 console.log(BST.inOrderDepthFirstSearchIterative());
 console.log(BST.breatheFirstSearch());
+console.log(BST.verticalOrder());

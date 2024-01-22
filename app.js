@@ -4074,6 +4074,36 @@ var minMeetingRooms = function(intervals) { // Time: O(NlogN). Space: O(N)
   return res;
 }
 
+//L.314 (Medium)
+var verticalOrder = function(root) { // Time: O(N). Space: O(N) {map used}
+  const res = [];
+  if (!root) return res;
+  
+  // ColumnTable rep each column mapped to the node values that lie on them e.g {0 => [2, 1]}
+  const columnTable = new Map();
+  let minColumn = maxColumn = 0;
+
+  const queue = [[root, 0]];
+  while (queue.length > 0) {
+    const [node, column] = queue.shift();
+  
+    if (!columnTable.has(column)) columnTable.set(column, []);
+    columnTable.get(column).push(node.val);
+
+    minColumn = Math.min(minColumn, column);
+    maxColumn = Math.max(maxColumn, column);
+
+    if (node.left) queue.push([node.left, column - 1]);
+    if (node.right) queue.push([node.right, column + 1]);
+  }
+
+  for (let i = minColumn; i <= maxColumn; i++) {
+    res.push(columnTable.get(i));
+  }
+
+  return res;
+}
+
 //L.450 (Medium)
 var deleteNode = function(root, key) { // Time: O(logN). Space: O(logN)
   if (!root) return root;
