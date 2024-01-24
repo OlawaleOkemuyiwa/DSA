@@ -4104,6 +4104,22 @@ var verticalOrder = function(root) { // Time: O(N). Space: O(N) {map used}
   return res;
 }
 
+//L.322 (Medium) ??
+var coinChange = function(coins, amount) { // Time: O(amount * N). Space: O(amount)
+  const dp = new Array(amount + 1).fill(amount + 1);
+  dp[0] = 0;
+
+  for (let i = 1; i < dp.length; i++) {
+    for (let c of coins) {
+      if (i - c >= 0) {
+        dp[i] = Math.min(dp[i], 1 + dp[i - c]);
+      }
+    }
+  }
+
+  return dp[amount] !== amount + 1 ? dp[amount] : -1;
+};
+
 //L.450 (Medium)
 var deleteNode = function(root, key) { // Time: O(logN). Space: O(logN)
   if (!root) return root;
