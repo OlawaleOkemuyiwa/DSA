@@ -1160,6 +1160,23 @@ var canAttendMeetings = function(intervals) {
   return true;
 };
 
+//L.338 (Easy)
+var countBits = function(n) { // Time: O(n*logn). Space: O(1)
+  const res = new Array(n + 1).fill(0);
+
+  for (let i = 1; i < res.length; i++) {
+    let num = i;
+    let count = 0;
+    while (num) {
+      if ((num % 2) === 1) count++;
+      num = parseInt(num / 2);
+    }
+    res[i] = count;
+  };
+
+  return res;  
+};
+
 //L.876 (Easy)
 var middleNode = function(head) { //GAA. time O(n). space O(1)
   let slow = head;
@@ -1174,7 +1191,7 @@ var middleNode = function(head) { //GAA. time O(n). space O(1)
   return slow;
 };
 
-//L.867 (Medium)
+//L.867 (Easy)
 var transpose = function(matrix) { //O(n^2) time, O(n^2) space
   const rows = matrix.length;
   const columns = matrix[0].length;
