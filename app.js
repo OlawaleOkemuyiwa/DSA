@@ -4104,20 +4104,23 @@ var verticalOrder = function(root) { // Time: O(N). Space: O(N) {map used}
   return res;
 }
 
-//L.322 (Medium) ??
+//L.322 (Medium)
 var coinChange = function(coins, amount) { // Time: O(amount * N). Space: O(amount)
-  const dp = new Array(amount + 1).fill(amount + 1);
-  dp[0] = 0;
+  // minCoinsDP[i] rep the min no of coins needed to arrive at amount i
+  const minCoinsDP = new Array(amount + 1).fill(amount + 1);
 
-  for (let i = 1; i < dp.length; i++) {
-    for (let c of coins) {
-      if (i - c >= 0) {
-        dp[i] = Math.min(dp[i], 1 + dp[i - c]);
-      }
+  minCoinsDP[0] = 0; // Base Case: 0 amount requires a min of 0 coin
+
+  for (let i = 1; i < minCoinsDP.length; i++) {
+    // i === amount of money
+    for (let coin of coins) {
+      if (i - coin < 0) continue;
+      minCoinsDP[i] = Math.min(minCoinsDP[i], 1 + minCoinsDP[i - coin]);
     }
   }
 
-  return dp[amount] !== amount + 1 ? dp[amount] : -1;
+  //if the initializing min hasn't been updated, then no coin combo found ==> -1
+  return minCoinsDP[amount] === amount + 1 ? - 1  : minCoinsDP[amount];
 };
 
 //L.450 (Medium)
