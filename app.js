@@ -1168,7 +1168,7 @@ var countBits = function(n) { // Time: O(n*logn). Space: O(1)
     let num = i;
     let count = 0;
     while (num) {
-      if ((num % 2) === 1) count++;
+      if (num % 2 === 1) count++;
       num = parseInt(num / 2);
     }
     res[i] = count;
@@ -4138,6 +4138,20 @@ var coinChange = function(coins, amount) { // Time: O(amount * N). Space: O(amou
 
   //if the initializing min hasn't been updated, then no coin combo found ==> -1
   return minCoinsDP[amount] === amount + 1 ? - 1  : minCoinsDP[amount];
+};
+
+//L.343 (Medium)
+var integerBreak = function(n) { // Time: O(n). Space: O(1)
+  if (n <= 3) return n - 1;
+
+  let maxProduct = 1;
+
+  while (n > 4) {
+    maxProduct *= 3;
+    n -= 3;
+  }
+
+  return maxProduct * n;
 };
 
 //L.450 (Medium)
