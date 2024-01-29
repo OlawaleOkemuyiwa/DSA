@@ -1177,6 +1177,33 @@ var countBits = function(n) { // Time: O(n*logn). Space: O(1)
   return res;  
 };
 
+//L.345 (Easy)
+var reverseVowels = function(s) { // Time: O(N). Space: O(N)
+  const vowels = ['a', 'e', 'i', 'o', 'u'];
+  const stack = [];
+  let modifiedString = '';
+  let res = '';
+
+  for (let i = 0; i < s.length; i++) {
+    if (vowels.includes(s[i].toLowerCase())) {
+      stack.push(s[i]);
+      modifiedString += 'a';
+    } else {
+      modifiedString += s[i];
+    }
+  }
+
+  for (let i = 0; i < modifiedString.length; i++) {
+    if (modifiedString[i] === 'a') {
+      res += stack.pop();
+    } else {
+      res += modifiedString[i];
+    }
+  }    
+
+  return res;
+};
+
 //L.876 (Easy)
 var middleNode = function(head) { //GAA. time O(n). space O(1)
   let slow = head;
