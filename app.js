@@ -1177,6 +1177,21 @@ var countBits = function(n) { // Time: O(n*logn). Space: O(1)
   return res;  
 };
 
+//L.344 (Easy)
+var reverseString = function(s) { // Time: O(N). Space: O(1)
+  let left = 0;
+  let right = s.length - 1;
+
+  while (left < right) {
+    const temp = s[left];
+    s[left] = s[right];
+    s[right] = temp;
+    
+    left++;
+    right--;
+  }
+};
+
 //L.345 (Easy)
 var reverseVowels = function(s) { // Time: O(N). Space: O(N)
   const vowels = ['a', 'e', 'i', 'o', 'u'];
