@@ -1219,7 +1219,30 @@ var reverseVowels = function(s) { // Time: O(N). Space: O(N)
   return res;
 };
 
-//L.350 (Medium)
+//L.349 (Easy)
+var intersection = function(nums1, nums2) { // Time: O(n + m). Space: O(min(m + n))
+  // Done so the shorter array between nums1 and nums2 is stored in map (smaller memory)
+  if (nums2.length < nums1.length) return intersection(nums2, nums1);
+
+  const res = [];
+  const nums1Count = new Map();
+
+  for (let num of nums1) {
+    if (!nums1Count.has(num)) {
+      nums1Count.set(num, 1);
+    }
+  }
+
+  for (let num of nums2) {
+    if (!nums1Count.has(num) || nums1Count.get(num) === 0) continue;
+    res.push(num);
+    nums1Count.set(num, nums1Count.get(num) - 1);
+  }
+
+  return res;
+};
+
+//L.350 (Easy)
 var intersect = function(nums1, nums2) { // Time: O(n + m). Space: O(min(n, m))
   // Done so the shorter array between nums1 and nums2 is stored in map (smaller memory)
   if (nums2.length < nums1.length) return intersect(nums2, nums1);
