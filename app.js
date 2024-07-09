@@ -412,6 +412,53 @@ var twoSum = function(nums, target) { //unsorted array time O(n). space O(n)
   }
 };
 
+//L.160 (Easy)
+var getIntersectionNode = function(headA, headB) {
+  let l1 = headA;
+  let l2 = headB;
+  let length1 = 0, length2= 0;
+
+  //If the last node of both list isn't equal then we have no intersection whatsover
+  while (l1.next || l2.next) {
+      if (l1.next) {
+        l1 = l1.next;
+        length1++;
+      }
+
+      if (l2.next) {
+        l2 = l2.next;
+        length2++;
+      }
+  }  
+
+  if (l1 !== l2) return null;
+
+  //If we ever get here, then there's an intersection. It's found by moving the pointer of
+  //the longer list to next till length of both lists become equal
+  l1 = headA;
+  l2 = headB;
+
+  if (length1 > length2) {
+    while (length1 !== length2) {
+      l1 = l1.next;
+      length1--;
+    } 
+  } else {
+    while (length1 !== length2) {
+      l2 = l2.next;
+      length2--;
+    } 
+  };
+
+  //Here the lengths are now equal and we can keep moving each pointer till intersection
+  while (l1 !== l2) {
+    l1 = l1.next;
+    l2 = l2.next;
+  }
+
+  return l1;
+};
+
 //L.167 (Medium) II
 var twoSumII = function(numbers, target) { // non-decreasing sorted array. time O(n). space(1)
   let left = 0;
