@@ -46,41 +46,44 @@ class Graph {
 
   DFSIterative(starterVertex) { //A vertex is noted to have been visited when it has been added to the stack for processing
     const result = [];
-    const stack = [starterVertex];
     const visited = new Set();
-    visited.add(starterVertex);
-
+    
+    const stack = [starterVertex];
     while (stack.length) {
       let currentVertex = stack.pop();
-      result.push(currentVertex);
 
-      for (let adjacentVertex of this.adjacencyList[currentVertex]) {
-        if (!visited.has(adjacentVertex)) {
-          stack.push(adjacentVertex);
-          visited.add(adjacentVertex);
+      if (!visited.has(currentVertex)) {
+        result.push(currentVertex);
+        visited.add(currentVertex);
+
+        for (let adjacentVertex of this.adjacencyList[currentVertex]) {
+          if (!visited.has(adjacentVertex)) stack.push(adjacentVertex);
         }
       }
     }
+
     return result;
   }
 
+
   BFS(starterVertex) { //BFS priotizes visiting all of the adjacent vertexes (neigbors) at a given depth before moving downwards
     const result = [];
-    const queue = [starterVertex];
     const visited = new Set();
-    visited.add(starterVertex);
-
+    
+    const queue = [starterVertex];
     while(queue.length) {
       let currentVertex = queue.shift();
-      result.push(currentVertex);
-    
-      for (let adjacentVertex of this.adjacencyList[currentVertex]) {
-        if (!visited.has(adjacentVertex)) {
-          queue.push(adjacentVertex);
-          visited.add(adjacentVertex);
+
+      if (!visited.has(currentVertex)) {
+        result.push(currentVertex);
+        visited.add(currentVertex);
+      
+        for (let adjacentVertex of this.adjacencyList[currentVertex]) {
+          if (!visited.has(adjacentVertex)) queue.push(adjacentVertex);
         }
       }
     }
+
     return result;
   }
 }
