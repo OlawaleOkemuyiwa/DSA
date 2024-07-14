@@ -1088,6 +1088,22 @@ var postorderTraversal = function(root) {
   return visited.reverse();
 };
 
+//L.168 (Easy)
+var convertToTitle = function(columnNumber) { //Space O(1). Time O(log26​(columnNumber))
+  //It is basically converting base 10 to base 26 with a twist (A -> 1, Z -> 26)
+  let res = '';
+
+  while (columnNumber) {   
+    const offset = (columnNumber - 1) % 26;
+    const unicode = 'A'.charCodeAt(0) + offset;
+    res = String.fromCharCode(unicode) + res;
+
+    columnNumber = parseInt((columnNumber - 1) / 26)
+  }
+  
+  return res;
+};
+
 //L.169 (Easy)
 var majorityElement = function(nums) { //
   /*
