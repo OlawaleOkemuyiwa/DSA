@@ -1095,8 +1095,8 @@ var convertToTitle = function(columnNumber) { //Space O(1). Time O(log26​(colu
 
   while (columnNumber) {   
     const offset = (columnNumber - 1) % 26;
-    const unicode = 'A'.charCodeAt(0) + offset;
-    res = String.fromCharCode(unicode) + res;
+    const charCode = 'A'.charCodeAt(0) + offset;
+    res = String.fromCharCode(charCode) + res;
 
     columnNumber = parseInt((columnNumber - 1) / 26)
   }
@@ -1133,6 +1133,21 @@ var majorityElement = function(nums) { //
   }
 
   return candidate;
+};
+
+//L.171 (Easy)
+var titleToNumber = function(columnTitle) { //Space O(1). Time O(n)
+  //Basically conversion of base 26 to base 10
+  let res = 0;
+  const length = columnTitle.length;
+
+  for (let i = columnTitle.length - 1; i >= 0; i--) {
+    const char = columnTitle.charAt(i);
+    const codeBase26 = char.charCodeAt(0) - 64;
+    res += codeBase26 * Math.pow(26, length - i - 1);
+  }
+
+  return res;
 };
 
 //L.203 (Easy)
