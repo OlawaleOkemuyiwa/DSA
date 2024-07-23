@@ -1150,6 +1150,23 @@ var titleToNumber = function(columnTitle) { //Space O(1). Time O(n)
   return res;
 };
 
+//L.179 (Medium)
+var largestNumber = function(nums) { //Time: O(nlogn). Space: O(1)
+  for (let i = 0; i < nums.length; i++) {
+    nums[i] = String(nums[i]);
+  };
+
+  nums.sort((a, b) => {
+    const num1 = parseInt(a + b);
+    const num2 = parseInt(b + a);
+
+    return num1 > num2 ? -1 : 1; 
+  });
+
+  // return nums.every(el => el === '0') ? '0' : '' + nums.join('');
+  return '' + BigInt(nums.join(''));
+};
+
 //L.203 (Easy)
 var removeElements = function(head, val) { //ABA. time O(n), space O(1)
   let dummyHead = new ListNode(-1);
