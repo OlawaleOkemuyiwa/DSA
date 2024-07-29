@@ -412,72 +412,6 @@ var twoSum = function(nums, target) { //unsorted array time O(n). space O(n)
   }
 };
 
-//L.160 (Easy)
-var getIntersectionNode = function(headA, headB) {
-  let l1 = headA;
-  let l2 = headB;
-  let length1 = 0, length2= 0;
-
-  //If the last node of both list isn't equal then we have no intersection whatsover
-  while (l1.next || l2.next) {
-      if (l1.next) {
-        l1 = l1.next;
-        length1++;
-      }
-
-      if (l2.next) {
-        l2 = l2.next;
-        length2++;
-      }
-  }  
-
-  if (l1 !== l2) return null;
-
-  //If we ever get here, then there's an intersection. It's found by moving the pointer of
-  //the longer list to next till length of both lists become equal
-  l1 = headA;
-  l2 = headB;
-
-  if (length1 > length2) {
-    while (length1 !== length2) {
-      l1 = l1.next;
-      length1--;
-    } 
-  } else {
-    while (length1 !== length2) {
-      l2 = l2.next;
-      length2--;
-    } 
-  };
-
-  //Here the lengths are now equal and we can keep moving each pointer till intersection
-  while (l1 !== l2) {
-    l1 = l1.next;
-    l2 = l2.next;
-  }
-
-  return l1;
-};
-
-//L.167 (Medium) II
-var twoSumII = function(numbers, target) { // non-decreasing sorted array. time O(n). space(1)
-  let left = 0;
-  let right = numbers.length - 1;
-
-  while (left < right) {
-    let sum = numbers[left] + numbers[right];
-    if (target === sum) {
-      return [left + 1, right + 1];
-    } else if (sum > target) {
-      right--;
-    } else {
-      left++;
-    }
-  }
-  return [-1, -1];
-};
-
-
 //L.9 (Easy)
 var isPalindrome = function(x) { //time O(log10x. space O(1)
   if (x < 0) return false; 
@@ -1086,6 +1020,53 @@ var postorderTraversal = function(root) {
     //[node, right, left].reverse === [left, right, node] POSTORDER
   }
   return visited.reverse();
+};
+
+//L.160 (Easy)
+var getIntersectionNode = function(headA, headB) {
+  let l1 = headA;
+  let l2 = headB;
+  let length1 = 0, length2= 0;
+
+  //If the last node of both list isn't equal then we have no intersection whatsover
+  while (l1.next || l2.next) {
+      if (l1.next) {
+        l1 = l1.next;
+        length1++;
+      }
+
+      if (l2.next) {
+        l2 = l2.next;
+        length2++;
+      }
+  }  
+
+  if (l1 !== l2) return null;
+
+  //If we ever get here, then there's an intersection. It's found by moving the pointer of
+  //the longer list to next till length of both lists become equal
+  l1 = headA;
+  l2 = headB;
+
+  if (length1 > length2) {
+    while (length1 !== length2) {
+      l1 = l1.next;
+      length1--;
+    } 
+  } else {
+    while (length1 !== length2) {
+      l2 = l2.next;
+      length2--;
+    } 
+  };
+
+  //Here the lengths are now equal and we can keep moving each pointer till intersection
+  while (l1 !== l2) {
+    l1 = l1.next;
+    l2 = l2.next;
+  }
+
+  return l1;
 };
 
 //L.168 (Easy)
@@ -3990,6 +3971,24 @@ var numIslands = function(grid) { //AGF. time O(N) {N is board cells}, space O(N
   return islands;    
 };
 
+//L.167 (Medium) II
+var twoSumII = function(numbers, target) { // non-decreasing sorted array. time O(n). space(1)
+  let left = 0;
+  let right = numbers.length - 1;
+
+  while (left < right) {
+    let sum = numbers[left] + numbers[right];
+    if (target === sum) {
+      return [left + 1, right + 1];
+    } else if (sum > target) {
+      right--;
+    } else {
+      left++;
+    }
+  }
+  return [-1, -1];
+};
+
 //L.206 (Nedium)
 var canFinish = function(numCourses, prerequisites) { //GAA. time, space O(m + n) 
   //initialize a barebones adjacency list using each of the courses.
@@ -4425,6 +4424,21 @@ var longestCommonSubsequence = function(text1, text2) { //time and space O(m * n
   return dp[0][0];
 };
 
+//L.2165 (Medium)
+var smallestNumber = function(num) { //Time: O(nlogn). Space: O(1)
+  const digits = num.toString().replace('-', '').split('');
+
+  if (digits.every(el => el === '0')) return 0;
+
+  if (num < 0) {
+    return parseInt('-' + digits.sort((a, b) => b - a).join(''));
+  } else {
+    const leadNum = '' + Math.min(...digits.filter(el => el !== '0'));
+    digits.splice(digits.indexOf(leadNum), 1);
+
+    return parseInt(leadNum + digits.sort((a, b) => a - b).join(''));
+  }
+};
 
 //L.4 (Hard)
 var findMedianSortedArrays = function(nums1, nums2) {
