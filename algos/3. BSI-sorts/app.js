@@ -71,7 +71,8 @@
 // }
 // console.log(insertionSort([8, 7, 5, 15, 3, 1]));
 
-// function countSort (nums) { //time O(n) {2 passes}, space O(1) {count is always length 3}
+// function countSort123(nums) { //time O(n) {2 passes}, space O(1) {count is always length 3}
+//   //This implementation assumes that the input array only contains the values 0, 1, and 2. It's a solution to a very specific problem, often referred to as the "Dutch National Flag problem" or "Sort Colors" problem.
 //   const count = new Array(3).fill(0);
 //   for (let num of nums) {
 //     count[num]++
@@ -88,4 +89,4 @@
 //     nums[i++] = 2;
 //   }
 // };
-// console.log(countSort([2,0,2,1,1,0]))
+// console.log(countSort([2,0,2,1,1,0]));
