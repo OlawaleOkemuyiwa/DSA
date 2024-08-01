@@ -3887,6 +3887,7 @@ var maxProduct = function(nums) { //ALM. time O(n). space O(1)
   }
   return maxProduct;
 };
+
 //L.153 (Medium)
 var findMin = function(nums) { //AMF. time O(logn). space O(1)
   //to rotate by 4 is to take the 4 rightmost nums and put in the beginning of the array
@@ -3939,6 +3940,44 @@ MinStack.prototype.getMin = function() {
   return this.stack[this.stack.length - 1][1];
 };
 
+//L.162 (Medium)
+var findPeakElement = function(nums) { //Time: O(logn). Space: O(1)
+  //A peak element is one greater than its adjacent neighbor(s)
+  let left = 0, right = nums.length - 1;
+
+  while(left <= right) {
+    let mid = Math.floor((left + right) / 2);
+
+    //left neighbor is greater than nums[mid] therefore peak is on the left
+    if (mid > 0 && nums[mid] < nums[mid - 1]) { 
+      right = mid - 1;
+    //right neighbor is greater than nums[mid] therfore peak is on the right
+    } else if (mid < nums.length - 1 && nums[mid] < nums[mid + 1]) {
+      left = mid + 1;
+    } else {
+      return mid;
+    }
+  }
+};
+
+//L.167 (Medium) II
+var twoSumII = function(numbers, target) { // non-decreasing sorted array. time O(n). space(1)
+  let left = 0;
+  let right = numbers.length - 1;
+
+  while (left < right) {
+    let sum = numbers[left] + numbers[right];
+    if (target === sum) {
+      return [left + 1, right + 1];
+    } else if (sum > target) {
+      right--;
+    } else {
+      left++;
+    }
+  }
+  return [-1, -1];
+};
+
 //L.200 (Medium)
 var numIslands = function(grid) { //AGF. time O(N) {N is board cells}, space O(N) {call stack}
   const rows = grid.length;
@@ -3969,24 +4008,6 @@ var numIslands = function(grid) { //AGF. time O(N) {N is board cells}, space O(N
   }
 
   return islands;    
-};
-
-//L.167 (Medium) II
-var twoSumII = function(numbers, target) { // non-decreasing sorted array. time O(n). space(1)
-  let left = 0;
-  let right = numbers.length - 1;
-
-  while (left < right) {
-    let sum = numbers[left] + numbers[right];
-    if (target === sum) {
-      return [left + 1, right + 1];
-    } else if (sum > target) {
-      right--;
-    } else {
-      left++;
-    }
-  }
-  return [-1, -1];
 };
 
 //L.206 (Nedium)
