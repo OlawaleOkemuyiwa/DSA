@@ -1069,6 +1069,18 @@ var getIntersectionNode = function(headA, headB) {
   return l1;
 };
 
+//L.164 (Medium) ??
+var maximumGap = function(nums) { //Time: O(nlogn). Space: O(1)
+  nums.sort((a, b) => a - b);
+
+  let max = 0;
+  for (let i = 1; i < nums.length; i++) {
+    max = Math.max(max, nums[i] - nums[i - 1]);
+  }
+
+  return max;
+};
+
 //L.168 (Easy)
 var convertToTitle = function(columnNumber) { //Space O(1). Time O(log26​(columnNumber))
   //It is basically converting base 10 to base 26 with a twist (A -> 1, Z -> 26)
