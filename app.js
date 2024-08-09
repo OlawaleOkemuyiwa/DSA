@@ -1081,6 +1081,29 @@ var maximumGap = function(nums) { //Time: O(nlogn). Space: O(1)
   return max;
 };
 
+//L.165 (Medium)
+var compareVersion = function(version1, version2) { //Time: O(n1 + n2). Space: O(n1 + n2)
+  const arr1 = version1.split('.').map(el => parseInt(el));
+  const arr2 = version2.split('.').map(el => parseInt(el));
+
+  let i = 0, j = 0;
+  while (i < arr1.length || i < arr2.length) {
+    const num1 = i < arr1.length ? arr1[i] : 0;
+    const num2 = j < arr2.length ? arr2[j] : 0;
+
+    if (num1 > num2) {
+      return 1;
+    } else if (num1 < num2) {
+      return -1;
+    } else {
+      i++;
+      j++;
+    }
+  }
+
+  return 0;
+};
+
 //L.168 (Easy)
 var convertToTitle = function(columnNumber) { //Space O(1). Time O(log26​(columnNumber))
   //It is basically converting base 10 to base 26 with a twist (A -> 1, Z -> 26)
