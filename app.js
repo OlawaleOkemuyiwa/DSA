@@ -1104,6 +1104,56 @@ var compareVersion = function(version1, version2) { //Time: O(n1 + n2). Space: O
   return 0;
 };
 
+//L.166 (Medium)
+var fractionToDecimal = function(numerator, denominator) { //Time: O(Log(Num)), Space: O(Num)
+  let negative = false;
+  if (numerator === 0) return "0";
+  if (numerator % denominator === 0) return String(numerator / denominator);
+  if (numerator * denominator < 0) negative = true;
+
+  numerator = Math.abs(numerator);
+  denominator = Math.abs(denominator);
+
+  //set the integer part of the result string
+  let res = Math.floor(numerator / denominator) + '.';
+  
+  const numQ = [];
+
+  //set the decimal part of the result string
+  while (true) {
+    let remainder = numerator % denominator; 
+    if (remainder === 0) {
+        for (let val of numQ) {
+            res += val.split(',')[1];
+        }
+        break;
+    }
+
+    numerator = remainder * 10; 
+    let q = Math.floor(numerator / denominator);
+
+    if (!numQ.includes(`${numerator},${q}`)) {
+      numQ.push(`${numerator},${q}`);
+    } else {
+      //build the non-repeating decimal part if there is any
+      let ind = numQ.indexOf(`${numerator},${q}`);
+      for (let i = 0; i < ind; i++) {
+        res += numQ[i].split(',')[1];
+      }
+
+      //build the repeating decimal part enclosed in paranthesis
+      res += '(';
+      for (let i = ind; i < numQ.length; i++) {
+        res += numQ[i].split(',')[1];
+      }
+      res += ')';
+      break;
+    }
+  }
+
+  return negative ? "-" + res : res;
+};
+
 //L.168 (Easy)
 var convertToTitle = function(columnNumber) { //Space O(1). Time O(log26​(columnNumber))
   //It is basically converting base 10 to base 26 with a twist (A -> 1, Z -> 26)
