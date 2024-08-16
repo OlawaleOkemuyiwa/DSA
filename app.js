@@ -1123,10 +1123,10 @@ var fractionToDecimal = function(numerator, denominator) { //Time: O(Log(Num)), 
   while (true) {
     let remainder = numerator % denominator; 
     if (remainder === 0) {
-        for (let val of numQ) {
-            res += val.split(',')[1];
-        }
-        break;
+      for (let val of numQ) {
+        res += val.split(',')[1];
+      }
+      break;
     }
 
     numerator = remainder * 10; 
