@@ -1136,14 +1136,14 @@ var fractionToDecimal = function(numerator, denominator) { //Time: O(Log(Num)), 
       numQ.push(`${numerator},${q}`);
     } else {
       //build the non-repeating decimal part if there is any
-      let ind = numQ.indexOf(`${numerator},${q}`);
-      for (let i = 0; i < ind; i++) {
+      let idx = numQ.indexOf(`${numerator},${q}`);
+      for (let i = 0; i < idx; i++) {
         res += numQ[i].split(',')[1];
       }
 
       //build the repeating decimal part enclosed in paranthesis
       res += '(';
-      for (let i = ind; i < numQ.length; i++) {
+      for (let i = idx; i < numQ.length; i++) {
         res += numQ[i].split(',')[1];
       }
       res += ')';
@@ -1214,6 +1214,18 @@ var titleToNumber = function(columnTitle) { //Space O(1). Time O(n)
   }
 
   return res;
+};
+
+//L.172 (Medium)
+var trailingZeroes = function(n) { //Time: O(Log5(n)). Space: O(1)
+  let count = 0;
+
+  while (n > 0) {
+    n = Math.floor(n / 5);
+    count += n;
+  }
+
+  return count;
 };
 
 //L.179 (Medium)
