@@ -4075,6 +4075,26 @@ var twoSumII = function(numbers, target) { // non-decreasing sorted array. time 
   return [-1, -1];
 };
 
+//L.187 (Medium)
+var findRepeatedDnaSequences = function(s) { //Time: O(N). Space: O(N)
+  const seen = new Set();
+  const res = new Set();
+
+  for (let i = 0; i < s.length - 9; i++) {
+    let curStr = s.substring(i, i + 10);
+
+    //if cur substring has already been encountered prior in s, then add to res hash set
+    if (seen.has(curStr)) {
+      res.add(curStr);
+    } else {
+      //else cur substring has just been encountered for the first time in s
+      seen.add(curStr);
+    }
+  }
+
+  return Array.from(res);
+};
+
 //L.200 (Medium)
 var numIslands = function(grid) { //AGF. time O(N) {N is board cells}, space O(N) {call stack}
   const rows = grid.length;
