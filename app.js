@@ -1245,6 +1245,24 @@ var largestNumber = function(nums) { //Time: O(nlogn). Space: O(1)
   return '' + BigInt(nums.join(''));
 };
 
+
+//L.190 (Easy)
+var reverseBits = function(n) { //Time: O(1). Space: O(1)
+  //Convert n from base 10 it is given in to base 2 and pad start resulting string to 32 bits
+  n = n.toString(2).padStart(32, '0');
+
+  //Reverse the 32 bits string
+  let reversedString = n.split('').reverse().join('');
+
+  //Convert the reversed 32 bits back to base 10
+  return parseInt(reversedString, 2);
+};
+
+//L.191 (Easy)
+var hammingWeight = function(n) {
+  return n.toString(2).split('').filter(el => el === '1').length;  
+};
+
 //L.203 (Easy)
 var removeElements = function(head, val) { //ABA. time O(n), space O(1)
   let dummyHead = new ListNode(-1);
