@@ -1245,6 +1245,19 @@ var largestNumber = function(nums) { //Time: O(nlogn). Space: O(1)
   return '' + BigInt(nums.join(''));
 };
 
+//L.179 (Medium)
+var rotate = function(nums, k) { //Time: O(N). Space: O(1)
+  k = k % nums.length;
+
+  nums.reverse();
+
+  let l = 0, r = k - 1;
+
+  while (l < r) [nums[l++], nums[r--]] = [nums[r], nums[l]];
+  
+  l = k, r = nums.length - 1;
+  while (l < r) [nums[l++], nums[r--]] = [nums[r], nums[l]];
+};
 
 //L.190 (Easy)
 var reverseBits = function(n) { //Time: O(1). Space: O(1)
