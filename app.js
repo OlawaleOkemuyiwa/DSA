@@ -1245,16 +1245,19 @@ var largestNumber = function(nums) { //Time: O(nlogn). Space: O(1)
   return '' + BigInt(nums.join(''));
 };
 
-//L.179 (Medium)
+//L.189 (Medium)
 var rotate = function(nums, k) { //Time: O(N). Space: O(1)
+  //Incase k >= length of nums.length. k is reduced to it's appropriate value
   k = k % nums.length;
 
+  // Reverse the entire array
   nums.reverse();
 
+  //reverse 0 to just before k
   let l = 0, r = k - 1;
-
   while (l < r) [nums[l++], nums[r--]] = [nums[r], nums[l]];
   
+  //reverse k to the end of the reversed nums array
   l = k, r = nums.length - 1;
   while (l < r) [nums[l++], nums[r--]] = [nums[r], nums[l]];
 };
