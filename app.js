@@ -432,11 +432,11 @@ var romanToInt = function(s) {
 
   let int = 0;
   for (let i = 0; i < s.length; i++) {
-    if (obj[s.charAt(i)] < obj[s.charAt(i + 1)]) {
-      int += obj[s.charAt(i + 1)] - obj[s.charAt(i)];
+    if (i + 1 < s.length && obj[s[i]] < obj[s[i + 1]]) {
+      int += obj[s[i + 1]] - obj[s[i]];
       i++;
     } else {
-      int += obj[s.charAt(i)]
+      int += obj[s[i]]
     }
   }
 
@@ -2882,20 +2882,22 @@ var exist = function(board, word) { //TBA.
 
 //L.80 (Medium)
 var removeDuplicates = function(nums) { //time O(n), space O(1)
-  let insertIdx = 0;
-  let numCount = 0;
+  let insertIdx = 1;
+  let numCount = 1;
 
-  for (let i = 0; i < nums.length; i++) {
-    if (i > 0 && nums[i] === nums[i - 1]) { 
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] === nums[i - 1]) { 
       numCount++;
-      if (numCount <= 2) {
-        nums[insertIdx++] = nums[i];
-      } 
     } else {
       numCount = 1;
-      nums[insertIdx++] = nums[i];
+    }
+    
+    if (numCount <= 2) {
+      nums[insertIdx] = nums[i];
+      insertIdx++;
     }
   }
+  
   return insertIdx;  
 };
 
